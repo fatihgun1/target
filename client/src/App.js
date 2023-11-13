@@ -5,6 +5,8 @@ import "../node_modules/bootstrap/dist/css/bootstrap.min.css"
 import Layout from './components/Layout';
 import LoginPage from './Page/LoginPage';
 import RegisterPage from './Page/RegisterPage';
+import ProfilePage from './Page/ProfilePage';
+import TodosPage from './Page/TodosPage';
 
 function App() {
   const router = createBrowserRouter(
@@ -27,6 +29,18 @@ function App() {
           path: "/register",
           element: (
             <RegisterPage/>
+          )
+        },
+        {
+          path: "/profile",
+          element: (
+            <ProfilePage/>
+          )
+        },
+        {
+          path: "/todos",
+          element: (
+            <TodosPage/>
           )
         }
       ]
