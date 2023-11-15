@@ -5,7 +5,8 @@ export const userSlice = createSlice({
     name:'user',
     initialState :{
         user : null,
-        isLogin : false
+        isLogin : false,
+        token: null
     },
     reducers:{
         currentUser: (state) =>{
@@ -14,6 +15,7 @@ export const userSlice = createSlice({
                 const user = decodeToken(token.token);
                 state.user = user.sub
                 state.isLogin = true;
+                state.token = token.token;
             }
         },
         logout : (state) => {

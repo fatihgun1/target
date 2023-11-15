@@ -6,7 +6,10 @@ import Layout from './components/Layout';
 import LoginPage from './Page/LoginPage';
 import RegisterPage from './Page/RegisterPage';
 import ProfilePage from './Page/ProfilePage';
-import TodosPage from './Page/TodosPage';
+import TodosPage from './Page/Todo/TodosPage';
+import CreateTodosPage from './Page/Todo/CreateTodosPage';
+import TodoPage from './Page/Todo/TodoPage';
+import CreateTodoPage from './Page/Todo/CreateTodoPage';
 
 function App() {
   const router = createBrowserRouter(
@@ -41,6 +44,24 @@ function App() {
           path: "/todos",
           element: (
             <TodosPage/>
+          )
+        },
+        {
+          path: "/todos/create",
+          element: (
+            <CreateTodosPage/>
+          )
+        },
+        {
+          path: "/todo/:code",
+          element: (
+            <TodoPage/>
+          )
+        },
+        {
+          path: "/todo/create/:code",
+          element: (
+            <CreateTodoPage/>
           )
         }
       ]

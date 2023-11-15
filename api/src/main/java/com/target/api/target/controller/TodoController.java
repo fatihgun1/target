@@ -1,8 +1,8 @@
 package com.target.api.target.controller;
 
-import com.target.api.target.dto.TodosDto;
-import com.target.api.target.facades.request.TodosRequestDto;
-import com.target.api.target.facades.todos.TodosFacades;
+import com.target.api.target.dto.TodoDto;
+import com.target.api.target.facades.request.TodoRequestDto;
+import com.target.api.target.facades.todos.TodoFacade;
 import jakarta.annotation.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,32 +10,31 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin("*")
-@RequestMapping(value = "/todos",method = RequestMethod.GET)
-public class TodosController {
+@RequestMapping(value = "/todo",method = RequestMethod.GET)
+public class TodoController {
 
-    @Resource(name = "todosFacades")
-    private TodosFacades todosFacades;
+    @Resource(name = "todoFacades")
+    private TodoFacade todoFacade;
 
     @PostMapping("/create")
-    public ResponseEntity<String> createTodos(@RequestBody TodosRequestDto todosRequestDto){
-        todosFacades.createTodoList(todosRequestDto);
+    public ResponseEntity<String> createTodos(@RequestBody TodoRequestDto todoRequestDto){
+        todoFacade.createTodo(todoRequestDto);
         return ResponseEntity.ok("Created");
     }
 
-    @GetMapping("/all/{owner}")
-    public List<TodosDto> getTodos(@PathVariable String owner){
-        return todosFacades.getTodosByOwner(owner);
+    @GetMapping("/all/{code}")
+    public List<TodoDto> getTodos(@PathVariable String code){
+        return todoFacade.getTodoList(code);
     }
 
     @PostMapping("/update")
-    public ResponseEntity<String> updateTodos(@RequestBody TodosRequestDto todosRequestDto){
-        Boolean succeed = todosFacades.updateTodoList(todosRequestDto);
+    public ResponseEntity<String> updateTodos(@RequestBody TodoRequestDto todoRequestDto){
+        Boolean succeed = todoFacade.updateTodo(todoRequestDto);
         return succeed ? ResponseEntity.ok("Updated"): ResponseEntity.badRequest().body("Could not update");
     }
     @PostMapping("/delete")
-    public ResponseEntity<String> deleteTodos(@RequestBody TodosRequestDto todosRequestDto){
-        Boolean succeed = todosFacades.deleteTodoList(todosRequestDto);
+    public ResponseEntity<String> deleteTodos(@RequestBody TodoRequestDto todoRequestDto){
+        Boolean succeed = todoFacade.deleteTodo(todoRequestDto);
         return succeed ? ResponseEntity.ok("Deleted"): ResponseEntity.badRequest().body("Could not delete");
     }
 
