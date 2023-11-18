@@ -11,7 +11,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/todos",method = RequestMethod.GET)
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class TodosController {
 
     @Resource(name = "todosFacades")
@@ -26,6 +25,11 @@ public class TodosController {
     @GetMapping("/all/{owner}")
     public List<TodosDto> getTodos(@PathVariable String owner){
         return todosFacades.getTodosByOwner(owner);
+    }
+
+    @GetMapping("/get/{code}")
+    public TodosDto getTodosByCode(@PathVariable("code") String code){
+        return todosFacades.getTodosByCode(code);
     }
 
     @PostMapping("/update")

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { currentUser } from '../../redux/slice/userSlice';
 import axios from 'axios';
-export default function CreateTodoPage({code,setAction}) {
+export default function CreateTodoPage({code,status,setAction}) {
 
   const dispatch = useDispatch();
   const cUser = useSelector(state => state.user);
@@ -17,20 +17,21 @@ export default function CreateTodoPage({code,setAction}) {
       'Authorization': `Bearer ${cUser.token}`
     }
   };
-  let statusList = ['Not Start', 'On Going', 'Done'];
+
   const [todo, setTodo] = useState({
     description: null,
-    status: null,
-    code:null
+    status:status[0],
+    code:code
   });
 
   useEffect(() => {
-    setTodo(prev => ({ ...prev, status: statusList[0],code:code }))
-  }, [])
+    setTodo(prev => ({ ...prev, status: status[0],code:code }))
+  }, [setAction])
 
   const onFormChange = e => {
     const { name, value } = e.target;
     setTodo(prev => ({ ...prev, [name]: value }))
+    console.log(todo);
   }
 
   const saveTodo = async e => {
@@ -45,12 +46,12 @@ export default function CreateTodoPage({code,setAction}) {
   }
 
   const onStatusChange = e => {
-    setTodo(prev => ({ ...prev, status: e.target.value}))
+    setTodo(prev => ({ ...prev, status: status.find(({code}) => code === e.target.value)}))
   }
 
   useEffect(() => {
     dispatch(currentUser());
-  }, [])
+  }, [setAction])
 
   return (
     <div>
@@ -58,7 +59,7 @@ export default function CreateTodoPage({code,setAction}) {
       <div>
         <input name="description" placeholder="what is your target" type="text" onChange={onFormChange} />
         <select className='form-select' onChange={onStatusChange}>
-          {statusList && statusList.map((type, index) => (<option key={index} value={type}>{type}</option>))}
+          {status && status.map((type, index) => (<option key={index} value={type.code}>{type.name}</option>))}
         </select>
       </div>
       <div>

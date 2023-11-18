@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-export default function TodoComponent({ description, code, status, token, setAction }) {
+export default function TodoComponent({ orginalTodo, statusList, token, setAction }) {
   const [edited, setEdited] = useState();
-  let statusList = ['Not Start', 'On Going', 'Done'];
-  const [todo, setTodo] = useState({
-    description: description,
-    status: status,
-    code: code
-});
+  const [todo, setTodo] = useState(orginalTodo);
+  useEffect(()=>{
+    setTodo(orginalTodo)
+  },[orginalTodo])
 
   let axiosConfig = {
     withCredentials: false,
@@ -21,8 +19,8 @@ export default function TodoComponent({ description, code, status, token, setAct
   };
 
   const deleteTodo = async () => {
-    console.log(code);
-    await axios.post(`http://localhost:8080/todo/delete`, { code }, axiosConfig)
+    console.log(todo.code);
+    await axios.post(`http://localhost:8080/todo/delete`, { code : todo.code }, axiosConfig)
       .then((response) => {
         setAction(prev => !prev)
       })
@@ -32,7 +30,6 @@ export default function TodoComponent({ description, code, status, token, setAct
   }
 
   const updateTodo = async () => {
-    console.log(todo);
     await axios.post(`http://localhost:8080/todo/update`, todo, axiosConfig)
       .then((response) => {
         setAction(prev => !prev)
@@ -49,27 +46,29 @@ export default function TodoComponent({ description, code, status, token, setAct
   }
 
   const onStatusChange = e => {
-    setTodo(prev => ({ ...prev, status: e.target.value}))
+    setTodo(prev => ({ ...prev, status: statusList.find(({code}) => code === e.target.value)}))
+    console.log(todo,statusList);
   }
 
   const onDescriptionChange = e => {
     setTodo(prev => ({ ...prev, description: e.target.value}))
+
   }
 
   return (
-    <div className='card mb-2' key={code}>
+    <div className='card mb-2' key={todo.code}>
       <div className="card-body">
         <div className="row">
           <div className="col">
             {edited ?
-              <div>
-                <input type='text' value={todo.description} onChange={onDescriptionChange}/>
-                <select onChange={onStatusChange} defaultValue={status}>
-                  {statusList && statusList.map((type, index) => (<option key={index} value={type}>{type}</option>))}
+              <div className='input-group'>
+                <input className='form-control' type='text' defaultValue={todo.description} onChange={onDescriptionChange}/>
+                <select className='form-select' onChange={onStatusChange} defaultValue={todo.status.code}>
+                  {statusList && statusList.map((type, index) => (<option key={index} value={type.code}>{type.name}</option>))}
                 </select>
-                
+            
               </div>
-              : <>{description} - {status} </>}
+              : <>{todo.description} - {todo.status.name} </>}
 
           </div>
           <div className="col-2">
@@ -77,9 +76,9 @@ export default function TodoComponent({ description, code, status, token, setAct
             {edited ? 
             <button className='btn btn-sm btn-primary' onClick={updateTodo}>Save</button>
             :
-            <button class="btn btn-sm btn-success" onClick={editTodo}>Edit</button>
+            <button className="btn btn-sm btn-success" onClick={editTodo}>Edit</button>
             }
-            <button type="button" class="btn-close" aria-label="Close" onClick={deleteTodo}></button>
+            <button type="button" className="btn-close" aria-label="Close" onClick={deleteTodo}></button>
           </div>
         </div>
 

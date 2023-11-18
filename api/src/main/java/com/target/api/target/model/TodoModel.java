@@ -12,8 +12,12 @@ public class TodoModel {
     private Long pk;
     private String code;
     private String description;
-    private String status;
+
     @ManyToOne
     @JoinColumn(name = "todos_pk")
     private TodosModel todos;
+
+    @ManyToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name = "status_pk")
+    private StatusModel status;
 }

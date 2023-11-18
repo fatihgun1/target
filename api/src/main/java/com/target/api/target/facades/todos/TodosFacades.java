@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface TodosFacades {
     List<TodosDto> getTodosByOwner(String owner);
+    TodosDto getTodosByCode(String code);
     void createTodoList(TodosRequestDto requestDto);
     Boolean updateTodoList(TodosRequestDto requestDto);
     Boolean deleteTodoList(TodosRequestDto requestDto);

@@ -42,6 +42,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request.requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/todos/**").permitAll()
                         .requestMatchers("/todo/**").permitAll()
+                        .requestMatchers("/status/**").permitAll()
                         .requestMatchers("/api/v1/admin").hasAnyAuthority(RoleEnum.ADMIN.name())
                         .requestMatchers("/api/v1/user").hasAnyAuthority(RoleEnum.USER.name())
                         .anyRequest().authenticated())

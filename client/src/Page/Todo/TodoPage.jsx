@@ -8,14 +8,23 @@ import TodoComponent from '../../components/todos/TodoComponent';
 export default function TodoPage() {
     const { code } = useParams()
     const dispatch = useDispatch();
+
     const cUser = useSelector(state => state.user);
     const [visible, setVisible] = useState(false);
-    const [action,setAction] = useState(false);
-    const [todo, setTodo] = useState([{
-        description: null,
-        status: null,
-        code: null
-    }]);
+    const [action, setAction] = useState(false);
+
+    const [todos, setTodos] = useState({
+        name: null,
+        code: null,
+        owner: null,
+        status: [{ code: null, name: null, score: null }],
+        todos: [{
+            description: null,
+            status: { code: null, name: null, score: null },
+            code: null
+        }]
+
+    });
 
     useEffect(() => {
         dispatch(currentUser());
@@ -23,10 +32,9 @@ export default function TodoPage() {
     }, [action])
 
     const getTodos = async (code) => {
-        await axios.get(`http://localhost:8080/todo/all/${code}`, null, axiosConfig)
+        await axios.get(`http://localhost:8080/todos/get/${code}`, null, axiosConfig)
             .then((response) => {
-                setTodo(response.data)
-                console.log(response.data);
+                setTodos(response.data)
             })
             .catch((error) => {
                 console.log(error)
@@ -51,17 +59,22 @@ export default function TodoPage() {
 
     return (
         <div className='row'>
-            <div className="col-8">
-                {todo && todo.map((todox, index) => (
-                    <TodoComponent setAction={setAction} description={todox.description} code={todox.code} status={todox.status} token={cUser.token}/>
+            <nav className="navbar bg-body-tertiary mb-4">
+                <div className="container-fluid">
+                    <p className='navbar-brand'>{todos.name}</p>
+                    <button className='btn btn-outline-primary' onClick={onCrateButtonClick} >Create todo</button>
+                </div>
+            </nav>
+            <div className={visible ? "col-8" : "col"}>
+                {todos.todos && todos.todos.map((todo, index) => (
+                    <TodoComponent setAction={setAction} orginalTodo={todo} statusList={todos.status} token={cUser.token} />
                 ))}
-
             </div>
-            <div className="col">
-                <button className='btn btn-outline-primary' onClick={onCrateButtonClick} >Add todo</button>
-                {visible ? <CreateTodoPage code={code} setAction={setAction} /> : null}
-            </div>
-
+            {visible ?
+                <div className="col">
+                    <CreateTodoPage code={todos.code} status={todos.status} setAction={setAction} />
+                </div>
+            : null}
         </div>
     )
 }

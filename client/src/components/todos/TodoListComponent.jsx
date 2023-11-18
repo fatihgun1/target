@@ -1,5 +1,5 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios';
 export default function TodoListComponent({ name, todosCode, key, setAction,token }) {
     const navigate = useNavigate();
@@ -16,7 +16,7 @@ export default function TodoListComponent({ name, todosCode, key, setAction,toke
             "Method": "GET",
             'Authorization': `Bearer ${token}`
         }
-    };
+    }; 
 
     const deleteTodo = async () => {
         console.log(todosCode);
@@ -34,12 +34,16 @@ export default function TodoListComponent({ name, todosCode, key, setAction,toke
             <div className="card-body">
 
                 <div className="row">
-                    <div className="col-11" onClick={() => navigateTodoDetail(todosCode)}>
+                    <div className="col-10" onClick={() => navigateTodoDetail(todosCode)}>
                         {name}
                     </div>
                     <div className="col">
-                        <button type="button" class="btn-close" aria-label="Close" onClick={deleteTodo}></button>
+                    <div className="input-group">
+                        <Link className='btn btn-sm btn-primary' to={`/todos/edit/${todosCode}`}>Edit</Link>
+                        <button className='btn btn-sm btn-danger' onClick={deleteTodo}>Delete</button>
                     </div>
+                    </div>
+
                 </div>
             </div>
         </div>
