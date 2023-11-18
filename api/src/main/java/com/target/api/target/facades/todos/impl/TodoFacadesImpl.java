@@ -2,9 +2,11 @@ package com.target.api.target.facades.todos.impl;
 
 import com.target.api.target.dto.TodoDto;
 import com.target.api.target.facades.request.TodoRequestDto;
-import com.target.api.target.facades.todos.TodoFacade;
+import com.target.api.target.facades.todos.TodoFacades;
 import com.target.api.target.mapper.TodoMapper;
+import com.target.api.target.model.StatusModel;
 import com.target.api.target.model.TodoModel;
+import com.target.api.target.services.StatusService;
 import com.target.api.target.services.TodoService;
 import com.target.api.target.services.TodosService;
 import jakarta.annotation.Resource;
@@ -16,11 +18,13 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Service("todoFacades")
-public class TodoFacadesImpl implements TodoFacade {
+public class TodoFacadesImpl implements TodoFacades {
     @Resource(name = "todoService")
     private TodoService todoService;
     @Resource(name = "todosService")
     private TodosService todosService;
+    @Resource(name = "statusService")
+    private StatusService statusService;
     @Resource(name = "todoMapper")
     private TodoMapper todoMapper;
     @Override
@@ -38,7 +42,7 @@ public class TodoFacadesImpl implements TodoFacade {
         TodoModel todo = new TodoModel();
         todo.setCode(UUID.randomUUID().toString());
         todo.setDescription(todoRequestDto.getDescription());
-        todo.setStatus(todoRequestDto.getStatus());
+        todo.setStatus(statusService.getStatusByCode(todoRequestDto.getStatus().getCode()));
         todo.setTodos(todosService.getTodosByCode(todoRequestDto.getCode()));
         todoService.createTodo(todo);
     }
@@ -46,11 +50,12 @@ public class TodoFacadesImpl implements TodoFacade {
     @Override
     public Boolean updateTodo(TodoRequestDto todoRequestDto) {
         TodoModel existed = todoService.getTodoByCode(todoRequestDto.getCode());
+        StatusModel status = statusService.getStatusByCode(todoRequestDto.getStatus().getCode());
         if (Objects.isNull(existed)){
             return false;
         }
         existed.setDescription(todoRequestDto.getDescription());
-        existed.setStatus(todoRequestDto.getStatus());
+        existed.setStatus(status);
         todoService.updateTodo(existed);
         return true;
     }

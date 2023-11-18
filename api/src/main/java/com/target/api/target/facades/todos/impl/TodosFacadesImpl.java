@@ -1,9 +1,14 @@
 package com.target.api.target.facades.todos.impl;
 
+import com.target.api.target.dto.TodoDto;
 import com.target.api.target.dto.TodosDto;
 import com.target.api.target.facades.request.TodosRequestDto;
 import com.target.api.target.facades.todos.TodosFacades;
+import com.target.api.target.mapper.StatusMapper;
+import com.target.api.target.mapper.TodoMapper;
 import com.target.api.target.mapper.TodosMapper;
+import com.target.api.target.model.StatusModel;
+import com.target.api.target.model.TodoModel;
 import com.target.api.target.model.TodosModel;
 import com.target.api.target.services.TodosService;
 import jakarta.annotation.Resource;
@@ -18,15 +23,35 @@ public class TodosFacadesImpl implements TodosFacades {
     private TodosService todosService;
     @Resource(name = "todosMapper")
     private TodosMapper todosMapper;
+    @Resource(name = "statusMapper")
+    private StatusMapper statusMapper;
+    @Resource(name = "todoMapper")
+    private TodoMapper todoMapper;
 
     @Override
     public List<TodosDto> getTodosByOwner(String owner) {
         List<TodosModel> todos = todosService.getTodosByOwner(owner);
         List<TodosDto> todosDto = new ArrayList<>();
+
         for (TodosModel todo : todos){
-            todosDto.add(todosMapper.toTodosDto(todo));
+            TodosDto dto = todosMapper.toTodosDto(todo);
+            todosDto.add(dto);
         }
+
         return todosDto;
+    }
+
+    @Override
+    public TodosDto getTodosByCode(String code) {
+        TodosModel todosModel = todosService.getTodosByCode(code);
+        TodosDto todoList = todosMapper.toTodosDto(todosModel);
+        todoList.setStatus(statusMapper.toMapStatusList(todosModel.getStatus()));
+        List<TodoDto> todoDtos = new ArrayList<>();
+        for (TodoModel todo : todosModel.getTodos()){
+            todoDtos.add(todoMapper.toTodoDto(todo));
+        }
+        todoList.setTodos(todoDtos);
+        return todoList;
     }
 
     @Override
@@ -35,7 +60,6 @@ public class TodosFacadesImpl implements TodosFacades {
         todosModel.setCode(UUID.randomUUID().toString());
         todosModel.setName(requestDto.getName());
         todosModel.setOwner(requestDto.getOwner());
-        todosModel.setStatus(Arrays.asList("Not Start","On Going","Done"));
         todosService.createTodoList(todosModel);
     }
 

@@ -13,7 +13,11 @@ import java.util.List;
 @Service("todosMapper")
 public class TodosMapper {
 
-    public TodosDto toTodosDto(TodosModel todos){
-        return new TodosDto(null,todos.getStatus(),todos.getOwner(),todos.getName(),todos.getCode());
+    public TodosDto toTodosDto(TodosModel source){
+        TodosDto target = new TodosDto();
+        target.setCode(source.getCode());
+        target.setName(source.getName());
+        target.setOwner(source.getOwner());
+        return target;
     }
 }

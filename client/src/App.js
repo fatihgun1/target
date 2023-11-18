@@ -10,6 +10,7 @@ import TodosPage from './Page/Todo/TodosPage';
 import CreateTodosPage from './Page/Todo/CreateTodosPage';
 import TodoPage from './Page/Todo/TodoPage';
 import CreateTodoPage from './Page/Todo/CreateTodoPage';
+import EditTodosPage from './Page/Todo/EditTodosPage';
 
 function App() {
   const router = createBrowserRouter(
@@ -62,6 +63,12 @@ function App() {
           path: "/todo/create/:code",
           element: (
             <CreateTodoPage/>
+          )
+        },
+        {
+          path: "/todos/edit/:code",
+          element: (
+            <EditTodosPage/>
           )
         }
       ]

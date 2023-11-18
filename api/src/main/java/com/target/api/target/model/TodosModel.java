@@ -12,10 +12,15 @@ public class TodosModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pk;
+
     private String name;
     private String code;
-    @OneToMany(mappedBy = "todos")
-    private List<TodoModel> todos;
-    private List<String> status;
     private String owner;
+
+    @OneToMany(mappedBy = "todos",cascade = CascadeType.DETACH)
+    private List<TodoModel> todos;
+
+    @OneToMany(mappedBy = "todos",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<StatusModel> status;
+
 }

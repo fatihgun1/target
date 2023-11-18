@@ -2,7 +2,7 @@ package com.target.api.target.controller;
 
 import com.target.api.target.dto.TodoDto;
 import com.target.api.target.facades.request.TodoRequestDto;
-import com.target.api.target.facades.todos.TodoFacade;
+import com.target.api.target.facades.todos.TodoFacades;
 import jakarta.annotation.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,7 @@ import java.util.List;
 public class TodoController {
 
     @Resource(name = "todoFacades")
-    private TodoFacade todoFacade;
+    private TodoFacades todoFacade;
 
     @PostMapping("/create")
     public ResponseEntity<String> createTodos(@RequestBody TodoRequestDto todoRequestDto){

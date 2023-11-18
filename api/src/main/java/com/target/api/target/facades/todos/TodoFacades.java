@@ -4,7 +4,7 @@ import com.target.api.target.dto.TodoDto;
 import com.target.api.target.facades.request.TodoRequestDto;
 import java.util.List;
 
-public interface TodoFacade {
+public interface TodoFacades {
     List<TodoDto> getTodoList(String code);
     void createTodo(TodoRequestDto todoRequestDto);
     Boolean updateTodo(TodoRequestDto todoRequestDto);

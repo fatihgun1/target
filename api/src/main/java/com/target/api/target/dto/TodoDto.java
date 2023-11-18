@@ -7,16 +7,7 @@ import lombok.RequiredArgsConstructor;
 public class TodoDto {
 
     private String description;
-    private String status;
+    private StatusDto status;
     private String code;
-    public TodoDto() {
-    }
-
-    public TodoDto(String description, String status,String code) {
-        this.description = description;
-        this.status = status;
-        this.code = code;
-    }
-
 
 }
