@@ -44,6 +44,7 @@ public class TodoFacadesImpl implements TodoFacades {
         todo.setDescription(todoRequestDto.getDescription());
         todo.setStatus(statusService.getStatusByCode(todoRequestDto.getStatus().getCode()));
         todo.setTodos(todosService.getTodosByCode(todoRequestDto.getCode()));
+        todo.setIsCalculated(Boolean.FALSE);
         todoService.createTodo(todo);
     }
 
@@ -56,6 +57,7 @@ public class TodoFacadesImpl implements TodoFacades {
         }
         existed.setDescription(todoRequestDto.getDescription());
         existed.setStatus(status);
+        existed.setIsCalculated(Boolean.FALSE);
         todoService.updateTodo(existed);
         return true;
     }

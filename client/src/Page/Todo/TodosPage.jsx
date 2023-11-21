@@ -20,7 +20,6 @@ export default function TodosPage() {
   }, [action])
 
   const getTodos = async (user) => {
-
     await axios.get(`http://localhost:8080/todos/all/${user}`, null, axiosConfig)
       .then((response) => {
         setTodos(response.data)

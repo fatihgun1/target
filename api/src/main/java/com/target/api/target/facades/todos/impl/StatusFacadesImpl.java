@@ -39,7 +39,6 @@ public class StatusFacadesImpl implements StatusFacades {
         status.setCode(UUID.randomUUID().toString());
         status.setScore(statusRequestDto.getScore());
         status.setTodos(todos);
-        status.setIsCalculated(Boolean.FALSE);
         statusService.createStatus(status);
         return true;
     }

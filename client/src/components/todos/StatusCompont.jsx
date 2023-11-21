@@ -77,19 +77,19 @@ export default function StatusCompont({ status, setAction, token,key }) {
             <div className="col-10">
                 <div className="row">
                     <div className="col">
-                        <div class="input-group input-group-sm">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">Name</span>
+                        <div className="input-group input-group-sm">
+                            <div className="input-group-prepend">
+                                <span className="input-group-text">Name</span>
                             </div>
-                            <input class="form-control form-control-sm" type="text" defaultValue={status.name} name="name" onChange={onStatusNameChage} />
+                            <input className="form-control form-control-sm" type="text" defaultValue={status.name} name="name" onChange={onStatusNameChage} />
                         </div>
                     </div>
                     <div className="col">
-                        <div class="input-group input-group-sm">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">Score</span>
+                        <div className="input-group input-group-sm">
+                            <div className="input-group-prepend">
+                                <span className="input-group-text">Score</span>
                             </div>
-                            <input class="form-control form-control-sm" type="text" defaultValue={status.score} name="score" onChange={onStatusScoreChage} />
+                            <input className="form-control form-control-sm" type="text" defaultValue={status.score} name="score" onChange={onStatusScoreChage} />
                         </div>
                     </div>
                 </div>

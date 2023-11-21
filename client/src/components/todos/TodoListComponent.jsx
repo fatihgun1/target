@@ -19,7 +19,6 @@ export default function TodoListComponent({ name, todosCode, key, setAction,toke
     }; 
 
     const deleteTodo = async () => {
-        console.log(todosCode);
         await axios.post(`http://localhost:8080/todos/delete`, { "code": todosCode }, axiosConfig)
             .then((response) => {
                 setAction(prev => !prev)

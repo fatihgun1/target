@@ -43,6 +43,8 @@ public class SecurityConfig {
                         .requestMatchers("/todos/**").permitAll()
                         .requestMatchers("/todo/**").permitAll()
                         .requestMatchers("/status/**").permitAll()
+                        .requestMatchers("/achievement/**").permitAll()
+                        .requestMatchers("/badge/**").permitAll()
                         .requestMatchers("/api/v1/admin").hasAnyAuthority(RoleEnum.ADMIN.name())
                         .requestMatchers("/api/v1/user").hasAnyAuthority(RoleEnum.USER.name())
                         .anyRequest().authenticated())

@@ -11,4 +11,5 @@ public interface TodoService {
     void createTodo(TodoModel todoModel);
     void updateTodo(TodoModel todoModel);
     void deleteTodo(TodoModel todoModel);
+    List<Long> findTodoPoints(String code);
 }

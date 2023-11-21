@@ -8,7 +8,6 @@ import TodoComponent from '../../components/todos/TodoComponent';
 export default function TodoPage() {
     const { code } = useParams()
     const dispatch = useDispatch();
-
     const cUser = useSelector(state => state.user);
     const [visible, setVisible] = useState(false);
     const [action, setAction] = useState(false);

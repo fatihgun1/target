@@ -19,7 +19,6 @@ export default function TodoComponent({ orginalTodo, statusList, token, setActio
   };
 
   const deleteTodo = async () => {
-    console.log(todo.code);
     await axios.post(`http://localhost:8080/todo/delete`, { code : todo.code }, axiosConfig)
       .then((response) => {
         setAction(prev => !prev)
@@ -47,7 +46,6 @@ export default function TodoComponent({ orginalTodo, statusList, token, setActio
 
   const onStatusChange = e => {
     setTodo(prev => ({ ...prev, status: statusList.find(({code}) => code === e.target.value)}))
-    console.log(todo,statusList);
   }
 
   const onDescriptionChange = e => {

@@ -74,8 +74,8 @@ export default function EditTodosPage() {
 
     const statusCreateForm = (
         <div className='container'>
-            <input class="form-control form-control-sm mb-2" type="text" name='name' placeholder="Name" onChange={onCreateStatusFormChange} />
-            <input class="form-control form-control-sm mb-2" type="text" name='score' placeholder="Score" onChange={onCreateStatusFormChange} />
+            <input className="form-control form-control-sm mb-2" type="text" name='name' placeholder="Name" onChange={onCreateStatusFormChange} />
+            <input className="form-control form-control-sm mb-2" type="text" name='score' placeholder="Score" onChange={onCreateStatusFormChange} />
             <div className="d-grid">
                 <button className="btn btn-sm btn-primary" type="button" onClick={createStatus}>create</button>
             </div>
@@ -128,7 +128,7 @@ export default function EditTodosPage() {
                     <button className="btn btn-sm btn-primary" onClick={updateTodos}>update</button>
                 </div>
                 {updated ?
-                <div class="alert alert-primary" role="alert">
+                <div className="alert alert-primary" role="alert">
                    Updated
                 </div>
                 :null}
