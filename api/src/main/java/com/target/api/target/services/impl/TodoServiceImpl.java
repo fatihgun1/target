@@ -39,4 +39,9 @@ public class TodoServiceImpl implements TodoService {
     public void deleteTodo(TodoModel todoModel) {
         todoRepository.delete(todoModel);
     }
+
+    @Override
+    public List<Long> findTodoPoints(String code) {
+        return null;
+    }
 }

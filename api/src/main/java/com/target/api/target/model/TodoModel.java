@@ -12,6 +12,8 @@ public class TodoModel {
     private Long pk;
     private String code;
     private String description;
+    @Column(name = "is_calculated")
+    private Boolean isCalculated;
 
     @ManyToOne
     @JoinColumn(name = "todos_pk")

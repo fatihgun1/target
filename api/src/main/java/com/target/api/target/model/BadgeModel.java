@@ -5,18 +5,17 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "status")
-public class StatusModel {
+@Table(name = "badge")
+public class BadgeModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pk;
-    private String name;
     private String code;
+    private String name;
+    private String description;
+    private String owner;
     private Long score;
-
-    @ManyToOne
-    @JoinColumn(name = "todos_pk")
-    private TodosModel todos;
-
+    @Column(length = 1000)
+    private String mediaUrl;
 
 }

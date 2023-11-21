@@ -11,6 +11,7 @@ import com.target.api.target.model.StatusModel;
 import com.target.api.target.model.TodoModel;
 import com.target.api.target.model.TodosModel;
 import com.target.api.target.services.TodosService;
+import com.target.api.target.strategy.AchievementStrategy;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,8 @@ public class TodosFacadesImpl implements TodosFacades {
     private StatusMapper statusMapper;
     @Resource(name = "todoMapper")
     private TodoMapper todoMapper;
+    @Resource(name = "achievementStrategy")
+    private AchievementStrategy achievementStrategy;
 
     @Override
     public List<TodosDto> getTodosByOwner(String owner) {
@@ -61,6 +64,7 @@ public class TodosFacadesImpl implements TodosFacades {
         todosModel.setName(requestDto.getName());
         todosModel.setOwner(requestDto.getOwner());
         todosService.createTodoList(todosModel);
+        achievementStrategy.createAchievement(todosModel);
     }
 
     @Override
@@ -71,6 +75,7 @@ public class TodosFacadesImpl implements TodosFacades {
         }
         existed.setName(requestDto.getName());
         todosService.updateTodoList(existed);
+        achievementStrategy.updateAchievement(existed);
         return true;
     }
 
@@ -81,6 +86,7 @@ public class TodosFacadesImpl implements TodosFacades {
             return false;
         }
         todosService.deleteTodoList(existed);
+        achievementStrategy.deleteAchievement(requestDto.getCode());
         return true;
     }
 }

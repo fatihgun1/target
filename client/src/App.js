@@ -5,7 +5,8 @@ import "../node_modules/bootstrap/dist/css/bootstrap.min.css"
 import Layout from './components/Layout';
 import LoginPage from './Page/LoginPage';
 import RegisterPage from './Page/RegisterPage';
-import ProfilePage from './Page/ProfilePage';
+import ProfilePage from './Page/Profile/ProfilePage';
+import SettingsPage from './Page/Profile/SettingsPage';
 import TodosPage from './Page/Todo/TodosPage';
 import CreateTodosPage from './Page/Todo/CreateTodosPage';
 import TodoPage from './Page/Todo/TodoPage';
@@ -39,6 +40,12 @@ function App() {
           path: "/profile",
           element: (
             <ProfilePage/>
+          )
+        },
+        {
+          path: "/profile/settings",
+          element: (
+            <SettingsPage/>
           )
         },
         {

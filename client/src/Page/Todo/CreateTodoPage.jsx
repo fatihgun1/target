@@ -31,7 +31,6 @@ export default function CreateTodoPage({code,status,setAction}) {
   const onFormChange = e => {
     const { name, value } = e.target;
     setTodo(prev => ({ ...prev, [name]: value }))
-    console.log(todo);
   }
 
   const saveTodo = async e => {
