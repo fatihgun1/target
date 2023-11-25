@@ -1,8 +1,9 @@
 import './App.css';
+import "../node_modules/bootstrap/dist/css/bootstrap.min.css"
 import React, { useEffect } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import "../node_modules/bootstrap/dist/css/bootstrap.min.css"
 import Layout from './components/Layout';
+import AuthLayout from './components/AuthLayout';
 import LoginPage from './Page/LoginPage';
 import RegisterPage from './Page/RegisterPage';
 import ProfilePage from './Page/Profile/ProfilePage';
@@ -12,30 +13,14 @@ import CreateTodosPage from './Page/Todo/CreateTodosPage';
 import TodoPage from './Page/Todo/TodoPage';
 import CreateTodoPage from './Page/Todo/CreateTodoPage';
 import EditTodosPage from './Page/Todo/EditTodosPage';
-
+import Homepage from './Page/Homepage';
 function App() {
-  const router = createBrowserRouter(
+
+  const authRouter = createBrowserRouter(
     [{
       path: "/",
       element: <Layout/> ,
       children: [
-        {
-          path: "/",
-          element: (
-            "Home"
-          )
-        },
-        {
-          path: "/login",
-          element: ( <LoginPage/>
-          )
-        },
-        {
-          path: "/register",
-          element: (
-            <RegisterPage/>
-          )
-        },
         {
           path: "/profile",
           element: (
@@ -77,6 +62,44 @@ function App() {
           element: (
             <EditTodosPage/>
           )
+        },
+        {
+          path: "*",
+          element: (
+            "Not Found"
+          )
+        }
+      ]
+    }]
+  );
+
+  const router = createBrowserRouter(
+    [{
+      path: "/",
+      element: <AuthLayout/> ,
+      children: [
+        {
+          path: "/",
+          element: (
+            <Homepage/>
+          )
+        },
+        {
+          path: "/login",
+          element: ( <LoginPage/>
+          )
+        },
+        {
+          path: "/register",
+          element: (
+            <RegisterPage/>
+          )
+        },
+        {
+          path: "*",
+          element: (
+            "Not Found"
+          )
         }
       ]
     }]
@@ -84,7 +107,7 @@ function App() {
 
   return (
     <div className="App">
-      <RouterProvider router={router} />
+      { localStorage.getItem("token") !== null ? <RouterProvider router={authRouter} /> : <RouterProvider router={router} />}
     </div>
   );
 }

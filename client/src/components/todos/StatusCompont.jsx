@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios';
-export default function StatusCompont({ status, setAction, token,key }) {
+
+import { useDispatch } from 'react-redux';
+import { deleteStatus, updateStatus } from '../../redux/slice/statusSlice';
+export default function StatusCompont({ status, setAction ,key }) {
 
     const [edit, setEdit] = useState(false);
     const [statu, setStatu] = useState(status)
+    const dispatch = useDispatch();
 
     useEffect(() => {
         setStatu(status)
-
     }, [status])
 
     const onStatusEdit = () => {
@@ -25,36 +27,23 @@ export default function StatusCompont({ status, setAction, token,key }) {
         setStatu(prev => ({ ...prev, [name]: value }))
     }
 
-    let axiosConfig = {
-        withCredentials: false,
-        headers: {
-            'Content-Type': 'application/json;charset=UTF-8',
-            "Access-Control-Allow-Origin": "*",
-            "Accept": "application/json",
-            "Method": "GET",
-            'Authorization': `Bearer ${token}`
-        }
-    };
-
     const saveStatus = async (e) => {
-        await axios.post(`http://localhost:8080/status/update `, statu, axiosConfig)
-            .then((response) => {
-                setAction(prev => !prev)
-                setEdit(prev => !prev)
-            })
-            .catch((error) => {
-                console.log(error)
-            })
+        dispatch(updateStatus(statu)).unwrap()
+        .then((response)=>{
+            setAction(prev => !prev)
+            setEdit(prev => !prev)
+        }).catch((err)=>{
+            console.log(err)
+        });
     }
 
-    const deleteStatus = async () =>{
-        await axios.post(`http://localhost:8080/status/delete `, {code:status.code}, axiosConfig)
+    const deleteExistedStatus = async () =>{
+        await dispatch(deleteStatus({code:status.code})).unwrap()
         .then((response) => {
             setAction(prev => !prev)
             setEdit(prev => !prev)
-        })
-        .catch((error) => {
-            console.log(error)
+        }).catch((err)=>{
+            console.log(err)
         })
     }
 
@@ -66,7 +55,7 @@ export default function StatusCompont({ status, setAction, token,key }) {
             <div className="col">
                 <div className="input-group">
                     <button className='btn btn-sm btn-primary' onClick={onStatusEdit}>Edit</button>
-                    <button className='btn btn-sm btn-danger' onClick={deleteStatus}>Delete</button>
+                    <button className='btn btn-sm btn-danger' onClick={deleteExistedStatus}>Delete</button>
                 </div>
             </div>
         </div>

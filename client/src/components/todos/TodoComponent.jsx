@@ -1,44 +1,33 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { deleteTodo, updateTodo } from '../../redux/slice/todoSlice';
 export default function TodoComponent({ orginalTodo, statusList, token, setAction }) {
   const [edited, setEdited] = useState();
   const [todo, setTodo] = useState(orginalTodo);
+  const dispatch = useDispatch();
   useEffect(()=>{
     setTodo(orginalTodo)
   },[orginalTodo])
 
-  let axiosConfig = {
-    withCredentials: false,
-    headers: {
-      'Content-Type': 'application/json;charset=UTF-8',
-      "Access-Control-Allow-Origin": "*",
-      "Accept": "application/json",
-      "Method": "GET",
-      'Authorization': `Bearer ${token}`
-    }
-  };
-
-  const deleteTodo = async () => {
-    await axios.post(`http://localhost:8080/todo/delete`, { code : todo.code }, axiosConfig)
-      .then((response) => {
-        setAction(prev => !prev)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+  const deleteSelectedTodo = async () => {
+    await dispatch(deleteTodo({ code : todo.code })).unwrap()
+    .then((response) =>{
+      setAction(prev => !prev)
+    }).catch((error) => {
+      console.log(error)
+    })
   }
 
-  const updateTodo = async () => {
-    await axios.post(`http://localhost:8080/todo/update`, todo, axiosConfig)
-      .then((response) => {
-        setAction(prev => !prev)
-        setEdited(prev => !prev)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+  const updateSelectedTodo = async () => {
+    await dispatch(updateTodo(todo)).unwrap()
+    .then((response) => {
+      setAction(prev => !prev)
+      setEdited(prev => !prev)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
   }
-
 
   const editTodo = async () => {
     setEdited(prev => !prev)
@@ -72,11 +61,11 @@ export default function TodoComponent({ orginalTodo, statusList, token, setActio
           <div className="col-2">
        
             {edited ? 
-            <button className='btn btn-sm btn-primary' onClick={updateTodo}>Save</button>
+            <button className='btn btn-sm btn-primary' onClick={updateSelectedTodo}>Save</button>
             :
             <button className="btn btn-sm btn-success" onClick={editTodo}>Edit</button>
             }
-            <button type="button" className="btn-close" aria-label="Close" onClick={deleteTodo}></button>
+            <button type="button" className="btn-close" aria-label="Close" onClick={deleteSelectedTodo}></button>
           </div>
         </div>
 

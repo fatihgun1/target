@@ -1,25 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { currentUser } from '../../redux/slice/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { createTodos } from '../../redux/slice/todosSlice';
 export default function CreateTodosPage() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const cUser = useSelector(state => state.user);
-
-  let axiosConfig = {
-    withCredentials: false,
-    headers: {
-      'Content-Type': 'application/json;charset=UTF-8',
-      "Access-Control-Allow-Origin": "*",
-      "Accept": "application/json",
-      "Method":"POST",
-      'Authorization': `Bearer ${cUser.token}`
-    }
-  };
+  const todoState = useSelector(state => state.todos);
 
   const [todos, setTodos] = useState({
     owner: null,
@@ -33,17 +23,13 @@ export default function CreateTodosPage() {
     setTodos(prev => ({ ...prev, owner: cUser.user }))
   }
 
-
   const saveTodo = async e => {
-    e.preventDefault();
-
-    await axios.post("http://localhost:8080/todos/create", todos, axiosConfig)
-      .then((response) => {
+    await dispatch(createTodos(todos)).unwrap().then((response) => {
         navigate("/todos")
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+    }).catch((err) => {
+      console.log(err);
+    }
+    );
   }
 
   const goBack = e => {
@@ -59,6 +45,9 @@ export default function CreateTodosPage() {
       <div>
         <button className='btn btn-primary' onClick={saveTodo}>Begin</button>
         <button className='btn btn-primary' onClick={goBack}>Cancel</button>
+      </div>
+      <div>
+        {todoState.loading && <>Saving...</>}
       </div>
     </div>
   )

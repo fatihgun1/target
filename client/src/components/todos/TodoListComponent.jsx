@@ -1,37 +1,26 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { deleteTodos } from '../../redux/slice/todosSlice';
 export default function TodoListComponent({ name, todosCode, key, setAction,token }) {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const navigateTodoDetail = (code) => {
         navigate(`/todo/${code}`)
     }
-    let axiosConfig = {
-        withCredentials: false,
-        headers: {
-            'Content-Type': 'application/json;charset=UTF-8',
-            "Access-Control-Allow-Origin": "*",
-            "Accept": "application/json",
-            "Method": "GET",
-            'Authorization': `Bearer ${token}`
-        }
-    }; 
-
-    const deleteTodo = async () => {
-        await axios.post(`http://localhost:8080/todos/delete`, { "code": todosCode }, axiosConfig)
-            .then((response) => {
-                setAction(prev => !prev)
-            })
-            .catch((error) => {
-                console.log(error)
-            })
+    
+    const deleteTodo = async (e) => {
+        dispatch(deleteTodos({ code: todosCode })).unwrap().then((response) => {
+            setAction(prev=>!prev)
+        }).catch((err) => {
+            console.log(err);
+        });
     }
 
     return (
         <div className='card mb-2' key={key}>
             <div className="card-body">
-
                 <div className="row">
                     <div className="col-10" onClick={() => navigateTodoDetail(todosCode)}>
                         {name}
@@ -42,7 +31,6 @@ export default function TodoListComponent({ name, todosCode, key, setAction,toke
                         <button className='btn btn-sm btn-danger' onClick={deleteTodo}>Delete</button>
                     </div>
                     </div>
-
                 </div>
             </div>
         </div>

@@ -1,32 +1,26 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import trophy from '../../assets/img/trophy.png'
 import ReactModal from 'react-modal'
 import SimpleBadgeComponent from './SimpleBadgeComponent';
-import axios from 'axios';
-export default function AchievementComponent({ achievement, key, token }) {
+
+import { useDispatch } from 'react-redux';
+import { calculateScore } from '../../redux/slice/achievementSlice';
+export default function AchievementComponent({ achievement, key }) {
     const [modal, setModal] = useState(false);
-
     const [achieve,setAchieve] = useState(achievement)
+    const dispatch = useDispatch();
+     useEffect(()=>{
+        
+     },[achieve]);
 
-    let axiosConfig = {
-        withCredentials: false,
-        headers: {
-            'Content-Type': 'application/json;charset=UTF-8',
-            "Access-Control-Allow-Origin": "*",
-            "Accept": "application/json",
-            'Authorization': `Bearer ${token}`
-        }
-    };
-
-    const calculateScore = async () => {
-        await axios.post(`http://localhost:8080/achievement/calculate`, { code: achievement.code }, axiosConfig)
-            .then((response) => {
-                 const res = response.data.totalScore;
-                setAchieve(prev => ({...prev,totalScore:res }))
-            })
-            .catch((error) => {
-                console.log(error)
-            })
+    const calculate = async () => {
+        await dispatch(calculateScore({ code: achievement.code })).unwrap()
+        .then((response) => {
+           setAchieve(prev => ({...prev,response }))
+       })
+       .catch((error) => {
+           console.log(error)
+       })
     }
 
     const customStyles = {
@@ -90,7 +84,7 @@ export default function AchievementComponent({ achievement, key, token }) {
                                 <button className='btn btn-sm btn-primary' onClick={() => setModal(prev => !prev)}>reward</button>
                             </span>
                             <span>
-                                <button className='btn btn-sm btn-primary' onClick={calculateScore}>Calculate</button>
+                                <button className='btn btn-sm btn-primary' onClick={calculate}>Calculate</button>
                             </span>
                         </div>
 
