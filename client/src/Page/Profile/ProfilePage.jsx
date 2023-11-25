@@ -29,8 +29,7 @@ export default function ProfilePage() {
       </div>
       <div className="row">
         <div className="col">
-          <div className="row row-cols-1 row-cols-md-3 g-4">
-       
+          <div className="row row-cols-1 row-cols-lg-3  g-2">
             {achievementresponse.achievements && achievementresponse.achievements.map((achievement, index) => (
               <AchievementComponent achievement={achievement} key={index} token={cUser.token} setAction={setAction}/>
             ))}

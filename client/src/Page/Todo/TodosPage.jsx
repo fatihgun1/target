@@ -4,30 +4,34 @@ import { currentUser } from '../../redux/slice/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import TodoListComponent from '../../components/todos/TodoListComponent';
 import { getTodos } from '../../redux/slice/todosSlice';
+import GeneralModal from '../../components/modal/GeneralModal';
+import CreateTodosComponent from '../../components/todos/CreateTodosComponent';
 
 export default function TodosPage() {
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
   const todos = useSelector(state => state.todos);
   const [action, setAction] = useState(false);
-
+  const [modal,setModal] = useState(false)
 
   useEffect(() => {
     dispatch(currentUser());
     dispatch(getTodos(user))
-  }, [dispatch, action])
+  }, [dispatch,action,modal])
 
 
   return (
     <div className='container'>
-      <div className="row">
+      <div className="row mt-4">
         <div className="col mb-4">
-          <Link className='btn btn-outline-primary' to="/todos/create">Create Target</Link>
+          <GeneralModal modal={modal} setModal={setModal}>
+              <CreateTodosComponent setModal={setModal} />
+          </GeneralModal>
+          <button className='btn btn-outline-primary' onClick={()=>setModal(prev => !prev)}>Create Target</button>
         </div>
       </div>
-      <div className="container text-center ">
-        <div className="row align-items-center">
-          <div className="col">
+      <div className="container text-center">
+        <div className="row row-cols-1 row-cols-md-3 g-4 align-items-center">
             {
               todos.loading === false ?
                 <>
@@ -40,7 +44,6 @@ export default function TodosPage() {
                   <span className="visually-hidden">Loading...</span>
                 </div>
             }
-          </div>
         </div>
 
       </div>

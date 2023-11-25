@@ -1,6 +1,6 @@
 import './App.css';
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css"
-import React, { useEffect } from 'react';
+import React from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Layout from './components/Layout';
 import AuthLayout from './components/AuthLayout';
@@ -9,10 +9,9 @@ import RegisterPage from './Page/RegisterPage';
 import ProfilePage from './Page/Profile/ProfilePage';
 import SettingsPage from './Page/Profile/SettingsPage';
 import TodosPage from './Page/Todo/TodosPage';
-import CreateTodosPage from './Page/Todo/CreateTodosPage';
 import TodoPage from './Page/Todo/TodoPage';
+import EditTodosPage from './Page/Todo/EditTodosPage'
 import CreateTodoPage from './Page/Todo/CreateTodoPage';
-import EditTodosPage from './Page/Todo/EditTodosPage';
 import Homepage from './Page/Homepage';
 function App() {
 
@@ -37,12 +36,6 @@ function App() {
           path: "/todos",
           element: (
             <TodosPage/>
-          )
-        },
-        {
-          path: "/todos/create",
-          element: (
-            <CreateTodosPage/>
           )
         },
         {
