@@ -1,22 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { currentUser } from '../../redux/slice/userSlice';
-import axios from 'axios';
+import { createTodo } from '../../redux/slice/todoSlice';
 export default function CreateTodoPage({code,status,setAction}) {
 
   const dispatch = useDispatch();
-  const cUser = useSelector(state => state.user);
-  
-  let axiosConfig = {
-    withCredentials: false,
-    headers: {
-      'Content-Type': 'application/json;charset=UTF-8',
-      "Access-Control-Allow-Origin": "*",
-      "Accept": "application/json",
-      "Method": "POST",
-      'Authorization': `Bearer ${cUser.token}`
-    }
-  };
 
   const [todo, setTodo] = useState({
     description: null,
@@ -25,6 +13,7 @@ export default function CreateTodoPage({code,status,setAction}) {
   });
 
   useEffect(() => {
+    console.log("status",status);
     setTodo(prev => ({ ...prev, status: status[0],code:code }))
   }, [setAction])
 
@@ -34,14 +23,13 @@ export default function CreateTodoPage({code,status,setAction}) {
   }
 
   const saveTodo = async e => {
-    e.preventDefault();
-    await axios.post("http://localhost:8080/todo/create", todo, axiosConfig)
-      .then((response) => {
-        setAction(prev=>!prev)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+    await dispatch(createTodo(todo)).unwrap()
+    .then((response) => {
+      setAction(prev=>!prev)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
   }
 
   const onStatusChange = e => {

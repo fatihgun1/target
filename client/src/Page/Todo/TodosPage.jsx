@@ -1,52 +1,51 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import axios from 'axios'
 import { currentUser } from '../../redux/slice/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import TodoListComponent from '../../components/todos/TodoListComponent';
+import { getTodos } from '../../redux/slice/todosSlice';
+
 export default function TodosPage() {
   const dispatch = useDispatch();
-  const cUser = useSelector(state => state.user);
-  const [action,setAction] = useState(false);
+  const user = useSelector(state => state.user);
+  const todos = useSelector(state => state.todos);
+  const [action, setAction] = useState(false);
 
-  const [todos, setTodos] = useState([{
-    name: null,
-    code: null
-  }]);
 
   useEffect(() => {
     dispatch(currentUser());
-    getTodos(cUser.user)
-  }, [action])
-
-  const getTodos = async (user) => {
-    await axios.get(`http://localhost:8080/todos/all/${user}`, null, axiosConfig)
-      .then((response) => {
-        setTodos(response.data)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  }
-
-  let axiosConfig = {
-    withCredentials: false,
-    headers: {
-      'Content-Type': 'application/json;charset=UTF-8',
-      "Access-Control-Allow-Origin": "*",
-      "Accept": "application/json",
-      "Method": "GET",
-      'Authorization': `Bearer ${cUser.token}`
-    }
-  };
+    dispatch(getTodos(user))
+  }, [dispatch, action])
 
 
   return (
-    <div>
-      <Link className='btn btn-outline-primary' to="/todos/create">Create Target</Link>
-      {todos && todos.map((todox,index) => (
-        <TodoListComponent name={todox.name} key={index} todosCode={todox.code} setAction={setAction} token={cUser.token}/>
-      ))}
+    <div className='container'>
+      <div className="row">
+        <div className="col mb-4">
+          <Link className='btn btn-outline-primary' to="/todos/create">Create Target</Link>
+        </div>
+      </div>
+      <div className="container text-center ">
+        <div className="row align-items-center">
+          <div className="col">
+            {
+              todos.loading === false ?
+                <>
+                  {todos.todos && todos.todos.map((todox, index) => (
+                    <TodoListComponent name={todox.name} key={index} todosCode={todox.code} setAction={setAction} />
+                  ))}
+                </>
+                :
+                <div className="spinner-border text-primary" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+            }
+          </div>
+        </div>
+
+      </div>
+
+
     </div>
   )
 }

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { currentUser } from '../../redux/slice/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios'
 import BadgeComponent from '../../components/profile/BadgeComponent';
+import { createBadge, getBadgesByUser } from '../../redux/slice/badgeSlice';
+
 export default function SettingsPage() {
   const distpatch = useDispatch();
   const cUser = useSelector(state => state.user)
+  const badgeresponse = useSelector(state => state.badge)
   const [action,setAction] = useState(false);
   
   const [badge, setBadge] = useState({
@@ -15,34 +17,13 @@ export default function SettingsPage() {
     score: null,
     mediaUrl: null
   });
-
-  const [badgeList,setBadgeList] = useState([
-    {
-      name: null,
-      description: null,
-      owner: null,
-      score: null,
-      mediaUrl: null
-    }
-  ]);
   
-  const [createBadge, setCreateBadge] = useState(false);
+  const [createdBadge, setCreatedBadge] = useState(false);
+
   useEffect(() => {
     distpatch(currentUser());
-    listBadgeByOwner(cUser.user);
-  },[createBadge,action]);
-
-
-  let axiosConfig = {
-    withCredentials: false,
-    headers: {
-      'Content-Type': 'application/json;charset=UTF-8',
-      "Access-Control-Allow-Origin": "*",
-      "Accept": "application/json",
-      "Method": "GET",
-      'Authorization': `Bearer ${cUser.token}`
-    }
-  };
+    distpatch(getBadgesByUser());
+  },[createdBadge,action]);
 
   const onCrateFormChange = (e) => {
     const { name, value } = e.target;
@@ -50,24 +31,15 @@ export default function SettingsPage() {
   }
 
   const onCrateBadgeButtonClick = async (e) => {
-    await axios.post(`http://localhost:8080/badge/create`, badge, axiosConfig)
-      .then((response) => {
-        setCreateBadge(prev => !prev)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  }
-
-  const listBadgeByOwner = async (owner) => {
-    await axios.get(`http://localhost:8080/badge/all/${owner}`, null, axiosConfig)
+    distpatch(createBadge(badge)).unwrap()
     .then((response) => {
-      setBadgeList(response.data)
+      setCreatedBadge(prev => !prev)
     })
     .catch((error) => {
       console.log(error)
     })
   }
+
 
   const createBadgeJsx = (
     <div className="row">
@@ -87,12 +59,10 @@ export default function SettingsPage() {
   const listBadgeJsx = (
     <div className='row'>
       <div className="col">
-        {badgeList  !==null? 
-          badgeList.map((source,index) => (
+        {badgeresponse.badges &&
+          badgeresponse.badges.map((source,index) => (
             <BadgeComponent badge={source} token={cUser.token} key={index} setAction={setAction}/>
-          ))
-        : null}
-        
+          ))}
       </div>
     </div>
   );
@@ -105,13 +75,12 @@ export default function SettingsPage() {
             <p className="display-6">Badge</p>
           </div>
           <div className="col-2">
-            <button className='btn btn-sm btn-outline-primary' onClick={() => setCreateBadge(prev => !prev)}>Create badge</button>
+            <button className='btn btn-sm btn-outline-primary' onClick={() => setCreatedBadge(prev => !prev)}>Create badge</button>
           </div>
         </div>
         <hr />
-        {createBadge ? createBadgeJsx : listBadgeJsx}
+        {createdBadge ? createBadgeJsx : listBadgeJsx}
       </div>
-
     </div>
   )
 }

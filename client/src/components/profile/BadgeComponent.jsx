@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { deleteBadge, updateBadge } from '../../redux/slice/badgeSlice';
 
 export default function BadgeComponent({ badge, key ,token ,setAction}) {
     const styleName = { fontSize: "24px", fontWeight: 400, margin: "0px" }
     const styleDesc = { fontSize: "12px", fontWeight: 400 }
     const [edit, setEdit] = useState(false);
+    const dispatch = useDispatch();
 
     const [newBadge, setNewBadge] = useState({
         name: null,
@@ -18,37 +20,26 @@ export default function BadgeComponent({ badge, key ,token ,setAction}) {
         setNewBadge(badge)
     }, [edit])
 
-    let axiosConfig = {
-        withCredentials: false,
-        headers: {
-          'Content-Type': 'application/json;charset=UTF-8',
-          "Access-Control-Allow-Origin": "*",
-          "Accept": "application/json",
-          "Method": "GET",
-          'Authorization': `Bearer ${token}`
-        }
-      };
-
     const badgeDeleteButton = async () => {
-        await axios.post(`http://localhost:8080/badge/delete`, {code:badge.code}, axiosConfig)
+        await dispatch(deleteBadge({code:badge.code})).unwrap()
         .then((response) => {
-          setEdit(prev => !prev)
-          setAction(prev => !prev)
-        })
-        .catch((error) => {
-          console.log(error)
-        })
+            setEdit(prev => !prev)
+            setAction(prev => !prev)
+          })
+          .catch((error) => {
+            console.log(error)
+          })
     }
 
     const badgeSaveButton = async () => {
-        await axios.post(`http://localhost:8080/badge/update`, newBadge, axiosConfig)
-      .then((response) => {
-        setEdit(prev => !prev)
-        setAction(prev => !prev)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+        dispatch(updateBadge(newBadge)).unwrap()
+        .then((response) => {
+            setEdit(prev => !prev)
+            setAction(prev => !prev)
+          })
+          .catch((error) => {
+            console.log(error)
+          })
   }
 
     const onFormChange = (e) => {

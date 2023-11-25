@@ -7,7 +7,7 @@ export default function RegisterForm() {
     const navigate = useNavigate();
     const dispatch = useDispatch()
     const register = useSelector(state => state.register)
-    
+
     const [user, setUser] = useState({
         firstName: null,
         lastName: null,
@@ -22,29 +22,26 @@ export default function RegisterForm() {
 
     const onRegister = async e => {
         e.preventDefault();
-        dispatch(fetchRegister(user)).then(()=>{
+        dispatch(fetchRegister(user)).then(() => {
             if (register.success) {
                 navigate('/login')
             }
         });
- 
-
     }
 
     return (
-        <form className='w-50'>
-            <h2 className='text-center'>Register</h2>
-            <div>
-                <input id="fname" name="firstName" placeholder="First Name" type="text" onChange={onFormChange} />
+        <form className='container'>
+            <div className='mb-3'>
+                <input className="form-control" name="firstName" placeholder="First Name" type="text" onChange={onFormChange} />
             </div>
-            <div>
-                <input id="lname" name="lastName" placeholder="Last Name" type="text" onChange={onFormChange} />
+            <div className='mb-3'>
+                <input className="form-control" name="lastName" placeholder="Last Name" type="text" onChange={onFormChange} />
             </div>
-            <div>
-                <input id="em" name="email" placeholder="Email" type="email" onChange={onFormChange} />
+            <div className='mb-3'>
+                <input className="form-control" name="email" placeholder="Email" type="email" onChange={onFormChange} />
             </div>
-            <div>
-                <input id="password" name="password" placeholder="Password" type="password" onChange={onFormChange} />
+            <div className='mb-3'>
+                <input className="form-control" name="password" placeholder="Password" type="password" onChange={onFormChange} />
             </div>
             <button className="btn btn-primary" onClick={onRegister} disabled={register.loading}>
                 {register.loading === true ?
@@ -53,9 +50,12 @@ export default function RegisterForm() {
                     </div>
                     : <p>Submit</p>}
             </button>
-            <div className="">
-                <p>Do you have account ?</p>
-                <Link to='/login'>Login</Link>
+            <div className="row">
+                <div className="col">
+                    <span>Do you have account ?</span>
+                    <span><Link className='btn btn-primary' to='/login'>Login</Link></span>
+                </div>
+
             </div>
             {register.error && <p>{register.error}</p>}
         </form>
