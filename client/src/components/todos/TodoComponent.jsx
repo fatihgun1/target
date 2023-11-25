@@ -5,40 +5,36 @@ export default function TodoComponent({ orginalTodo, statusList, token, setActio
   const [edited, setEdited] = useState();
   const [todo, setTodo] = useState(orginalTodo);
   const dispatch = useDispatch();
-  useEffect(()=>{
+  useEffect(() => {
     setTodo(orginalTodo)
-  },[orginalTodo])
+  }, [orginalTodo])
 
   const deleteSelectedTodo = async () => {
-    await dispatch(deleteTodo({ code : todo.code })).unwrap()
-    .then((response) =>{
-      setAction(prev => !prev)
-    }).catch((error) => {
-      console.log(error)
-    })
+    await dispatch(deleteTodo({ code: todo.code })).unwrap()
+      .then((response) => {
+        setAction(prev => !prev)
+      }).catch((error) => {
+        console.log(error)
+      })
   }
 
   const updateSelectedTodo = async () => {
     await dispatch(updateTodo(todo)).unwrap()
-    .then((response) => {
-      setAction(prev => !prev)
-      setEdited(prev => !prev)
-    })
-    .catch((error) => {
-      console.log(error)
-    })
-  }
-
-  const editTodo = async () => {
-    setEdited(prev => !prev)
+      .then((response) => {
+        setAction(prev => !prev)
+        setEdited(prev => !prev)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }
 
   const onStatusChange = e => {
-    setTodo(prev => ({ ...prev, status: statusList.find(({code}) => code === e.target.value)}))
+    setTodo(prev => ({ ...prev, status: statusList.find(({ code }) => code === e.target.value) }))
   }
 
   const onDescriptionChange = e => {
-    setTodo(prev => ({ ...prev, description: e.target.value}))
+    setTodo(prev => ({ ...prev, description: e.target.value }))
 
   }
 
@@ -49,23 +45,30 @@ export default function TodoComponent({ orginalTodo, statusList, token, setActio
           <div className="col">
             {edited ?
               <div className='input-group'>
-                <input className='form-control' type='text' defaultValue={todo.description} onChange={onDescriptionChange}/>
+                <input className='form-control' type='text' defaultValue={todo.description} onChange={onDescriptionChange} />
                 <select className='form-select' onChange={onStatusChange} defaultValue={todo.status.code}>
                   {statusList && statusList.map((type, index) => (<option key={index} value={type.code}>{type.name}</option>))}
                 </select>
-            
+
               </div>
               : <>{todo.description} - {todo.status.name} </>}
 
           </div>
           <div className="col-2">
-       
-            {edited ? 
-            <button className='btn btn-sm btn-primary' onClick={updateSelectedTodo}>Save</button>
-            :
-            <button className="btn btn-sm btn-success" onClick={editTodo}>Edit</button>
+
+            {edited ?
+            <div className="input-group">
+              <button className='btn btn-sm btn-success' onClick={() => setEdited(prev => !prev)}>Cancel</button>
+              <button className='btn btn-sm btn-primary' onClick={updateSelectedTodo}>Save</button>
+            </div>
+
+              :
+              <div className="input-group">
+                <button className="btn btn-sm btn-success" onClick={() => setEdited(prev => !prev)}>Edit</button>
+                <button className="btn btn-danger" onClick={deleteSelectedTodo}>Delete</button>
+              </div>
             }
-            <button type="button" className="btn-close" aria-label="Close" onClick={deleteSelectedTodo}></button>
+
           </div>
         </div>
 

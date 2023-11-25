@@ -7,20 +7,20 @@ import { useDispatch } from 'react-redux';
 import { calculateScore } from '../../redux/slice/achievementSlice';
 export default function AchievementComponent({ achievement, key }) {
     const [modal, setModal] = useState(false);
-    const [achieve,setAchieve] = useState(achievement)
+    const [achieve, setAchieve] = useState(achievement)
     const dispatch = useDispatch();
-     useEffect(()=>{
-        
-     },[achieve]);
+    useEffect(() => {
+
+    }, [achieve]);
 
     const calculate = async () => {
         await dispatch(calculateScore({ code: achievement.code })).unwrap()
-        .then((response) => {
-           setAchieve(prev => ({...prev,response }))
-       })
-       .catch((error) => {
-           console.log(error)
-       })
+            .then((response) => {
+                setAchieve(prev => ({ ...prev, response }))
+            })
+            .catch((error) => {
+                console.log(error)
+            })
     }
 
     const customStyles = {
@@ -50,9 +50,10 @@ export default function AchievementComponent({ achievement, key }) {
 
     return (
         <div className="col">
-            <div className='card' style={{ width: '250px' }} key={key}>
-                <div className="card-body">
-                    <div className="row">
+            {badge}
+            <div className='card' key={key}>
+                <div className="card-body text-center">
+                    <div className="row align-items-center mb-3">
                         <div className="col-4">
                             <img src={trophy} alt='' className='card-img-top' />
                         </div>
@@ -62,7 +63,7 @@ export default function AchievementComponent({ achievement, key }) {
                                     <div className="row">
                                         <div className="col">
                                             <p className='h5 d-inline'>Target </p>
-                                            <p className='lead d-inline'>
+                                            <p className='lead d-inline' style={ {"word-wrap": "break-word"}}>
                                                 {achievement.name}
                                             </p>
                                         </div>
@@ -79,16 +80,13 @@ export default function AchievementComponent({ achievement, key }) {
                     </div>
 
                     <div className="row">
+                        <div className="col ">
+                            <button className='btn btn-sm btn-primary w-100 m-0 p-0' onClick={() => setModal(prev => !prev)}>Reward</button>
+                        </div>
                         <div className="col">
-                            <span>
-                                <button className='btn btn-sm btn-primary' onClick={() => setModal(prev => !prev)}>reward</button>
-                            </span>
-                            <span>
-                                <button className='btn btn-sm btn-primary' onClick={calculate}>Calculate</button>
-                            </span>
+                            <button className='btn btn-sm btn-primary w-100 m-0 p-0' onClick={calculate}>Calculate</button>
                         </div>
 
-                        {badge}
                     </div>
                 </div>
             </div>

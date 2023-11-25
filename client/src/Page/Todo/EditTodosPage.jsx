@@ -5,15 +5,15 @@ import { Link, useParams } from 'react-router-dom';
 import StatusCompont from '../../components/todos/StatusCompont';
 import { getTodosByCode, updateTodos } from '../../redux/slice/todosSlice';
 import { createStatus } from '../../redux/slice/statusSlice';
+import GeneralModal from '../../components/modal/GeneralModal';
 
 export default function EditTodosPage() {
     const dispatch = useDispatch();
     const { code } = useParams();
     const todosresponse = useSelector(state => state.todos);
-    const [create, setCreate] = useState(false);
     const [action, setAction] = useState(false);
     const [newStatus, setNewStatus] = useState({ todoscode: null, name: null, score: null });
-
+    const [modal, setModal] = useState(false);
     const [newTodos, setNewTodos] = useState({
         name: null,
         code: null,
@@ -23,17 +23,15 @@ export default function EditTodosPage() {
         dispatch(currentUser());
         dispatch(getTodosByCode(code));
         setNewTodos(prev => ({ ...prev, code: todosresponse.todosSingle.code }))
-    }, [code, action])
+    }, [code, action,modal])
 
-    const onCreateButtonClick = () => {
-        setCreate(prev => !prev)
-    }
 
     const createNewStatus = async () => {
-        await dispatch(createStatus(newStatus)).unwrap().then((response)=>{
+        await dispatch(createStatus(newStatus)).unwrap().then((response) => {
             setAction(prev => !prev)
-            setCreate(prev => !prev)
-        }).catch((err)=>{
+            setModal(prev => !prev)
+
+        }).catch((err) => {
             console.log(err);
         });
     }
@@ -51,29 +49,11 @@ export default function EditTodosPage() {
         const { name, value } = e.target;
         setNewStatus(prev => ({ ...prev, [name]: value, todoscode: todosresponse.todosSingle.code }))
     }
-    
+
     const onTodosUpdateForm = (e) => {
         const { name, value } = e.target;
         setNewTodos(prev => ({ ...prev, [name]: value, code: todosresponse.todosSingle.code }))
     }
-
-    const statusCreateForm = (
-        <div className='container'>
-            <input className="form-control form-control-sm mb-2" type="text" name='name' placeholder="Name" onChange={onCreateStatusFormChange} />
-            <input className="form-control form-control-sm mb-2" type="text" name='score' placeholder="Score" onChange={onCreateStatusFormChange} />
-            <div className="d-grid">
-                <button className="btn btn-sm btn-primary" type="button" onClick={createNewStatus}>create</button>
-            </div>
-        </div>
-    );
-
-    const statusPreviewList = (
-        <div className="container-fluid mt-4">
-            {todosresponse.todosSingle.status && todosresponse.todosSingle.status.map((status, index) => (
-                <StatusCompont status={status} setAction={setAction} key={index} />
-            ))}
-        </div>
-    );
 
     return (
         <div className='container'>
@@ -93,7 +73,7 @@ export default function EditTodosPage() {
                 <input id="x1" disabled className="form-control form-control-sm mb-3" type="text" defaultValue={todosresponse.todosSingle.code} />
                 <div className="d-grid gap-2">
                     <button className="btn btn-sm btn-primary" onClick={updateTodosFrom}>
-                        {todosresponse.loading ===true ?
+                        {todosresponse.loading === true ?
                             <div class="spinner-grow" role="status">
                                 <span class="visually-hidden">Loading...</span>
                             </div> :
@@ -113,12 +93,29 @@ export default function EditTodosPage() {
                     <h1 className="display-6">Status Setting</h1>
                 </div>
                 <div className="col-2">
-                    <button className='btn btn-sm btn-outline-primary' onClick={onCreateButtonClick}>Create Status</button>
+                    <button className='btn btn-sm btn-outline-primary' onClick={() => setModal(prev => !prev)}>Create Status</button>
                 </div>
             </div>
 
             <hr className="border border-gray border-1 opacity-50 mb-4"></hr>
-            {create ? statusCreateForm : statusPreviewList}
+            <GeneralModal modal={modal} setModal={setModal}>
+                <div className='container'>
+                    <input className="form-control form-control-sm mb-2" type="text" name='name' placeholder="Name" onChange={onCreateStatusFormChange} />
+                    <input className="form-control form-control-sm mb-2" type="text" name='score' placeholder="Score" onChange={onCreateStatusFormChange} />
+                    <div className="d-grid">
+                        <button className="btn btn-sm btn-primary" type="button" onClick={createNewStatus}>create</button>
+                    </div>
+                </div>
+            </GeneralModal>
+            <div className="row">
+                <div className="col">
+                    <div className="container-fluid mt-4">
+                        {todosresponse.todosSingle.status && todosresponse.todosSingle.status.map((status, index) => (
+                            <StatusCompont status={status} setAction={setAction} key={index} />
+                        ))}
+                    </div>
+                </div>
+            </div>
 
         </div>
     )
