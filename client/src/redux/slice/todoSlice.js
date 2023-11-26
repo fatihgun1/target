@@ -14,32 +14,12 @@ const headers =  {
          'Authorization': `Bearer ${user ? user.token :null}`
 } };
 
-export const getTodoByCode = createAsyncThunk('getTodoByCode', async (code) => {
-    try{
-        const response = await axios.get(`http://localhost:8080/todos/get/${code}`,headers)
-        return response.data;
-       
-    }catch(err){
-        console.log(err);
-    }
-})
-
-export const getTodo = createAsyncThunk('getTodo', async () => {
-    try{
-        const response = await axios.get(`http://localhost:8080/todos/all/${user.user}`,headers)
-        return response.data;
-       
-    }catch(err){
-        console.log(err);
-    }
-})
-
 export const createTodo = createAsyncThunk('createTodo', async (payload) => {
     try{
         const response = await axios.post(`http://localhost:8080/todo/create`, payload, headers)
         return response.data;
     }catch(err){
-        console.log(err);
+        return err.response.data;
     }
 })
 
@@ -48,7 +28,7 @@ export const updateTodo = createAsyncThunk('updateTodo', async (payload) => {
         const response = await axios.post(`http://localhost:8080/todo/update`, payload, headers)
         return response.data;
     }catch(err){
-        console.log(err);
+        return err.response.data;
     }
 })
 
@@ -66,45 +46,7 @@ export const todoSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        //GET TODOS
-        builder.addCase(getTodo.pending,(state,action)=>{
-            state.loading = true;
-            state.error = null;
-            state.success = false
-        });
-        builder.addCase(getTodo.fulfilled,(state,action)=>{
-            state.loading = false;
-            state.error = null;
-            if(action.payload){
-                state.todo = action.payload
-                state.success = true;
-            }
-        });
-        builder.addCase(getTodo.rejected,(state,action) => {
-            state.loading = false;
-            state.error = "3";
-            state.success = false
-        });
-        // GET STATUS BY CODE
-        builder.addCase(getTodoByCode.pending,(state,action)=>{
-            state.loading = true;
-            state.error = null;
-            state.success = false
-        });
-        builder.addCase(getTodoByCode.fulfilled,(state,action)=>{
-            state.loading = false;
-            state.error = null;
-            state.success = false;
-            if(action.payload){
-                state.todo = action.payload
-            }
-        });
-        builder.addCase(getTodoByCode.rejected,(state,action) => {
-            state.loading = false;
-            state.error = "3";
-            state.success = false
-        });
-        //CREATE TODOS
+        //CREATE TODO
         builder.addCase(createTodo.pending,(state,action)=>{
             state.loading = true;
             state.error = null;
@@ -116,13 +58,17 @@ export const todoSlice = createSlice({
             if(action.payload){
                 state.success = true;
             }
+            if(action.payload.status === "BAD_REQUEST"){
+                state.error = action.payload.message;
+                state.success = false;
+            }
         });
         builder.addCase(createTodo.rejected,(state,action) => {
             state.loading = false;
             state.error = "3";
             state.success = false
         });
-        //UPDATE TODOS 
+        //UPDATE TODO 
         builder.addCase(updateTodo.pending,(state,action)=>{
             state.loading = true;
             state.error = null;
@@ -132,6 +78,10 @@ export const todoSlice = createSlice({
             state.error = null;
             if(action.payload){
                 state.success = true;
+            }
+            if(action.payload.status === "BAD_REQUEST"){
+                state.error = action.payload.message;
+                state.success = false;
             }
         });
         builder.addCase(updateTodo.rejected,(state,action) => {
@@ -158,6 +108,5 @@ export const todoSlice = createSlice({
         });
     }
 })
-
 
 export default todoSlice.reducer;

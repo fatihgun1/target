@@ -3,6 +3,7 @@ package com.target.api.target.controller;
 import com.target.api.target.facades.request.StatusRequestDto;
 import com.target.api.target.facades.todos.StatusFacades;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,13 +15,13 @@ public class StatusController {
     private StatusFacades statusFacades;
 
     @PostMapping("/create")
-    public ResponseEntity<String> createStatus(@RequestBody StatusRequestDto statusRequestDto){
+    public ResponseEntity<String> createStatus(@Valid @RequestBody StatusRequestDto statusRequestDto){
         statusFacades.createStatus(statusRequestDto);
         return ResponseEntity.ok("Created");
     }
 
     @PostMapping("/update")
-    public ResponseEntity<String> updateStatus(@RequestBody StatusRequestDto statusRequestDto){
+    public ResponseEntity<String> updateStatus(@Valid @RequestBody StatusRequestDto statusRequestDto){
         Boolean succeed = statusFacades.updateStatus(statusRequestDto);
         return succeed ? ResponseEntity.ok("Updated") : ResponseEntity.ok("Could not update");
     }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import { deleteTodos } from '../../redux/slice/todosSlice';
@@ -25,7 +25,7 @@ export default function TodoListComponent({ name, todosCode, key, setAction }) {
                 <div className="card-body text-center " onClick={() => navigateTodoDetail(todosCode)}>
                     {name}
                 </div>
-                <div class="card-footer bg-transparent ">
+                <div className="card-footer bg-transparent ">
                     <div className="row">
                         <div className="col">
                             <Link className='btn btn-sm btn-primary w-100' to={`/todos/edit/${todosCode}`}>Edit</Link>

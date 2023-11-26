@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteBadge, updateBadge } from '../../redux/slice/badgeSlice';
 
-export default function BadgeComponent({ badge, key ,token ,setAction}) {
+export default function BadgeComponent({ badge, key, token, setAction }) {
     const styleName = { fontSize: "24px", fontWeight: 400, margin: "0px" }
     const styleDesc = { fontSize: "12px", fontWeight: 400 }
     const [edit, setEdit] = useState(false);
     const dispatch = useDispatch();
-
+    const badgeresponse = useSelector(state => state.badge)
     const [newBadge, setNewBadge] = useState({
         name: null,
         description: null,
@@ -21,26 +21,28 @@ export default function BadgeComponent({ badge, key ,token ,setAction}) {
     }, [edit])
 
     const badgeDeleteButton = async () => {
-        await dispatch(deleteBadge({code:badge.code})).unwrap()
-        .then((response) => {
-            setEdit(prev => !prev)
-            setAction(prev => !prev)
-          })
-          .catch((error) => {
-            console.log(error)
-          })
+        await dispatch(deleteBadge({ code: badge.code })).unwrap()
+            .then((response) => {
+                setEdit(prev => !prev)
+                setAction(prev => !prev)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
     }
 
     const badgeSaveButton = async () => {
         dispatch(updateBadge(newBadge)).unwrap()
-        .then((response) => {
-            setEdit(prev => !prev)
-            setAction(prev => !prev)
-          })
-          .catch((error) => {
-            console.log(error)
-          })
-  }
+            .then((response) => {
+                if (response.status !== "BAD_REQUEST") {
+                    setEdit(prev => !prev)
+                    setAction(prev => !prev)
+                }
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }
 
     const onFormChange = (e) => {
         const { name, value } = e.target;
@@ -50,25 +52,26 @@ export default function BadgeComponent({ badge, key ,token ,setAction}) {
 
     const preview = (
         <>
-            <div className="col-2">
-                <img src={badge.mediaUrl} alt={badge.name} style={{ width: "64px" }} />
-            </div>
-            <div className="col">
-                <div className="row">
-                    <div className="col">
-                        <p className='display-6' style={styleName}>{badge.name}</p>
-                    </div>
+                <div className="col-2">
+                    <img src={badge.mediaUrl} alt={badge.name} style={{ width: "64px" }} />
                 </div>
-                <div className="row">
-                    <div className="col">
-                        <strong style={styleDesc}>{badge.description}</strong>
-                    </div>
-                </div>
-            </div>
 
-            <div className="col ">
-                <p className='display-6' style={styleName}><b>Score:</b> {badge.score}</p>
-            </div>
+                <div className="col">
+                    <div className="row">
+                        <div className="col">
+                            <p className='display-6' style={styleName}>{badge.name}</p>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col">
+                            <strong style={styleDesc}>{badge.description}</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="col ">
+                    <p className='display-6' style={styleName}><b>Score:</b> {badge.score}</p>
+                </div>
         </>
     );
 
@@ -110,6 +113,15 @@ export default function BadgeComponent({ badge, key ,token ,setAction}) {
                     </div>
                 </div>
             </div>
+            {badgeresponse.error &&
+                <div className="row">
+                    <div className="col">
+                        <div className="alert alert-danger mt-4" >
+                            {badgeresponse.error}
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
     );
 

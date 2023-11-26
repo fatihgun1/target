@@ -4,6 +4,7 @@ import com.target.api.target.dto.TodoDto;
 import com.target.api.target.facades.request.TodoRequestDto;
 import com.target.api.target.facades.todos.TodoFacades;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ public class TodoController {
     private TodoFacades todoFacade;
 
     @PostMapping("/create")
-    public ResponseEntity<String> createTodos(@RequestBody TodoRequestDto todoRequestDto){
+    public ResponseEntity<String> createTodos(@Valid @RequestBody TodoRequestDto todoRequestDto){
         todoFacade.createTodo(todoRequestDto);
         return ResponseEntity.ok("Created");
     }
@@ -28,7 +29,7 @@ public class TodoController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<String> updateTodos(@RequestBody TodoRequestDto todoRequestDto){
+    public ResponseEntity<String> updateTodos(@Valid @RequestBody TodoRequestDto todoRequestDto){
         Boolean succeed = todoFacade.updateTodo(todoRequestDto);
         return succeed ? ResponseEntity.ok("Updated"): ResponseEntity.badRequest().body("Could not update");
     }

@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { currentUser } from '../../redux/slice/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { createTodos } from '../../redux/slice/todosSlice';
 export default function CreateTodosComponent({ setModal }) {
 
   const dispatch = useDispatch();
-
-
   const cUser = useSelector(state => state.user);
   const todoState = useSelector(state => state.todos);
 
@@ -24,11 +22,11 @@ export default function CreateTodosComponent({ setModal }) {
 
   const saveTodo = async e => {
     await dispatch(createTodos(todos)).unwrap().then((response) => {
-      setModal(prev => !prev);
-    }).catch((err) => {
-      console.log(err);
-    }
-    );
+      console.log("resposne",response);
+      if(response.status !== "BAD_REQUEST"){
+        setModal(prev => !prev);
+      }
+    });
   }
 
   const goBack = e => {
@@ -51,6 +49,11 @@ export default function CreateTodosComponent({ setModal }) {
       </div>
       <div>
         {todoState.loading && <>Saving...</>}
+        {todoState.error && 
+          <div className="alert alert-danger mt-4" >
+            {todoState.error}
+        </div>
+        }
       </div>
     </div>
   )

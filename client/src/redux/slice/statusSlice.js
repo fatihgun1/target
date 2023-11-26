@@ -14,22 +14,14 @@ const headers =  {
          'Authorization': `Bearer ${user ? user.token :null}`
 } };
 
-export const getStatus = createAsyncThunk('getStatus', async (user) => {
-    try{
-        const response = await axios.get(`http://localhost:8080/todos/all/${user.user}`,headers)
-        return response.data;
-       
-    }catch(err){
-        console.log(err);
-    }
-})
 
 export const createStatus = createAsyncThunk('createStatus', async (payload) => {
     try{
         const response = await axios.post(`http://localhost:8080/status/create`, payload, headers)
         return response.data;
     }catch(err){
-        console.log(err);
+        return err.response.data;
+
     }
 })
 
@@ -38,7 +30,7 @@ export const updateStatus = createAsyncThunk('updateStatus', async (payload) => 
         const response = await axios.post(`http://localhost:8080/status/update`, payload, headers)
         return response.data;
     }catch(err){
-        console.log(err);
+        return err.response.data;
     }
 })
 
@@ -56,26 +48,7 @@ export const statusSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        //GET TODOS
-        builder.addCase(getStatus.pending,(state,action)=>{
-            state.loading = true;
-            state.error = null;
-            state.success = false
-        });
-        builder.addCase(getStatus.fulfilled,(state,action)=>{
-            state.loading = false;
-            state.error = null;
-            if(action.payload){
-                state.todos = action.payload
-                state.success = true;
-            }
-        });
-        builder.addCase(getStatus.rejected,(state,action) => {
-            state.loading = false;
-            state.error = "3";
-            state.success = false
-        });
-        //CREATE TODOS
+        //CREATE Status
         builder.addCase(createStatus.pending,(state,action)=>{
             state.loading = true;
             state.error = null;
@@ -87,13 +60,17 @@ export const statusSlice = createSlice({
             if(action.payload){
                 state.success = true;
             }
+            if(action.payload.status === "BAD_REQUEST"){
+                state.error = action.payload.message;
+                state.success = false;
+            }
         });
         builder.addCase(createStatus.rejected,(state,action) => {
             state.loading = false;
             state.error = "3";
             state.success = false
         });
-        //UPDATE TODOS 
+        //UPDATE Status 
         builder.addCase(updateStatus.pending,(state,action)=>{
             state.loading = true;
             state.error = null;
@@ -105,13 +82,17 @@ export const statusSlice = createSlice({
             if(action.payload){
                 state.success = true;
             }
+            if(action.payload.status === "BAD_REQUEST"){
+                state.error = action.payload.message;
+                state.success = false;
+            }
         });
         builder.addCase(updateStatus.rejected,(state,action) => {
             state.loading = false;
             state.error = "3";
             state.success = false
         });
-        //DELETE TODOS
+        //DELETE Status
         builder.addCase(deleteStatus.pending,(state,action)=>{
             state.loading = true;
             state.error = null;

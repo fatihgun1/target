@@ -4,6 +4,7 @@ import com.target.api.target.dto.BadgeDto;
 import com.target.api.target.facades.achievement.BadgeFacades;
 import com.target.api.target.facades.request.BadgeRequestDto;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,13 +27,13 @@ public class BadgeController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> createBadge(@RequestBody BadgeRequestDto statusRequestDto){
+    public ResponseEntity<String> createBadge(@Valid @RequestBody BadgeRequestDto statusRequestDto){
         badgeFacades.crateBadge(statusRequestDto);
         return ResponseEntity.ok("Created");
     }
 
     @PostMapping("/update")
-    public ResponseEntity<String> updateBadge(@RequestBody BadgeRequestDto statusRequestDto){
+    public ResponseEntity<String> updateBadge(@Valid @RequestBody BadgeRequestDto statusRequestDto){
         Boolean succeed = badgeFacades.updateBadge(statusRequestDto);
         return succeed ? ResponseEntity.ok("Updated") : ResponseEntity.ok("Could not update");
     }

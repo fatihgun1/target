@@ -2,19 +2,19 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { currentUser } from '../../redux/slice/userSlice';
 import { createTodo } from '../../redux/slice/todoSlice';
-export default function CreateTodoPage({code,status,setAction}) {
+export default function CreateTodoPage({ code, status, setAction }) {
 
   const dispatch = useDispatch();
-
+  const responsetodo = useSelector(state => state.todo);
   const [todo, setTodo] = useState({
     description: null,
-    status:status[0],
-    code:code
+    status: status[0],
+    code: code
   });
 
   useEffect(() => {
-    console.log("status",status);
-    setTodo(prev => ({ ...prev, status: status[0],code:code }))
+    console.log("status", status);
+    setTodo(prev => ({ ...prev, status: status[0], code: code }))
   }, [setAction])
 
   const onFormChange = e => {
@@ -24,16 +24,18 @@ export default function CreateTodoPage({code,status,setAction}) {
 
   const saveTodo = async e => {
     await dispatch(createTodo(todo)).unwrap()
-    .then((response) => {
-      setAction(prev=>!prev)
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+      .then((response) => {
+        if (response.status !== "BAD_REQUEST") {
+          setAction(prev => !prev)
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }
 
   const onStatusChange = e => {
-    setTodo(prev => ({ ...prev, status: status.find(({code}) => code === e.target.value)}))
+    setTodo(prev => ({ ...prev, status: status.find(({ code }) => code === e.target.value) }))
   }
 
   useEffect(() => {
@@ -52,6 +54,14 @@ export default function CreateTodoPage({code,status,setAction}) {
       <div>
         <button className='btn btn-primary' onClick={saveTodo}>Create</button>
       </div>
+      <div className="mt-3">
+        {responsetodo.error &&
+          <div className="alert alert-danger mt-4" >
+            {responsetodo.error}
+          </div>
+        }
+      </div>
+
     </div>
   )
 }
