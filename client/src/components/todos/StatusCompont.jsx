@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
-
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteStatus, updateStatus } from '../../redux/slice/statusSlice';
-export default function StatusCompont({ status, setAction ,key }) {
+export default function StatusCompont({ status, setAction, key }) {
 
     const [edit, setEdit] = useState(false);
     const [statu, setStatu] = useState(status)
     const dispatch = useDispatch();
-
+    const statusresponse = useSelector(state => state.status)
     useEffect(() => {
         setStatu(status)
     }, [status])
@@ -29,22 +28,25 @@ export default function StatusCompont({ status, setAction ,key }) {
 
     const saveStatus = async (e) => {
         dispatch(updateStatus(statu)).unwrap()
-        .then((response)=>{
-            setAction(prev => !prev)
-            setEdit(prev => !prev)
-        }).catch((err)=>{
-            console.log(err)
-        });
+            .then((response) => {
+                if (response.status !== "BAD_REQUEST") {
+                    setAction(prev => !prev)
+                    setEdit(prev => !prev)
+                }
+
+            }).catch((err) => {
+                console.log(err)
+            });
     }
 
-    const deleteExistedStatus = async () =>{
-        await dispatch(deleteStatus({code:status.code})).unwrap()
-        .then((response) => {
-            setAction(prev => !prev)
-            setEdit(prev => !prev)
-        }).catch((err)=>{
-            console.log(err)
-        })
+    const deleteExistedStatus = async () => {
+        await dispatch(deleteStatus({ code: status.code })).unwrap()
+            .then((response) => {
+                setAction(prev => !prev)
+                setEdit(prev => !prev)
+            }).catch((err) => {
+                console.log(err)
+            })
     }
 
     const previewStatus = (
@@ -80,6 +82,15 @@ export default function StatusCompont({ status, setAction ,key }) {
                             </div>
                             <input className="form-control form-control-sm" type="text" defaultValue={status.score} name="score" onChange={onStatusScoreChage} />
                         </div>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col">
+                        {statusresponse.error &&
+                            <div className="alert alert-danger mt-4" >
+                                {statusresponse.error}
+                            </div>
+                        }
                     </div>
                 </div>
             </div>

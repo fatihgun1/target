@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { currentUser } from '../../redux/slice/userSlice';
 import { Link, useParams } from 'react-router-dom';
 import StatusCompont from '../../components/todos/StatusCompont';
 import { getTodosByCode, updateTodos } from '../../redux/slice/todosSlice';
@@ -11,6 +10,7 @@ export default function EditTodosPage() {
     const dispatch = useDispatch();
     const { code } = useParams();
     const todosresponse = useSelector(state => state.todos);
+    const statusresponse = useSelector(state => state.status);
     const [action, setAction] = useState(false);
     const [newStatus, setNewStatus] = useState({ todoscode: null, name: null, score: null });
     const [modal, setModal] = useState(false);
@@ -20,17 +20,18 @@ export default function EditTodosPage() {
     });
 
     useEffect(() => {
-        dispatch(currentUser());
         dispatch(getTodosByCode(code));
-        setNewTodos(prev => ({ ...prev, code: todosresponse.todosSingle.code }))
-    }, [code, action,modal])
+        setNewTodos(prev => ({ ...prev, code: todosresponse.todosSingle.code, name: todosresponse.todosSingle.name }))
+    }, [code, action, modal])
 
 
     const createNewStatus = async () => {
         await dispatch(createStatus(newStatus)).unwrap().then((response) => {
-            setAction(prev => !prev)
-            setModal(prev => !prev)
-
+            if (response.status !== "BAD_REQUEST") {
+                setAction(prev => !prev)
+                setModal(prev => !prev)
+                setNewStatus({name: null, score: null });
+            }
         }).catch((err) => {
             console.log(err);
         });
@@ -39,9 +40,9 @@ export default function EditTodosPage() {
     const updateTodosFrom = async () => {
         await dispatch(updateTodos(newTodos)).unwrap()
             .then((response) => {
-                setAction(prev => !prev)
-            }).catch((err) => {
-                console.log(err);
+                if (response.status !== "BAD_REQUEST") {
+                    setAction(prev => !prev)
+                }
             });
     }
 
@@ -74,8 +75,8 @@ export default function EditTodosPage() {
                 <div className="d-grid gap-2">
                     <button className="btn btn-sm btn-primary" onClick={updateTodosFrom}>
                         {todosresponse.loading === true ?
-                            <div class="spinner-grow" role="status">
-                                <span class="visually-hidden">Loading...</span>
+                            <div className="spinner-grow" role="status">
+                                <span className="visually-hidden">Loading...</span>
                             </div> :
                             <>update</>
                         }
@@ -86,6 +87,12 @@ export default function EditTodosPage() {
                         Updated
                     </div>
                     : null}
+
+                {todosresponse.error &&
+                    <div className="alert alert-danger mt-4" >
+                        {todosresponse.error}
+                    </div>
+                }
             </div>
 
             <div className="row align-items-center">
@@ -105,6 +112,11 @@ export default function EditTodosPage() {
                     <div className="d-grid">
                         <button className="btn btn-sm btn-primary" type="button" onClick={createNewStatus}>create</button>
                     </div>
+                    {statusresponse.error &&
+                    <div className="alert alert-danger mt-4" >
+                        {statusresponse.error}
+                    </div>
+                }
                 </div>
             </GeneralModal>
             <div className="row">

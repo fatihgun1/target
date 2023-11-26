@@ -22,22 +22,21 @@ export default function SettingsPage() {
   useEffect(() => {
     distpatch(currentUser());
     distpatch(getBadgesByUser());
-  }, [distpatch,modal, action]);
+  }, [distpatch, modal, action]);
 
   const onCrateFormChange = (e) => {
     const { name, value } = e.target;
-    console.log(badgeresponse);
     setBadge(prev => ({ ...prev, [name]: value, owner: cUser.user }))
   }
 
   const onCrateBadgeButtonClick = async (e) => {
     distpatch(createBadge(badge)).unwrap()
       .then((response) => {
-        setModal(prev => !prev)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+        if (response.status !== "BAD_REQUEST") {
+          setModal(prev => !prev)
+          setBadge({name: null,description: null,score: null,mediaUrl: null})
+        }
+      });
   }
 
   return (
@@ -64,6 +63,16 @@ export default function SettingsPage() {
             <div className="d-grid">
               <button className="btn btn-sm btn-primary" onClick={onCrateBadgeButtonClick}>Create Badge</button>
             </div>
+            {badgeresponse.error &&
+              <div className="row">
+                <div className="col">
+                  <div className="alert alert-danger mt-4" >
+                    {badgeresponse.error}
+                  </div>
+                </div>
+              </div>
+            }
+
           </div>
         </div>
       </GeneralModal>

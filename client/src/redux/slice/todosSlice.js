@@ -44,7 +44,7 @@ export const createTodos = createAsyncThunk('createTodos', async (payload) => {
         const response = await axios.post(`http://localhost:8080/todos/create`, payload, headers)
         return response.data;
     }catch(err){
-        console.log(err);
+        return err.response.data;
     }
 })
 
@@ -53,7 +53,7 @@ export const updateTodos = createAsyncThunk('updateTodos', async (payload) => {
         const response = await axios.post(`http://localhost:8080/todos/update`, payload, headers)
         return response.data;
     }catch(err){
-        console.log(err);
+        return err.response.data;
     }
 })
 
@@ -103,7 +103,6 @@ export const todosSlice = createSlice({
             state.success = false;
             if(action.payload){
                 state.todosSingle = action.payload
-                
             }
         });
         builder.addCase(getTodosByCode.rejected,(state,action) => {
@@ -123,6 +122,10 @@ export const todosSlice = createSlice({
             if(action.payload){
                 state.success = true;
             }
+            if(action.payload.status === "BAD_REQUEST"){
+                state.error = action.payload.message;
+                state.success = false;
+            }
         });
         builder.addCase(createTodos.rejected,(state,action) => {
             state.loading = false;
@@ -139,6 +142,10 @@ export const todosSlice = createSlice({
             state.error = null;
             if(action.payload){
                 state.success = true;
+            }
+            if(action.payload.status === "BAD_REQUEST"){
+                state.error = action.payload.message;
+                state.success = false;
             }
         });
         builder.addCase(updateTodos.rejected,(state,action) => {

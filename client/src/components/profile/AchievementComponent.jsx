@@ -49,9 +49,9 @@ export default function AchievementComponent({ achievement, key }) {
     );
 
     return (
-        <div className="col">
+        <div className="col" key={key}>
             {badge}
-            <div className='card' key={key}>
+            <div className='card' >
                 <div className="card-body text-center">
                     <div className="row align-items-center mb-3">
                         <div className="col-4">
@@ -86,7 +86,6 @@ export default function AchievementComponent({ achievement, key }) {
                         <div className="col">
                             <button className='btn btn-sm btn-primary w-100 m-0 p-0' onClick={calculate}>Calculate</button>
                         </div>
-
                     </div>
                 </div>
             </div>
