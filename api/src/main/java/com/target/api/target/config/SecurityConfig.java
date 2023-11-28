@@ -45,6 +45,7 @@ public class SecurityConfig {
                         .requestMatchers("/status/**").permitAll()
                         .requestMatchers("/achievement/**").permitAll()
                         .requestMatchers("/badge/**").permitAll()
+                        .requestMatchers("/media/**").permitAll()
                         .requestMatchers("/api/v1/admin").hasAnyAuthority(RoleEnum.ADMIN.name())
                         .requestMatchers("/api/v1/user").hasAnyAuthority(RoleEnum.USER.name())
                         .anyRequest().authenticated())
