@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import BadgeComponent from '../../components/profile/BadgeComponent';
 import { createBadge, getBadgesByUser } from '../../redux/slice/badgeSlice';
 import GeneralModal from '../../components/modal/GeneralModal';
+import MediaUploadComponent from '../../components/general/MediaUploadComponent';
 
 export default function SettingsPage() {
   const distpatch = useDispatch();
@@ -59,7 +60,7 @@ export default function SettingsPage() {
             <input className='form-control form-control-sm mb-3' type='text' placeholder='Name' name='name' onChange={onCrateFormChange} />
             <input className='form-control form-control-sm mb-3' type='text' placeholder='Description' name='description' onChange={onCrateFormChange} />
             <input className='form-control form-control-sm mb-3' type='text' placeholder='Score' name='score' onChange={onCrateFormChange} />
-            <input className='form-control form-control-sm mb-3' type='text' placeholder='image' name='mediaUrl' onChange={onCrateFormChange} />
+            <MediaUploadComponent setState={setBadge}/>
             <div className="d-grid">
               <button className="btn btn-sm btn-primary" onClick={onCrateBadgeButtonClick}>Create Badge</button>
             </div>
