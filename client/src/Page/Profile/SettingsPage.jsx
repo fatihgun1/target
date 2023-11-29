@@ -60,7 +60,7 @@ export default function SettingsPage() {
             <input className='form-control form-control-sm mb-3' type='text' placeholder='Name' name='name' onChange={onCrateFormChange} />
             <input className='form-control form-control-sm mb-3' type='text' placeholder='Description' name='description' onChange={onCrateFormChange} />
             <input className='form-control form-control-sm mb-3' type='text' placeholder='Score' name='score' onChange={onCrateFormChange} />
-            <MediaUploadComponent setState={setBadge}/>
+            <MediaUploadComponent setState={setBadge} type="badges"/>
             <div className="d-grid">
               <button className="btn btn-sm btn-primary" onClick={onCrateBadgeButtonClick}>Create Badge</button>
             </div>

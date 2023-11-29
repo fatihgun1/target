@@ -6,6 +6,7 @@ export default function CreateTodoPage({ code, status, setAction }) {
 
   const dispatch = useDispatch();
   const responsetodo = useSelector(state => state.todo);
+  const [textAreaFocus,setTextAreaFocus] = useState(false)
   const [todo, setTodo] = useState({
     description: null,
     status: status[0],
@@ -13,7 +14,6 @@ export default function CreateTodoPage({ code, status, setAction }) {
   });
 
   useEffect(() => {
-    console.log("status", status);
     setTodo(prev => ({ ...prev, status: status[0], code: code }))
   }, [setAction])
 
@@ -27,6 +27,8 @@ export default function CreateTodoPage({ code, status, setAction }) {
       .then((response) => {
         if (response.status !== "BAD_REQUEST") {
           setAction(prev => !prev)
+          setTextAreaFocus(false)
+          
         }
       })
       .catch((error) => {
@@ -43,17 +45,27 @@ export default function CreateTodoPage({ code, status, setAction }) {
   }, [setAction])
 
   return (
-    <div>
-      <h3>Add todo</h3>
-      <div>
-        <input name="description" placeholder="what is your target" type="text" onChange={onFormChange} />
-        <select className='form-select' onChange={onStatusChange}>
-          {status && status.map((type, index) => (<option key={index} value={type.code}>{type.name}</option>))}
-        </select>
+    <div className='card p-2 mb-3'>
+      <div className="form-floating mb-2" >
+        <textarea className="form-control" id="todotext" name='description' onFocus={() => setTextAreaFocus(true)} onChange={onFormChange} style={textAreaFocus ? {height:"100px"} :  {height:"10px"}}></textarea>
+        <label for="todotext">Add todo</label>
       </div>
-      <div>
-        <button className='btn btn-primary' onClick={saveTodo}>Create</button>
+      {textAreaFocus &&
+      <div className='row g-2'>
+        <div className="col-md ">
+          <button className='btn btn-primary w-100' onClick={saveTodo}>Create</button>
+        </div>
+        <div className="col-md">
+          <div className="form-floating">
+            <select id='todotext1' className='form-select' onChange={onStatusChange}>
+              {status && status.map((type, index) => (<option key={index} value={type.code}>{type.name}</option>))}
+            </select>
+            <label for="todotext1">Status</label>
+          </div>
+        </div>
       </div>
+    }
+
       <div className="mt-3">
         {responsetodo.error &&
           <div className="alert alert-danger mt-4" >
@@ -61,7 +73,6 @@ export default function CreateTodoPage({ code, status, setAction }) {
           </div>
         }
       </div>
-
     </div>
   )
 }

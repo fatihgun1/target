@@ -55,7 +55,6 @@ export default function TodoComponent({ orginalTodo, statusList, setAction }) {
                 <select className='form-select' onChange={onStatusChange} defaultValue={todo.status.code}>
                   {statusList && statusList.map((type, index) => (<option key={index} value={type.code}>{type.name}</option>))}
                 </select>
-
               </div>
               : <>{todo.description} - {todo.status.name} </>}
 

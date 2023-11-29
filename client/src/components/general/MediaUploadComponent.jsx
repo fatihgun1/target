@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import {createMedia} from '../../redux/slice/mediaSlice'
-export default function MediaUploadComponent({setState}) {
+export default function MediaUploadComponent({setState,type}) {
     const [file, setFile] = useState();
     const dispatch = useDispatch();
     const response = useSelector(state => state.media)
@@ -21,7 +21,7 @@ export default function MediaUploadComponent({setState}) {
         e.preventDefault();
         const formData = new FormData();
         formData.append('data', file);
-        formData.append('type', 'badges');
+        formData.append('type', {type});
         await dispatch(createMedia(formData)).unwrap().then((response) => {
             if(response){
                 setState(prev => ({...prev,mediaUrl:response.url}))

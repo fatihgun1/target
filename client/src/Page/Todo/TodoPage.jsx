@@ -18,29 +18,21 @@ export default function TodoPage() {
         dispatch(getTodosByCode(code))
     }, [action])
 
-    const onCrateButtonClick = () => {
-        console.log(todosresponse.todosSingle);
-        setVisible(visible => !visible)
-    }
-
     return (
-        <div className='row'>
-            <nav className="navbar bg-body-tertiary mb-4">
-                <div className="container-fluid">
-                    <p className='navbar-brand'>{todosresponse.todosSingle.name}</p>
-                    <button className='btn btn-outline-primary' onClick={onCrateButtonClick} >Create todo</button>
-                </div>
-            </nav>
+        <div className='container'>
+
+            <div className="container-fluid ext-body-secondary bg-light-subtle p-2 mb-2 mt-2">
+               {todosresponse.todosSingle.name}
+            </div>
+
+            <div className="col">
+                <CreateTodoPage code={todosresponse.todosSingle.code} status={todosresponse.todosSingle.status} setAction={setAction} />
+            </div>
             <div className={visible ? "col-8" : "col"}>
                 {todosresponse.todosSingle.todos && todosresponse.todosSingle.todos.map((todo, index) => (
                     <TodoComponent setAction={setAction} orginalTodo={todo} statusList={todosresponse.todosSingle.status} token={cUser.token} />
                 ))}
             </div>
-            {visible ?
-                <div className="col">
-                    <CreateTodoPage code={todosresponse.todosSingle.code} status={todosresponse.todosSingle.status} setAction={setAction} />
-                </div>
-            : null}
         </div>
     )
 }
