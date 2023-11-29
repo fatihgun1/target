@@ -21,12 +21,11 @@ export default function MediaUploadComponent({setState,type}) {
         e.preventDefault();
         const formData = new FormData();
         formData.append('data', file);
-        formData.append('type', {type});
+        formData.append('type', type);
         await dispatch(createMedia(formData)).unwrap().then((response) => {
             if(response){
                 setState(prev => ({...prev,mediaUrl:response.url}))
             }
-
         });
     }
 
@@ -38,11 +37,6 @@ export default function MediaUploadComponent({setState,type}) {
                     <button className='btn btn-sm btn-secondary' disabled={response.loading} type='submit'>Upload</button>
                 </div>
             </form>
-            {response.media && 
-            <div className='container text-center p-3 '>
-                <img src={response.media.url} alt='' style={{height:"120px "}}/>
-            </div>
-            }
         </div>
     )
 }

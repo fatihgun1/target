@@ -5,11 +5,13 @@ import com.target.api.target.dto.JwtAuthenticationResponse;
 import com.target.api.target.dto.RefreshTokenRequest;
 import com.target.api.target.dto.SignInRequest;
 import com.target.api.target.dto.SignupRequest;
+import com.target.api.target.model.ProfileModel;
 import com.target.api.target.model.RoleEnum;
 import com.target.api.target.model.UserModel;
 import com.target.api.target.repository.UserRepository;
 import com.target.api.target.services.AuthenticationService;
 import com.target.api.target.services.JwtService;
+import com.target.api.target.services.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,7 +27,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
-
+    private final ProfileService profileService;
     @Override
     public UserModel signUp(SignupRequest signupRequest){
         UserModel user = new UserModel();
@@ -35,6 +37,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setRoles(RoleEnum.USER);
         user.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
         userRepository.save(user);
+        this.createProfile(signupRequest);
         return user;
     }
 
@@ -49,6 +52,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         JwtAuthenticationResponse response = new JwtAuthenticationResponse();
         response.setToken(jwt);
         response.setRefreshToken(refreshToken);
+
         return response;
     }
 
@@ -64,5 +68,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return response;
         }
         return null;
+    }
+
+    protected void createProfile(SignupRequest signupRequest){
+        ProfileModel profileModel = new ProfileModel();
+        profileModel.setFullName(signupRequest.getFirstName() + " " + signupRequest.getLastName());
+        profileModel.setOwner(signupRequest.getEmail());
+        profileService.createProfile(profileModel);
     }
 }
