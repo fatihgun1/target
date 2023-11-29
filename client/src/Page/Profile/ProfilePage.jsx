@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import AchievementComponent from '../../components/profile/AchievementComponent'
 import { useDispatch, useSelector } from 'react-redux';
-import { currentUser } from '../../redux/slice/userSlice';
 import ProfileNavbar from '../../components/profile/ProfileNavbar';
 import ProfileDetailComponent from '../../components/profile/ProfileDetailComponent';
 import { getAchievemnetByUser } from '../../redux/slice/achievementSlice';
+import { getProfile } from '../../redux/slice/profileSlice';
 export default function ProfilePage() {
   const dispatch = useDispatch();
   const cUser = useSelector(state => state.user);
   const achievementresponse = useSelector(state => state.achievement);
   const [action,setAction] = useState(false)
   useEffect(() => {
-    dispatch(currentUser());
     dispatch(getAchievemnetByUser())
+    dispatch(getProfile())
   }, [dispatch,action]);
 
   return (

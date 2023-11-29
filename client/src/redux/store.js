@@ -8,6 +8,7 @@ import todoSlice from "./slice/todoSlice";
 import achievementSlice from "./slice/achievementSlice";
 import badgeSlice from "./slice/badgeSlice";
 import mediaSlice from "./slice/mediaSlice";
+import profileSlice from "./slice/profileSlice";
 export default configureStore({
     reducer : {
         register:registerSlice,
@@ -18,6 +19,7 @@ export default configureStore({
         status:statusSlice,
         achievement:achievementSlice,
         badge:badgeSlice,
-        media:mediaSlice
+        media:mediaSlice,
+        profile:profileSlice
     }
 })
