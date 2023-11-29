@@ -41,6 +41,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request.requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/todos/**").permitAll()
+                        .requestMatchers("/profile/**").permitAll()
                         .requestMatchers("/todo/**").permitAll()
                         .requestMatchers("/status/**").permitAll()
                         .requestMatchers("/achievement/**").permitAll()
