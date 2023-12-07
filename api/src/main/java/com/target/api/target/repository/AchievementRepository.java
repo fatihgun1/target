@@ -13,7 +13,7 @@ public interface AchievementRepository extends JpaRepository<AchievementModel,Lo
     List<AchievementModel> findByOwner(String owner);
     @Query(value = "SELECT t.code, s.score  FROM status as s " +
             "JOIN todo AS t ON s.pk = t.status_pk  " +
-            "JOIN todos AS ts ON ts.pk = t.todos_pk " +
+            "JOIN project AS ts ON ts.pk = t.project_pk " +
             "WHERE  ts.code = :code AND t.is_calculated = 0 ",nativeQuery = true)
     List<Object[]> findScore(@Param("code") String code);
 

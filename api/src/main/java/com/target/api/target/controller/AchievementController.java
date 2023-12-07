@@ -15,7 +15,7 @@ public class AchievementController {
     private AchievementFacades achievementFacades;
 
     @GetMapping("/all/{owner}")
-    public List<AchievementDto> getTodos(@PathVariable String owner){
+    public List<AchievementDto> getAchievementByOwner(@PathVariable String owner){
         return achievementFacades.getAchievementByOwner(owner);
     }
 

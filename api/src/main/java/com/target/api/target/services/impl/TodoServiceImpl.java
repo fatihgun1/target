@@ -2,7 +2,7 @@ package com.target.api.target.services.impl;
 
 import com.target.api.target.model.TodoModel;
 import com.target.api.target.repository.TodoRepository;
-import com.target.api.target.repository.TodosRepository;
+import com.target.api.target.repository.ProjectRepository;
 import com.target.api.target.services.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ public class TodoServiceImpl implements TodoService {
     @Autowired
     private TodoRepository todoRepository;
     @Autowired
-    private TodosRepository todosRepository;
+    private ProjectRepository projectRepository;
     @Override
     public TodoModel getTodoByCode(String code) {
         return todoRepository.findByCode(code);
@@ -22,7 +22,7 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public List<TodoModel> getTodoList(String code) {
-        return todosRepository.findByCode(code).getTodos();
+        return projectRepository.findByCode(code).getTodos();
     }
 
     @Override

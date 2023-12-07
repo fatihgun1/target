@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
-import StatusCompont from '../../components/todos/StatusCompont';
-import { getTodosByCode, updateTodos } from '../../redux/slice/todosSlice';
+import StatusCompont from '../../components/todo/StatusCompont';
+import { getProjectByCode, updateProject } from '../../redux/slice/projectSlice';
 import { createStatus } from '../../redux/slice/statusSlice';
 import GeneralModal from '../../components/modal/GeneralModal';
 
-export default function EditTodosPage() {
+export default function EditProjectPage() {
     const dispatch = useDispatch();
     const { code } = useParams();
-    const todosresponse = useSelector(state => state.todos);
+    const projectresponse = useSelector(state => state.project);
     const statusresponse = useSelector(state => state.status);
     const [action, setAction] = useState(false);
-    const [newStatus, setNewStatus] = useState({ todoscode: null, name: null, score: null });
+    const [newStatus, setNewStatus] = useState({ project: null, name: null, score: null });
     const [modal, setModal] = useState(false);
     const [newTodos, setNewTodos] = useState({
         name: null,
@@ -20,8 +20,8 @@ export default function EditTodosPage() {
     });
 
     useEffect(() => {
-        dispatch(getTodosByCode(code));
-        setNewTodos(prev => ({ ...prev, code: todosresponse.todosSingle.code, name: todosresponse.todosSingle.name }))
+        dispatch(getProjectByCode(code));
+        setNewTodos(prev => ({ ...prev, code: projectresponse.project.code, name: projectresponse.project.name }))
     }, [code, action, modal])
 
 
@@ -38,7 +38,7 @@ export default function EditTodosPage() {
     }
 
     const updateTodosFrom = async () => {
-        await dispatch(updateTodos(newTodos)).unwrap()
+        await dispatch(updateProject(newTodos)).unwrap()
             .then((response) => {
                 if (response.status !== "BAD_REQUEST") {
                     setAction(prev => !prev)
@@ -48,12 +48,12 @@ export default function EditTodosPage() {
 
     const onCreateStatusFormChange = (e) => {
         const { name, value } = e.target;
-        setNewStatus(prev => ({ ...prev, [name]: value, todoscode: todosresponse.todosSingle.code }))
+        setNewStatus(prev => ({ ...prev, [name]: value, project: projectresponse.project.code }))
     }
 
     const onTodosUpdateForm = (e) => {
         const { name, value } = e.target;
-        setNewTodos(prev => ({ ...prev, [name]: value, code: todosresponse.todosSingle.code }))
+        setNewTodos(prev => ({ ...prev, [name]: value, code: projectresponse.project.code }))
     }
 
     return (
@@ -63,18 +63,18 @@ export default function EditTodosPage() {
                     <h1 className="display-6">General Setting</h1>
                 </div>
                 <div className="col-1">
-                    <Link to='/todos' className='btn btn-sm btn-primary'>Back</Link>
+                    <Link to='/project' className='btn btn-sm btn-primary'>Back</Link>
                 </div>
             </div>
             <hr className="border border-gray border-1 opacity-50"></hr>
 
             <div className="container g-4 mb-4">
-                <input className="form-control form-control-sm mb-3" type="text" placeholder="Name" defaultValue={todosresponse.todosSingle.name} name='name' onChange={onTodosUpdateForm} />
-                <input disabled className="form-control form-control-sm mb-3" type="text" defaultValue={todosresponse.todosSingle.owner} />
-                <input id="x1" disabled className="form-control form-control-sm mb-3" type="text" defaultValue={todosresponse.todosSingle.code} />
+                <input className="form-control form-control-sm mb-3" type="text" placeholder="Name" defaultValue={projectresponse.project.name} name='name' onChange={onTodosUpdateForm} />
+                <input disabled className="form-control form-control-sm mb-3" type="text" defaultValue={projectresponse.project.owner} />
+                <input id="x1" disabled className="form-control form-control-sm mb-3" type="text" defaultValue={projectresponse.project.code} />
                 <div className="d-grid gap-2">
                     <button className="btn btn-sm btn-primary" onClick={updateTodosFrom}>
-                        {todosresponse.loading === true ?
+                        {projectresponse.loading === true ?
                             <div className="spinner-grow" role="status">
                                 <span className="visually-hidden">Loading...</span>
                             </div> :
@@ -82,15 +82,15 @@ export default function EditTodosPage() {
                         }
                     </button>
                 </div>
-                {todosresponse.success === true ?
+                {projectresponse.success === true ?
                     <div className="alert alert-primary">
                         Updated
                     </div>
                     : null}
 
-                {todosresponse.error &&
+                {projectresponse.error &&
                     <div className="alert alert-danger mt-4" >
-                        {todosresponse.error}
+                        {projectresponse.error}
                     </div>
                 }
             </div>
@@ -122,7 +122,7 @@ export default function EditTodosPage() {
             <div className="row">
                 <div className="col">
                     <div className="container-fluid mt-4">
-                        {todosresponse.todosSingle.status && todosresponse.todosSingle.status.map((status, index) => (
+                        {projectresponse.project.status && projectresponse.project.status.map((status, index) => (
                             <StatusCompont status={status} setAction={setAction} key={index} />
                         ))}
                     </div>

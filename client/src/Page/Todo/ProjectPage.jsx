@@ -1,22 +1,21 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { currentUser } from '../../redux/slice/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import TodoListComponent from '../../components/todos/TodoListComponent';
-import { getTodos } from '../../redux/slice/todosSlice';
+import ProjectsComponent from '../../components/project/ProjectsComponent';
+import { getProject } from '../../redux/slice/projectSlice';
 import GeneralModal from '../../components/modal/GeneralModal';
-import CreateTodosComponent from '../../components/todos/CreateTodosComponent';
+import CreateProjectComponent from '../../components/project/CreateProjectComponent';
 
-export default function TodosPage() {
+export default function ProjectPage() {
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
-  const todos = useSelector(state => state.todos);
+  const project = useSelector(state => state.project);
   const [action, setAction] = useState(false);
   const [modal,setModal] = useState(false)
 
   useEffect(() => {
     dispatch(currentUser());
-    dispatch(getTodos(user))
+    dispatch(getProject(user))
   }, [dispatch,action,modal])
 
 
@@ -25,7 +24,7 @@ export default function TodosPage() {
       <div className="row mt-4">
         <div className="col mb-4">
           <GeneralModal modal={modal} setModal={setModal}>
-              <CreateTodosComponent setModal={setModal} />
+              <CreateProjectComponent setModal={setModal} />
           </GeneralModal>
           <button className='btn btn-outline-primary' onClick={()=>setModal(prev => !prev)}>Create Target</button>
         </div>
@@ -33,10 +32,10 @@ export default function TodosPage() {
       <div className="container text-center">
         <div className="row row-cols-1 row-cols-md-3 g-4 align-items-center">
             {
-              todos.loading === false ?
+              project.loading === false ?
                 <>
-                  {todos.todos && todos.todos.map((todox, index) => (
-                    <TodoListComponent name={todox.name} key={index} todosCode={todox.code} setAction={setAction} />
+                  {project.projects && project.projects.map((todox, index) => (
+                    <ProjectsComponent name={todox.name} key={index} project={todox.code} setAction={setAction} />
                   ))}
                 </>
                 :

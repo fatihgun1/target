@@ -8,7 +8,7 @@ import com.target.api.target.model.StatusModel;
 import com.target.api.target.model.TodoModel;
 import com.target.api.target.services.StatusService;
 import com.target.api.target.services.TodoService;
-import com.target.api.target.services.TodosService;
+import com.target.api.target.services.ProjectService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +21,8 @@ import java.util.UUID;
 public class TodoFacadesImpl implements TodoFacades {
     @Resource(name = "todoService")
     private TodoService todoService;
-    @Resource(name = "todosService")
-    private TodosService todosService;
+    @Resource(name = "projectService")
+    private ProjectService projectService;
     @Resource(name = "statusService")
     private StatusService statusService;
     @Resource(name = "todoMapper")
@@ -43,7 +43,7 @@ public class TodoFacadesImpl implements TodoFacades {
         todo.setCode(UUID.randomUUID().toString());
         todo.setDescription(todoRequestDto.getDescription());
         todo.setStatus(statusService.getStatusByCode(todoRequestDto.getStatus().getCode()));
-        todo.setTodos(todosService.getTodosByCode(todoRequestDto.getCode()));
+        todo.setProject(projectService.getTodosByCode(todoRequestDto.getCode()));
         todo.setIsCalculated(Boolean.FALSE);
         todoService.createTodo(todo);
     }

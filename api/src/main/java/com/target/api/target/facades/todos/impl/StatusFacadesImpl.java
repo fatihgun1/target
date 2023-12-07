@@ -5,9 +5,9 @@ import com.target.api.target.facades.request.StatusRequestDto;
 import com.target.api.target.facades.todos.StatusFacades;
 import com.target.api.target.mapper.StatusMapper;
 import com.target.api.target.model.StatusModel;
-import com.target.api.target.model.TodosModel;
+import com.target.api.target.model.ProjectModel;
 import com.target.api.target.services.StatusService;
-import com.target.api.target.services.TodosService;
+import com.target.api.target.services.ProjectService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +20,8 @@ public class StatusFacadesImpl implements StatusFacades {
     private StatusService statusService;
     @Resource(name = "statusMapper")
     private StatusMapper statusMapper;
-    @Resource(name = "todosService")
-    private TodosService todosService;
+    @Resource(name = "projectService")
+    private ProjectService projectService;
 
     @Override
     public StatusDto getStatusByCode(String code) {
@@ -30,15 +30,15 @@ public class StatusFacadesImpl implements StatusFacades {
 
     @Override
     public Boolean createStatus(StatusRequestDto statusRequestDto) {
-        TodosModel todos = todosService.getTodosByCode(statusRequestDto.getTodoscode());
-        if (Objects.isNull(todos)){
+        ProjectModel project = projectService.getTodosByCode(statusRequestDto.getProject());
+        if (Objects.isNull(project)){
             return false;
         }
         StatusModel status = new StatusModel();
         status.setName(statusRequestDto.getName());
         status.setCode(UUID.randomUUID().toString());
         status.setScore(statusRequestDto.getScore());
-        status.setTodos(todos);
+        status.setProject(project);
         statusService.createStatus(status);
         return true;
     }

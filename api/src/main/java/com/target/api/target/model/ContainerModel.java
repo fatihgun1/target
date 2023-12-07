@@ -5,18 +5,12 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "status")
-public class StatusModel {
+@Table(name = "container")
+public class ContainerModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pk;
-    private String name;
     private String code;
-    private Long score;
-
-    @ManyToOne
-    @JoinColumn(name = "project_pk")
-    private ProjectModel project;
-
+    private String name;
 
 }

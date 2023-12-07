@@ -8,9 +8,9 @@ import LoginPage from './Page/LoginPage';
 import RegisterPage from './Page/RegisterPage';
 import ProfilePage from './Page/Profile/ProfilePage';
 import SettingsPage from './Page/Profile/SettingsPage';
-import TodosPage from './Page/Todo/TodosPage';
+import ProjectPage from './Page/Todo/ProjectPage';
 import TodoPage from './Page/Todo/TodoPage';
-import EditTodosPage from './Page/Todo/EditTodosPage'
+import EditProjectPage from './Page/Todo/EditProjectPage'
 import CreateTodoPage from './Page/Todo/CreateTodoPage';
 import Homepage from './Page/Homepage';
 function App() {
@@ -33,9 +33,9 @@ function App() {
           )
         },
         {
-          path: "/todos",
+          path: "/project",
           element: (
-            <TodosPage/>
+            <ProjectPage/>
           )
         },
         {
@@ -51,9 +51,9 @@ function App() {
           )
         },
         {
-          path: "/todos/edit/:code",
+          path: "/project/edit/:code",
           element: (
-            <EditTodosPage/>
+            <EditProjectPage/>
           )
         },
         {
