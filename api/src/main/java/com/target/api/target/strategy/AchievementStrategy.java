@@ -1,10 +1,10 @@
 package com.target.api.target.strategy;
 
-import com.target.api.target.model.TodosModel;
+import com.target.api.target.model.ProjectModel;
 
 public interface AchievementStrategy {
-    void createAchievement(TodosModel todos);
-    Boolean updateAchievement(TodosModel todos);
+    void createAchievement(ProjectModel todos);
+    Boolean updateAchievement(ProjectModel todos);
     Boolean deleteAchievement(String todosCode);
 
 }

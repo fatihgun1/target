@@ -1,9 +1,7 @@
 package com.target.api.target.mapper;
 
 import com.target.api.target.dto.TodoDto;
-import com.target.api.target.dto.TodosDto;
 import com.target.api.target.model.TodoModel;
-import com.target.api.target.model.TodosModel;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 

@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class TodosDto {
+public class ProjectDto {
     private String name;
     private String code;
     private List<TodoDto> todos;

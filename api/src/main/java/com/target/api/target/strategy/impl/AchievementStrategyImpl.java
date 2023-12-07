@@ -1,7 +1,7 @@
 package com.target.api.target.strategy.impl;
 
 import com.target.api.target.model.AchievementModel;
-import com.target.api.target.model.TodosModel;
+import com.target.api.target.model.ProjectModel;
 import com.target.api.target.services.AchievementService;
 import com.target.api.target.strategy.AchievementStrategy;
 import jakarta.annotation.Resource;
@@ -15,7 +15,7 @@ public class AchievementStrategyImpl implements AchievementStrategy {
     @Resource(name = "achievementService")
     private AchievementService achievementService;
 
-    public void createAchievement(TodosModel todos){
+    public void createAchievement(ProjectModel todos){
         AchievementModel achievement = new AchievementModel();
         achievement.setCode(UUID.randomUUID().toString());
         achievement.setName(todos.getName());
@@ -26,7 +26,7 @@ public class AchievementStrategyImpl implements AchievementStrategy {
     }
 
     @Override
-    public Boolean updateAchievement(TodosModel todos) {
+    public Boolean updateAchievement(ProjectModel todos) {
         AchievementModel achievement = achievementService.getAchievementByTodosCode(todos.getCode());
         if (Objects.isNull(achievement)){
             return false;

@@ -16,8 +16,8 @@ public class TodoModel {
     private Boolean isCalculated;
 
     @ManyToOne
-    @JoinColumn(name = "todos_pk")
-    private TodosModel todos;
+    @JoinColumn(name = "project_pk")
+    private ProjectModel project;
 
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "status_pk")
