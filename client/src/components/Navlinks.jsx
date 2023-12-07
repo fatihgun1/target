@@ -12,7 +12,7 @@ export default function Navlinks() {
                     <Link to="/profile" className="nav-link">Profile</Link>
                 </li>
                 <li className="nav-item">
-                    <Link to="/todos" className="nav-link">Todos</Link>
+                    <Link to="/project" className="nav-link">Project</Link>
                 </li>
             </ul>
         </div>

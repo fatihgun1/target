@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, {  useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { currentUser } from '../../redux/slice/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { createTodos } from '../../redux/slice/todosSlice';
-export default function CreateTodosPage() {
+import { createProject } from '../../redux/slice/projectSlice';
+export default function CreateProjectPage() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const cUser = useSelector(state => state.user);
-  const todoState = useSelector(state => state.todos);
+  const projectresponse = useSelector(state => state.project);
 
-  const [todos, setTodos] = useState({
+  const [project, setProject] = useState({
     owner: null,
     name: null
   });
@@ -19,13 +19,13 @@ export default function CreateTodosPage() {
   const onFormChange = e => {
     dispatch(currentUser());
     const { name, value } = e.target;
-    setTodos(prev => ({ ...prev, [name]: value }))
-    setTodos(prev => ({ ...prev, owner: cUser.user }))
+    setProject(prev => ({ ...prev, [name]: value }))
+    setProject(prev => ({ ...prev, owner: cUser.user }))
   }
 
   const saveTodo = async e => {
-    await dispatch(createTodos(todos)).unwrap().then((response) => {
-        navigate("/todos")
+    await dispatch(createProject(project)).unwrap().then((response) => {
+        navigate("/project")
     }).catch((err) => {
       console.log(err);
     }
@@ -33,7 +33,7 @@ export default function CreateTodosPage() {
   }
 
   const goBack = e => {
-    navigate("/todos")
+    navigate("/project")
   }
 
   return (
@@ -47,7 +47,7 @@ export default function CreateTodosPage() {
         <button className='btn btn-primary' onClick={goBack}>Cancel</button>
       </div>
       <div>
-        {todoState.loading && <>Saving...</>}
+        {projectresponse.loading && <>Saving...</>}
       </div>
     </div>
   )

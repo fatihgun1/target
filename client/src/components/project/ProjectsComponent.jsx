@@ -1,9 +1,9 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
-import { deleteTodos } from '../../redux/slice/todosSlice';
+import { deleteProject } from '../../redux/slice/projectSlice';
 
-export default function TodoListComponent({ name, todosCode, key, setAction }) {
+export default function ProjectsComponent({ name, project, key, setAction }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -12,7 +12,7 @@ export default function TodoListComponent({ name, todosCode, key, setAction }) {
     }
 
     const deleteTodo = async (e) => {
-        dispatch(deleteTodos({ code: todosCode })).unwrap().then((response) => {
+        dispatch(deleteProject({ code: project })).unwrap().then((response) => {
             setAction(prev => !prev)
         }).catch((err) => {
             console.log(err);
@@ -22,13 +22,13 @@ export default function TodoListComponent({ name, todosCode, key, setAction }) {
     return (
         <div className="col">
             <div className='card' key={key} style={{ height: "150px" }}>
-                <div className="card-body text-center " onClick={() => navigateTodoDetail(todosCode)}>
+                <div className="card-body text-center " onClick={() => navigateTodoDetail(project)}>
                     {name}
                 </div>
                 <div className="card-footer bg-transparent ">
                     <div className="row">
                         <div className="col">
-                            <Link className='btn btn-sm btn-primary w-100' to={`/todos/edit/${todosCode}`}>Edit</Link>
+                            <Link className='btn btn-sm btn-primary w-100' to={`/project/edit/${project}`}>Edit</Link>
                         </div>
                         <div className="col">
                             <button className='btn btn-sm btn-danger w-100' onClick={deleteTodo}>Delete</button>

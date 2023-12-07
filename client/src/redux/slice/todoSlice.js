@@ -88,7 +88,7 @@ export const todoSlice = createSlice({
             state.loading = false;
             state.error = "3";
         });
-        //DELETE TODOS
+        //DELETE TODO
         builder.addCase(deleteTodo.pending,(state,action)=>{
             state.loading = true;
             state.error = null;

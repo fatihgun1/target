@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
-    todos : [{name: null,code: null}],
-    todosSingle: {name: null,code: null,owner: null,
+    projects : [{name: null,code: null}],
+    project: {name: null,code: null,owner: null,
         status: [{ code: null, name: null, score: null }],
         todos: [{ description: null,status: { code: null, name: null, score: null },code: null}]
 },
@@ -18,9 +18,9 @@ const headers =  {
          'Authorization': `Bearer ${user ? user.token :null}`
 } };
 
-export const getTodosByCode = createAsyncThunk('getTodosByCode', async (code) => {
+export const getProjectByCode = createAsyncThunk('getProjectByCode', async (code) => {
     try{
-        const response = await axios.get(`http://localhost:8080/todos/get/${code}`,headers)
+        const response = await axios.get(`http://localhost:8080/project/get/${code}`,headers)
         return response.data;
        
     }catch(err){
@@ -29,9 +29,9 @@ export const getTodosByCode = createAsyncThunk('getTodosByCode', async (code) =>
 })
 
 
-export const getTodos = createAsyncThunk('getTodos', async () => {
+export const getProject = createAsyncThunk('getProject', async () => {
     try{
-        const response = await axios.get(`http://localhost:8080/todos/all/${user.user}`,headers)
+        const response = await axios.get(`http://localhost:8080/project/all/${user.user}`,headers)
         return response.data;
        
     }catch(err){
@@ -39,84 +39,86 @@ export const getTodos = createAsyncThunk('getTodos', async () => {
     }
 })
 
-export const createTodos = createAsyncThunk('createTodos', async (payload) => {
+export const createProject = createAsyncThunk('createProject', async (payload) => {
     try{
-        const response = await axios.post(`http://localhost:8080/todos/create`, payload, headers)
+        const response = await axios.post(`http://localhost:8080/project/create`, payload, headers)
+        
+        return response.data;
+    }catch(err){
+        console.log("dfsfsfsdfsdf",err);
+        return err;
+    }
+})
+
+export const updateProject = createAsyncThunk('updateProject', async (payload) => {
+    try{
+        const response = await axios.post(`http://localhost:8080/project/update`, payload, headers)
         return response.data;
     }catch(err){
         return err.response.data;
     }
 })
 
-export const updateTodos = createAsyncThunk('updateTodos', async (payload) => {
-    try{
-        const response = await axios.post(`http://localhost:8080/todos/update`, payload, headers)
-        return response.data;
-    }catch(err){
-        return err.response.data;
-    }
-})
-
-export const deleteTodos = createAsyncThunk('deleteTodos', async (payload) => {
+export const deleteProject = createAsyncThunk('deleteProject', async (payload) => {
     console.log(payload);
     try{
-        const response = await axios.post(`http://localhost:8080/todos/delete`, payload, headers)
+        const response = await axios.post(`http://localhost:8080/project/delete`, payload, headers)
         return response.data;
     }catch(err){
         console.log(err);
     }
 })
 
-export const todosSlice = createSlice({
-    name:'todos',
+export const projectSlice = createSlice({
+    name:'project',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        //GET TODOS
-        builder.addCase(getTodos.pending,(state,action)=>{
+        //GET PROJECT
+        builder.addCase(getProject.pending,(state,action)=>{
             state.loading = true;
             state.error = null;
             state.success = false
         });
-        builder.addCase(getTodos.fulfilled,(state,action)=>{
+        builder.addCase(getProject.fulfilled,(state,action)=>{
             state.loading = false;
             state.error = null;
             if(action.payload){
-                state.todos = action.payload
+                state.projects = action.payload
                 state.success = true;
             }
         });
-        builder.addCase(getTodos.rejected,(state,action) => {
+        builder.addCase(getProject.rejected,(state,action) => {
             state.loading = false;
             state.error = "3";
             state.success = false
         });
         // GET STATUS BY CODE
-        builder.addCase(getTodosByCode.pending,(state,action)=>{
+        builder.addCase(getProjectByCode.pending,(state,action)=>{
             state.loading = true;
             state.error = null;
             state.success = false
         });
-        builder.addCase(getTodosByCode.fulfilled,(state,action)=>{
+        builder.addCase(getProjectByCode.fulfilled,(state,action)=>{
             state.loading = false;
             state.error = null;
             state.success = false;
             if(action.payload){
-                state.todosSingle = action.payload
+                state.project = action.payload
             }
         });
-        builder.addCase(getTodosByCode.rejected,(state,action) => {
+        builder.addCase(getProjectByCode.rejected,(state,action) => {
             state.loading = false;
             state.error = "3";
             state.success = false
         });
-        //CREATE TODOS
-        builder.addCase(createTodos.pending,(state,action)=>{
+        //CREATE PROJECT
+        builder.addCase(createProject.pending,(state,action)=>{
             state.loading = true;
             state.error = null;
             state.success = false
         });
-        builder.addCase(createTodos.fulfilled,(state,action)=>{
+        builder.addCase(createProject.fulfilled,(state,action)=>{
             state.loading = false;
             state.error = null;
             if(action.payload){
@@ -127,17 +129,17 @@ export const todosSlice = createSlice({
                 state.success = false;
             }
         });
-        builder.addCase(createTodos.rejected,(state,action) => {
+        builder.addCase(createProject.rejected,(state,action) => {
             state.loading = false;
             state.error = "3";
             state.success = false
         });
-        //UPDATE TODOS 
-        builder.addCase(updateTodos.pending,(state,action)=>{
+        //UPDATE PROJECT 
+        builder.addCase(updateProject.pending,(state,action)=>{
             state.loading = true;
             state.error = null;
         });
-        builder.addCase(updateTodos.fulfilled,(state,action)=>{
+        builder.addCase(updateProject.fulfilled,(state,action)=>{
             state.loading = false;
             state.error = null;
             if(action.payload){
@@ -148,24 +150,24 @@ export const todosSlice = createSlice({
                 state.success = false;
             }
         });
-        builder.addCase(updateTodos.rejected,(state,action) => {
+        builder.addCase(updateProject.rejected,(state,action) => {
             state.loading = false;
             state.error = "3";
         });
-        //DELETE TODOS
-        builder.addCase(deleteTodos.pending,(state,action)=>{
+        //DELETE PROJECT
+        builder.addCase(deleteProject.pending,(state,action)=>{
             state.loading = true;
             state.error = null;
             state.success = false
         });
-        builder.addCase(deleteTodos.fulfilled,(state,action)=>{
+        builder.addCase(deleteProject.fulfilled,(state,action)=>{
             state.loading = false;
             state.error = null;
             if(action.payload){
                 state.success = true;
             }
         });
-        builder.addCase(deleteTodos.rejected,(state,action) => {
+        builder.addCase(deleteProject.rejected,(state,action) => {
             state.loading = false;
             state.error = "3";
             state.success = false
@@ -174,4 +176,4 @@ export const todosSlice = createSlice({
 })
 
 
-export default todosSlice.reducer;
+export default projectSlice.reducer;

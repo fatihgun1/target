@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import { currentUser } from '../../redux/slice/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { createTodos } from '../../redux/slice/todosSlice';
-export default function CreateTodosComponent({ setModal }) {
+import { createProject } from '../../redux/slice/projectSlice';
+export default function CreateProjectComponent({ setModal }) {
 
   const dispatch = useDispatch();
   const cUser = useSelector(state => state.user);
-  const todoState = useSelector(state => state.todos);
+  const projectState = useSelector(state => state.project);
 
-  const [todos, setTodos] = useState({
+  const [project, setProject] = useState({
     owner: null,
     name: null
   });
@@ -16,12 +16,12 @@ export default function CreateTodosComponent({ setModal }) {
   const onFormChange = e => {
     dispatch(currentUser());
     const { name, value } = e.target;
-    setTodos(prev => ({ ...prev, [name]: value }))
-    setTodos(prev => ({ ...prev, owner: cUser.user }))
+    setProject(prev => ({ ...prev, [name]: value }))
+    setProject(prev => ({ ...prev, owner: cUser.user }))
   }
 
   const saveTodo = async e => {
-    await dispatch(createTodos(todos)).unwrap().then((response) => {
+    await dispatch(createProject(project)).unwrap().then((response) => {
       console.log("resposne",response);
       if(response.status !== "BAD_REQUEST"){
         setModal(prev => !prev);
@@ -48,10 +48,10 @@ export default function CreateTodosComponent({ setModal }) {
         </div>
       </div>
       <div>
-        {todoState.loading && <>Saving...</>}
-        {todoState.error && 
+        {projectState.loading && <>Saving...</>}
+        {projectState.error && 
           <div className="alert alert-danger mt-4" >
-            {todoState.error}
+            {projectState.error}
         </div>
         }
       </div>

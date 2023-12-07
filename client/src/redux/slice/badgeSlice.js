@@ -57,7 +57,7 @@ export const badgeSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        //GET TODOS
+        //GET BADGE
         builder.addCase(getBadgesByUser.pending,(state,action)=>{
             state.loading = true;
             state.error = null;
@@ -76,7 +76,7 @@ export const badgeSlice = createSlice({
             state.error = "3";
             state.success = false
         });
-        //CREATE TODOS
+        //CREATE BADGE
         builder.addCase(createBadge.pending,(state,action)=>{
             state.loading = true;
             state.error = null;
@@ -98,7 +98,7 @@ export const badgeSlice = createSlice({
             state.error = "3";
             state.success = false
         });
-        //UPDATE TODOS 
+        //UPDATE BADGE 
         builder.addCase(updateBadge.pending,(state,action)=>{
             state.loading = true;
             state.error = null;
@@ -118,7 +118,7 @@ export const badgeSlice = createSlice({
             state.loading = false;
             state.error = "3";
         });
-        //DELETE TODOS
+        //DELETE badege
         builder.addCase(deleteBadge.pending,(state,action)=>{
             state.loading = true;
             state.error = null;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { deleteTodo, updateTodo } from '../../redux/slice/todoSlice';
 export default function TodoComponent({ orginalTodo, statusList, setAction }) {
   const [edited, setEdited] = useState();

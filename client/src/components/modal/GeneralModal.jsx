@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactModal from 'react-modal';
-
 export default function GeneralModal({ children , modal, setModal,width}) {
     const customStyles = {
         content: {

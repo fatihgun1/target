@@ -36,40 +36,13 @@ export const getAchievemnetByUser = createAsyncThunk('getAchievemnetByCode', asy
     }
 })
 
-export const createTodos = createAsyncThunk('createTodos', async (payload) => {
-    try{
-        const response = await axios.post(`http://localhost:8080/todos/create`, payload, headers)
-        return response.data;
-    }catch(err){
-        console.log(err);
-    }
-})
-
-export const updateTodos = createAsyncThunk('updateTodos', async (payload) => {
-    try{
-        const response = await axios.post(`http://localhost:8080/todos/update`, payload, headers)
-        return response.data;
-    }catch(err){
-        console.log(err);
-    }
-})
-
-export const deleteTodos = createAsyncThunk('deleteTodos', async (payload) => {
-    console.log(payload);
-    try{
-        const response = await axios.post(`http://localhost:8080/todos/delete`, payload, headers)
-        return response.data;
-    }catch(err){
-        console.log(err);
-    }
-})
 
 export const achievementSlice = createSlice({
     name:'achievement',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        //GET TODOS
+        //GET BADGE
         builder.addCase(getAchievemnetByUser.pending,(state,action)=>{
             state.loading = true;
             state.error = null;
@@ -103,58 +76,6 @@ export const achievementSlice = createSlice({
             }
         });
         builder.addCase(calculateScore.rejected,(state,action) => {
-            state.loading = false;
-            state.error = "3";
-            state.success = false
-        });
-        //CREATE TODOS
-        builder.addCase(createTodos.pending,(state,action)=>{
-            state.loading = true;
-            state.error = null;
-            state.success = false
-        });
-        builder.addCase(createTodos.fulfilled,(state,action)=>{
-            state.loading = false;
-            state.error = null;
-            if(action.payload){
-                state.success = true;
-            }
-        });
-        builder.addCase(createTodos.rejected,(state,action) => {
-            state.loading = false;
-            state.error = "3";
-            state.success = false
-        });
-        //UPDATE TODOS 
-        builder.addCase(updateTodos.pending,(state,action)=>{
-            state.loading = true;
-            state.error = null;
-        });
-        builder.addCase(updateTodos.fulfilled,(state,action)=>{
-            state.loading = false;
-            state.error = null;
-            if(action.payload){
-                state.success = true;
-            }
-        });
-        builder.addCase(updateTodos.rejected,(state,action) => {
-            state.loading = false;
-            state.error = "3";
-        });
-        //DELETE TODOS
-        builder.addCase(deleteTodos.pending,(state,action)=>{
-            state.loading = true;
-            state.error = null;
-            state.success = false
-        });
-        builder.addCase(deleteTodos.fulfilled,(state,action)=>{
-            state.loading = false;
-            state.error = null;
-            if(action.payload){
-                state.success = true;
-            }
-        });
-        builder.addCase(deleteTodos.rejected,(state,action) => {
             state.loading = false;
             state.error = "3";
             state.success = false
