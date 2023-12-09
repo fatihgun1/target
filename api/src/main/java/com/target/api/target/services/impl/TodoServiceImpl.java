@@ -22,7 +22,7 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public List<TodoModel> getTodoList(String code) {
-        return projectRepository.findByCode(code).getTodos();
+        return null;
     }
 
     @Override

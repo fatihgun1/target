@@ -47,11 +47,13 @@ public class ProjectFacadesImpl implements ProjectFacades {
     public ProjectDto getTodosByCode(String code) {
         ProjectModel todosModel = projectService.getTodosByCode(code);
         ProjectDto todoList = projectMapper.toTodosDto(todosModel);
-        todoList.setStatus(statusMapper.toMapStatusList(todosModel.getStatus()));
+        //todoList.setStatus(statusMapper.toMapStatusList(todosModel.getStatus()));
         List<TodoDto> todoDtos = new ArrayList<>();
+        /*
         for (TodoModel todo : todosModel.getTodos()){
             todoDtos.add(todoMapper.toTodoDto(todo));
         }
+         */
         todoList.setTodos(todoDtos);
         return todoList;
     }

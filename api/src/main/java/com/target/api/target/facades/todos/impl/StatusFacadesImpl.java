@@ -4,8 +4,10 @@ import com.target.api.target.dto.StatusDto;
 import com.target.api.target.facades.request.StatusRequestDto;
 import com.target.api.target.facades.todos.StatusFacades;
 import com.target.api.target.mapper.StatusMapper;
+import com.target.api.target.model.ContainerModel;
 import com.target.api.target.model.StatusModel;
 import com.target.api.target.model.ProjectModel;
+import com.target.api.target.services.ContainerService;
 import com.target.api.target.services.StatusService;
 import com.target.api.target.services.ProjectService;
 import jakarta.annotation.Resource;
@@ -20,8 +22,8 @@ public class StatusFacadesImpl implements StatusFacades {
     private StatusService statusService;
     @Resource(name = "statusMapper")
     private StatusMapper statusMapper;
-    @Resource(name = "projectService")
-    private ProjectService projectService;
+    @Resource(name = "containerService")
+    private ContainerService containerService;
 
     @Override
     public StatusDto getStatusByCode(String code) {
@@ -30,15 +32,15 @@ public class StatusFacadesImpl implements StatusFacades {
 
     @Override
     public Boolean createStatus(StatusRequestDto statusRequestDto) {
-        ProjectModel project = projectService.getTodosByCode(statusRequestDto.getProject());
-        if (Objects.isNull(project)){
+        ContainerModel container = containerService.getContainer(statusRequestDto.getContainer());
+        if (Objects.isNull(container)){
             return false;
         }
         StatusModel status = new StatusModel();
         status.setName(statusRequestDto.getName());
         status.setCode(UUID.randomUUID().toString());
         status.setScore(statusRequestDto.getScore());
-        status.setProject(project);
+        status.setContainer(container);
         statusService.createStatus(status);
         return true;
     }

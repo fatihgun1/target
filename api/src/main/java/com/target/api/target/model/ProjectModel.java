@@ -19,7 +19,8 @@ public class ProjectModel {
     @OneToMany(mappedBy = "project",cascade = CascadeType.DETACH)
     private List<TodoModel> todos;
 
-    @OneToMany(mappedBy = "project",cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<StatusModel> status;
+    @ManyToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name = "container_pk")
+    private ContainerModel container;
 
 }

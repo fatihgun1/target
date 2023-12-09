@@ -15,8 +15,8 @@ public class StatusModel {
     private Long score;
 
     @ManyToOne
-    @JoinColumn(name = "project_pk")
-    private ProjectModel project;
+    @JoinColumn(name = "container_pk")
+    private ContainerModel container;
 
 
 }
