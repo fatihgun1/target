@@ -19,9 +19,4 @@ public class AchievementController {
         return achievementFacades.getAchievementByOwner(owner);
     }
 
-    @PostMapping("/calculate")
-    private AchievementDto calculate(@RequestBody AchievementRequestDto achievementRequestDto){
-        return achievementFacades.calculate(achievementRequestDto);
-    }
-
 }

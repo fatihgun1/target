@@ -44,9 +44,9 @@ public class AchievementFacadesImpl implements AchievementFacades {
     }
 
     @Override
-    public AchievementDto calculate(AchievementRequestDto request) {
-        List<Object[]> response = achievementService.findTodoPoints(request.getCode());
-        AchievementModel achievement = achievementService.getAchievementByTodosCode(request.getCode());
+    public AchievementDto calculate(String code) {
+        List<Object[]> response = achievementService.findTodoPoints(code);
+        AchievementModel achievement = achievementService.getAchievementByTodosCode(code);
         if(response.isEmpty()){
             return achievementMapper.toAchievementDto(achievement);
         }

@@ -4,7 +4,7 @@ import ReactModal from 'react-modal'
 import SimpleBadgeComponent from './SimpleBadgeComponent';
 
 import { useDispatch } from 'react-redux';
-import { calculateScore } from '../../redux/slice/achievementSlice';
+
 export default function AchievementComponent({ achievement, key }) {
     const [modal, setModal] = useState(false);
     const [achieve, setAchieve] = useState(achievement)
@@ -13,15 +13,6 @@ export default function AchievementComponent({ achievement, key }) {
 
     }, [achieve]);
 
-    const calculate = async () => {
-        await dispatch(calculateScore({ code: achievement.code })).unwrap()
-            .then((response) => {
-                setAchieve(prev => ({ ...prev, response }))
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-    }
 
     const customStyles = {
         content: {
@@ -82,9 +73,6 @@ export default function AchievementComponent({ achievement, key }) {
                     <div className="row">
                         <div className="col ">
                             <button className='btn btn-sm btn-primary w-100 m-0 p-0' onClick={() => setModal(prev => !prev)}>Reward</button>
-                        </div>
-                        <div className="col">
-                            <button className='btn btn-sm btn-primary w-100 m-0 p-0' onClick={calculate}>Calculate</button>
                         </div>
                     </div>
                 </div>

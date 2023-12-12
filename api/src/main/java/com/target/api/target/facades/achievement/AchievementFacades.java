@@ -8,5 +8,5 @@ import java.util.List;
 public interface AchievementFacades {
 
     List<AchievementDto> getAchievementByOwner(String owner);
-    AchievementDto calculate(AchievementRequestDto request);
+    AchievementDto calculate(String code);
 }
