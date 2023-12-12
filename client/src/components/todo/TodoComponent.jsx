@@ -1,86 +1,71 @@
-import React, { useEffect, useState } from 'react'
+import React, {  useState } from 'react'
+import GeneralModal from '../modal/GeneralModal';
 import { useDispatch } from 'react-redux';
-import { deleteTodo, updateTodo } from '../../redux/slice/todoSlice';
-export default function TodoComponent({ orginalTodo, statusList, setAction }) {
-  const [edited, setEdited] = useState();
-  const [todo, setTodo] = useState(orginalTodo);
+import { deleteTodo, updateTodo as fetchTodo} from '../../redux/slice/todoSlice';
+import {  deleteTodoInProject, updateTodoInProject } from '../../redux/slice/projectSlice';
+export default function TodoComponent({ todo, status, key }) {
+  const [modal, setModal] = useState(false);
   const dispatch = useDispatch();
-  const [error,setError] = useState();
+  const [updateTodo, setUpdateTodo] = useState(() => todo);
 
-  useEffect(() => {
-    setTodo(orginalTodo)
-  }, [])
+  const onUpdateTodoButtonClick = () => {
+    dispatch(fetchTodo(updateTodo)).unwrap().then((response)=> {
+      
+      if(response){
+        dispatch(updateTodoInProject(response))
+        setModal(prev => !prev)
+      }
+    });
+  }
 
-  const deleteSelectedTodo = async () => {
-    await dispatch(deleteTodo({ code: todo.code })).unwrap()
-      .then((response) => {
-        setAction(prev => !prev)
-      }).catch((error) => {
-        console.log(error)
+  const onDeleteTodoButtonClick = () => {
+      dispatch(deleteTodo({code:todo.code})).unwrap().then((response) => {
+          dispatch(deleteTodoInProject({code:todo.code}));
+          setModal(prev => !prev)
       })
   }
 
-  const updateSelectedTodo = async () => {
-    await dispatch(updateTodo(todo)).unwrap()
-      .then((response) => {
-        if (response.status !== "BAD_REQUEST") {
-          setAction(prev => !prev)
-          setEdited(prev => !prev)
-          setError(null)
-        }else{
-          setError(response.message)
-        }
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+  const onFormCange = (e) => {
+    const { name, value } = e.target;
+    setUpdateTodo(prev => ({ ...prev, [name]: value }))
   }
-
   const onStatusChange = e => {
-    setTodo(prev => ({ ...prev, status: statusList.find(({ code }) => code === e.target.value) }))
-  }
-
-  const onDescriptionChange = e => {
-    setTodo(prev => ({ ...prev, description: e.target.value }))
+    setUpdateTodo(prev => ({ ...prev, status: { code: e.target.value } }))
   }
 
   return (
-    <div className='card mb-2' key={todo.code}>
-      <div className="card-body">
-        <div className="row">
+    <div key={key}>
+      <GeneralModal modal={modal} setModal={setModal}>
+        <input className="form-control form-control-sm mb-2" type="text" name='description' placeholder="Score" onChange={onFormCange} defaultValue={todo.description} />
+        <select className='form-select  mb-2' defaultValue={todo.status && todo.status.code} onChange={onStatusChange}>
+          {status && status.map((statu, index) => (
+            <option key={index} value={statu.code}>{statu.name}</option>
+          ))}
+        </select>
+        <button className='btn btn-sm btn-outline-danger mb-1' onClick={onDeleteTodoButtonClick} style={{width:'100%'}}>Delete</button>
+        <div className='row'>
           <div className="col">
-            {edited ?
-              <div className='input-group'>
-                <input className='form-control' type='text' defaultValue={todo.description} onChange={onDescriptionChange} />
-                <select className='form-select' onChange={onStatusChange} defaultValue={todo.status.code}>
-                  {statusList && statusList.map((type, index) => (<option key={index} value={type.code}>{type.name}</option>))}
-                </select>
-              </div>
-              : <>{todo.description} - {todo.status.name} </>}
-
+            <button className='btn btn-success' onClick={onUpdateTodoButtonClick} style={{ width: "100%" }}>Update</button>
           </div>
-          <div className="col-2">
-
-            {edited ?
-              <div className="input-group">
-                <button className='btn btn-sm btn-success' onClick={() => setEdited(prev => !prev)}>Cancel</button>
-                <button className='btn btn-sm btn-primary' onClick={updateSelectedTodo}>Save</button>
-              </div>
-
-              :
-              <div className="input-group">
-                <button className="btn btn-sm btn-success" onClick={() => setEdited(prev => !prev)}>Edit</button>
-                <button className="btn btn-danger" onClick={deleteSelectedTodo}>Delete</button>
-              </div>
-            }
+          <div className="col">
+            <button className='btn btn-primary' onClick={() => setModal(prev => !prev)} style={{ width: "100%" }}>Cancel</button>
           </div>
         </div>
-        {error&&
-          <div className="alert alert-danger mt-4" >
-            {error}
+      </GeneralModal>
+      <div className="card mb-2">
+        <div className="card-body">
+          <div className='row ' onClick={() => setModal(prev => !prev)}>
+            <div className="col">
+              Decription : {todo.description}
+            </div>
+            <div className="col">
+              Status : {todo.status && todo.status.name}
+            </div>
           </div>
-        }
+        </div>
       </div>
+
     </div>
+
   )
 }

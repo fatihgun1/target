@@ -1,10 +1,10 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
     projects : [{name: null,code: null}],
     project: {name: null,code: null,owner: null,
-        status: [{ code: null, name: null, score: null }],
+        container : {status: [{ code: null, name: null, score: null }]},
         todos: [{ description: null,status: { code: null, name: null, score: null },code: null}]
 },
     loading:false,
@@ -45,8 +45,7 @@ export const createProject = createAsyncThunk('createProject', async (payload) =
         
         return response.data;
     }catch(err){
-        console.log("dfsfsfsdfsdf",err);
-        return err;
+        return err.response.data;
     }
 })
 
@@ -65,14 +64,27 @@ export const deleteProject = createAsyncThunk('deleteProject', async (payload) =
         const response = await axios.post(`http://localhost:8080/project/delete`, payload, headers)
         return response.data;
     }catch(err){
-        console.log(err);
+        return err.response.data;
     }
 })
 
 export const projectSlice = createSlice({
     name:'project',
     initialState,
-    reducers: {},
+    reducers: {
+        setTodoToProject: (state, action) => {
+            state.project.todos.push(action.payload);
+        },
+        updateTodoInProject: (state, action) => {
+            let index = current(state.project.todos).findIndex(item => item.code===action.payload.code);
+            state.project.todos[index] = action.payload;
+        },
+        deleteTodoInProject: (state, action) => {
+            let todoIndex = current(state.project.todos).find(item => item.code===action.payload.code);
+            console.log("todoIndex",todoIndex,"paylaod",action.payload );
+            state.project.todos.splice(todoIndex, 1)
+        },
+    },
     extraReducers: (builder) => {
         //GET PROJECT
         builder.addCase(getProject.pending,(state,action)=>{
@@ -84,6 +96,7 @@ export const projectSlice = createSlice({
             state.loading = false;
             state.error = null;
             if(action.payload){
+          
                 state.projects = action.payload
                 state.success = true;
             }
@@ -103,7 +116,7 @@ export const projectSlice = createSlice({
             state.loading = false;
             state.error = null;
             state.success = false;
-            if(action.payload){
+            if (action.payload.status !== "BAD_REQUEST") {
                 state.project = action.payload
             }
         });
@@ -175,5 +188,5 @@ export const projectSlice = createSlice({
     }
 })
 
-
+export const {setTodoToProject,updateTodoInProject,deleteTodoInProject} = projectSlice.actions;
 export default projectSlice.reducer;

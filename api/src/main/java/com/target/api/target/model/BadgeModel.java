@@ -17,5 +17,7 @@ public class BadgeModel {
     private Long score;
     @Column(length = 1000)
     private String mediaUrl;
-
+    @ManyToOne
+    @JoinColumn(name = "container_pk")
+    private ContainerModel container;
 }

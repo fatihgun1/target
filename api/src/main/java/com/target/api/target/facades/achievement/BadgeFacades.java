@@ -8,7 +8,7 @@ import java.util.List;
 public interface BadgeFacades {
     List<BadgeDto> getBadgeByOwner(String owner);
     BadgeDto getBadgeByCode(String code);
-    void crateBadge(BadgeRequestDto badge);
-    Boolean updateBadge(BadgeRequestDto badge);
+    BadgeDto crateBadge(BadgeRequestDto badge);
+    BadgeDto updateBadge(BadgeRequestDto badge);
     Boolean deleteBadge(BadgeRequestDto badge);
 }

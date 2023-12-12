@@ -4,7 +4,7 @@ import com.target.api.target.model.StatusModel;
 
 public interface StatusService {
     StatusModel getStatusByCode(String code);
-    void createStatus(StatusModel statusModel);
-    void updateStatus(StatusModel statusModel);
+    StatusModel createStatus(StatusModel statusModel);
+    StatusModel updateStatus(StatusModel statusModel);
     void deleteStatus(StatusModel statusModel);
 }

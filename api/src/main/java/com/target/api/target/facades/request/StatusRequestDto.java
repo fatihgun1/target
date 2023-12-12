@@ -9,7 +9,7 @@ import lombok.Data;
 public class StatusRequestDto {
     @NotEmpty(message = "Status name cannot be empty")
     private String name;
-    private String project;
+    private String container;
     private String code;
     @Digits(integer = 3,fraction = 2,message = "Score should be number")
     @NotNull(message = "Score cannot be empty")

@@ -27,20 +27,17 @@ public class BadgeController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> createBadge(@Valid @RequestBody BadgeRequestDto statusRequestDto){
-        badgeFacades.crateBadge(statusRequestDto);
-        return ResponseEntity.ok("Created");
+    public BadgeDto createBadge(@Valid @RequestBody BadgeRequestDto statusRequestDto){
+        return badgeFacades.crateBadge(statusRequestDto);
     }
 
     @PostMapping("/update")
-    public ResponseEntity<String> updateBadge(@Valid @RequestBody BadgeRequestDto statusRequestDto){
-        Boolean succeed = badgeFacades.updateBadge(statusRequestDto);
-        return succeed ? ResponseEntity.ok("Updated") : ResponseEntity.ok("Could not update");
+    public BadgeDto updateBadge(@Valid @RequestBody BadgeRequestDto statusRequestDto){
+        return badgeFacades.updateBadge(statusRequestDto);
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<String> deleteBadge(@RequestBody BadgeRequestDto statusRequestDto){
-        Boolean succeed = badgeFacades.deleteBadge(statusRequestDto);
-        return succeed ? ResponseEntity.ok("Updated") : ResponseEntity.ok("Could not update");
+    public Boolean deleteBadge(@RequestBody BadgeRequestDto statusRequestDto){
+        return badgeFacades.deleteBadge(statusRequestDto);
     }
 }

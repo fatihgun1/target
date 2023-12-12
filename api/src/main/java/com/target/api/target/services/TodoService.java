@@ -8,8 +8,8 @@ import java.util.List;
 public interface TodoService {
     TodoModel getTodoByCode(String code);
     List<TodoModel> getTodoList(String name);
-    void createTodo(TodoModel todoModel);
-    void updateTodo(TodoModel todoModel);
+    TodoModel createTodo(TodoModel todoModel);
+    TodoModel updateTodo(TodoModel todoModel);
     void deleteTodo(TodoModel todoModel);
     List<Long> findTodoPoints(String code);
 }

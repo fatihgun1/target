@@ -5,7 +5,7 @@ import com.target.api.target.facades.request.StatusRequestDto;
 
 public interface StatusFacades {
     StatusDto getStatusByCode(String code);
-    Boolean createStatus(StatusRequestDto statusRequestDto);
-    Boolean updateStatus(StatusRequestDto statusRequestDto);
+    StatusDto createStatus(StatusRequestDto statusRequestDto);
+    StatusDto updateStatus(StatusRequestDto statusRequestDto);
     Boolean deleteStatus(StatusRequestDto statusRequestDto);
 }

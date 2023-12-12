@@ -18,3 +18,15 @@
   width: 128px;
   object-fit: fill;
 }
+
+.state-badge-container{
+  display:flex;
+  flex-direction: column ;
+  justify-content:space-between;
+  border: 1px solid;
+}
+
+.onHover:hover{
+  background-color: grey;
+  cursor: pointer;
+}

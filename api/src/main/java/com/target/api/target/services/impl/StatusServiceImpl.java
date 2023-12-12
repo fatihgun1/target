@@ -16,13 +16,13 @@ public class StatusServiceImpl implements StatusService {
     }
 
     @Override
-    public void createStatus(StatusModel statusModel) {
-        statusRepository.save(statusModel);
+    public StatusModel createStatus(StatusModel statusModel) {
+        return statusRepository.save(statusModel);
     }
 
     @Override
-    public void updateStatus(StatusModel statusModel) {
-        statusRepository.save(statusModel);
+    public StatusModel updateStatus(StatusModel statusModel) {
+       return statusRepository.save(statusModel);
     }
 
     @Override

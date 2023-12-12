@@ -7,7 +7,7 @@ import java.util.List;
 public interface BadgeService {
     List<BadgeModel> getBadgeByOwner(String owner);
     BadgeModel getBadgeByCode(String code);
-    void crateBadge(BadgeModel badge);
-    void updateBadge(BadgeModel badge);
+    BadgeModel crateBadge(BadgeModel badge);
+    BadgeModel updateBadge(BadgeModel badge);
     void deleteBadge(BadgeModel badge);
 }

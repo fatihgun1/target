@@ -18,9 +18,8 @@ public class TodoController {
     private TodoFacades todoFacade;
 
     @PostMapping("/create")
-    public ResponseEntity<String> createTodos(@Valid @RequestBody TodoRequestDto todoRequestDto){
-        todoFacade.createTodo(todoRequestDto);
-        return ResponseEntity.ok("Created");
+    public TodoDto createTodo(@Valid @RequestBody TodoRequestDto todoRequestDto){
+        return todoFacade.createTodo(todoRequestDto);
     }
 
     @GetMapping("/all/{code}")
@@ -29,9 +28,8 @@ public class TodoController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<String> updateTodos(@Valid @RequestBody TodoRequestDto todoRequestDto){
-        Boolean succeed = todoFacade.updateTodo(todoRequestDto);
-        return succeed ? ResponseEntity.ok("Updated"): ResponseEntity.badRequest().body("Could not update");
+    public TodoDto updateTodo(@Valid @RequestBody TodoRequestDto todoRequestDto){
+        return todoFacade.updateTodo(todoRequestDto);
     }
     @PostMapping("/delete")
     public ResponseEntity<String> deleteTodos(@RequestBody TodoRequestDto todoRequestDto){

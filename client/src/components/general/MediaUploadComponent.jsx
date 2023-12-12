@@ -32,7 +32,7 @@ export default function MediaUploadComponent({setState,type}) {
     return (
         <div>
             <form onSubmit={onFileUpdoadButtonClick}>
-                <div class="input-group">
+                <div className="input-group">
                     <input className="form-control form-control-sm" type="file" onChange={onFileUpdate} accept='.jpg,.jpeg,.png,.gif' />
                     <button className='btn btn-sm btn-secondary' disabled={response.loading} type='submit'>Upload</button>
                 </div>

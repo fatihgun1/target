@@ -6,6 +6,7 @@ import com.target.api.target.facades.request.BadgeRequestDto;
 import com.target.api.target.mapper.BadgeMapper;
 import com.target.api.target.model.BadgeModel;
 import com.target.api.target.services.BadgeService;
+import com.target.api.target.services.ContainerService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,8 @@ public class BadgeFacadesImpl implements BadgeFacades {
     private BadgeService badgeService;
     @Resource(name = "badgeMapper")
     private BadgeMapper badgeMapper;
+    @Resource(name = "containerService")
+    private ContainerService containerService;
 
     @Override
     public List<BadgeDto> getBadgeByOwner(String owner) {
@@ -31,7 +34,7 @@ public class BadgeFacadesImpl implements BadgeFacades {
     }
 
     @Override
-    public void crateBadge(BadgeRequestDto source) {
+    public BadgeDto crateBadge(BadgeRequestDto source) {
         BadgeModel target = new BadgeModel();
         target.setCode(UUID.randomUUID().toString());
         target.setName(source.getName());
@@ -39,21 +42,21 @@ public class BadgeFacadesImpl implements BadgeFacades {
         target.setScore(Long.valueOf(source.getScore()));
         target.setOwner(source.getOwner());
         target.setMediaUrl(source.getMediaUrl());
-        badgeService.crateBadge(target);
+        target.setContainer(containerService.getContainer(source.getContainer()));
+        return badgeMapper.toBadgeDto(badgeService.crateBadge(target));
     }
 
     @Override
-    public Boolean updateBadge(BadgeRequestDto source) {
+    public BadgeDto updateBadge(BadgeRequestDto source) {
         BadgeModel target = badgeService.getBadgeByCode(source.getCode());
         if (Objects.isNull(target)){
-            return false;
+            return null;
         }
         target.setName(source.getName());
         target.setDescription(source.getDescription());
         target.setScore(Long.valueOf(source.getScore()));
         target.setMediaUrl(source.getMediaUrl());
-        badgeService.updateBadge(target);
-        return true;
+        return badgeMapper.toBadgeDto(badgeService.updateBadge(target));
     }
 
     @Override

@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
-    badges :[{name: null,description: null,owner: null,score: null,mediaUrl: null}],
+    badges : {name: null,description: null,owner: null,score: null,mediaUrl: null},
     loading:false,
     success:false,
     error:null
@@ -14,15 +14,6 @@ const headers =  {
          'Authorization': `Bearer ${user ? user.token :null}`
 } };
 
-export const getBadgesByUser = createAsyncThunk('getBadgesByUser', async () => {
-    try{
-        const response = await axios.get(`http://localhost:8080/badge/all/${user.user}`,headers)
-        return response.data;
-       
-    }catch(err){
-        console.log(err);
-    }
-})
 
 export const createBadge = createAsyncThunk('createBadge', async (payload) => {
     try{
@@ -43,7 +34,7 @@ export const updateBadge = createAsyncThunk('updateBadge', async (payload) => {
 })
 
 export const deleteBadge = createAsyncThunk('deleteBadge', async (payload) => {
-    console.log(payload);
+   
     try{
         const response = await axios.post(`http://localhost:8080/badge/delete`, payload, headers)
         return response.data;
@@ -57,25 +48,6 @@ export const badgeSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        //GET BADGE
-        builder.addCase(getBadgesByUser.pending,(state,action)=>{
-            state.loading = true;
-            state.error = null;
-            state.success = false
-        });
-        builder.addCase(getBadgesByUser.fulfilled,(state,action)=>{
-            state.loading = false;
-            state.error = null;
-            if(action.payload){
-                state.badges = action.payload
-                state.success = true;
-            }
-        });
-        builder.addCase(getBadgesByUser.rejected,(state,action) => {
-            state.loading = false;
-            state.error = "3";
-            state.success = false
-        });
         //CREATE BADGE
         builder.addCase(createBadge.pending,(state,action)=>{
             state.loading = true;
@@ -85,12 +57,11 @@ export const badgeSlice = createSlice({
         builder.addCase(createBadge.fulfilled,(state,action)=>{
             state.loading = false;
             state.error = null;
-            if(action.payload){
-                state.success = true;
-            }
             if(action.payload.status === "BAD_REQUEST"){
                 state.error = action.payload.message;
                 state.success = false;
+            }else{
+                state.success = true;
             }
         });
         builder.addCase(createBadge.rejected,(state,action) => {
@@ -106,12 +77,11 @@ export const badgeSlice = createSlice({
         builder.addCase(updateBadge.fulfilled,(state,action)=>{
             state.loading = false;
             state.error = null;
-            if(action.payload){
-                state.success = true;
-            }
             if(action.payload.status === "BAD_REQUEST"){
                 state.error = action.payload.message;
                 state.success = false;
+            }else{
+                state.success = true;
             }
         });
         builder.addCase(updateBadge.rejected,(state,action) => {
@@ -129,6 +99,7 @@ export const badgeSlice = createSlice({
             state.error = null;
             if(action.payload){
                 state.success = true;
+
             }
         });
         builder.addCase(deleteBadge.rejected,(state,action) => {

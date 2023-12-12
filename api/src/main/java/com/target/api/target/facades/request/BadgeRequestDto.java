@@ -17,4 +17,5 @@ public class BadgeRequestDto {
     private String score;
     @NotEmpty(message = "Badge media cannot be empty")
     private String mediaUrl;
+    private String container;
 }

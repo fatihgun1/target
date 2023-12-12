@@ -1,13 +1,9 @@
 package com.target.api.target.facades.project.impl;
 
-import com.target.api.target.dto.TodoDto;
 import com.target.api.target.dto.ProjectDto;
-import com.target.api.target.facades.request.TodosRequestDto;
+import com.target.api.target.facades.request.ProjectRequestDto;
 import com.target.api.target.facades.project.ProjectFacades;
-import com.target.api.target.mapper.StatusMapper;
-import com.target.api.target.mapper.TodoMapper;
 import com.target.api.target.mapper.ProjectMapper;
-import com.target.api.target.model.TodoModel;
 import com.target.api.target.model.ProjectModel;
 import com.target.api.target.services.ProjectService;
 import com.target.api.target.strategy.AchievementStrategy;
@@ -23,41 +19,22 @@ public class ProjectFacadesImpl implements ProjectFacades {
     private ProjectService projectService;
     @Resource(name = "projectMapper")
     private ProjectMapper projectMapper;
-    @Resource(name = "statusMapper")
-    private StatusMapper statusMapper;
-    @Resource(name = "todoMapper")
-    private TodoMapper todoMapper;
+
     @Resource(name = "achievementStrategy")
     private AchievementStrategy achievementStrategy;
 
     @Override
-    public List<ProjectDto> getTodosByOwner(String owner) {
-        List<ProjectModel> todos = projectService.getTodosByOwner(owner);
-        List<ProjectDto> todosDto = new ArrayList<>();
-
-        for (ProjectModel todo : todos){
-            ProjectDto dto = projectMapper.toTodosDto(todo);
-            todosDto.add(dto);
-        }
-
-        return todosDto;
+    public List<ProjectDto> getProjectByOwner(String owner) {
+        return projectMapper.toMapProjectList(projectService.getTodosByOwner(owner));
     }
 
     @Override
-    public ProjectDto getTodosByCode(String code) {
-        ProjectModel todosModel = projectService.getTodosByCode(code);
-        ProjectDto todoList = projectMapper.toTodosDto(todosModel);
-        todoList.setStatus(statusMapper.toMapStatusList(todosModel.getStatus()));
-        List<TodoDto> todoDtos = new ArrayList<>();
-        for (TodoModel todo : todosModel.getTodos()){
-            todoDtos.add(todoMapper.toTodoDto(todo));
-        }
-        todoList.setTodos(todoDtos);
-        return todoList;
+    public ProjectDto getProjectByCode(String code) {
+        return projectMapper.toMapProjectDto(projectService.getTodosByCode(code));
     }
 
     @Override
-    public void createTodoList(TodosRequestDto requestDto) {
+    public void createProject(ProjectRequestDto requestDto) {
         final ProjectModel todosModel = new ProjectModel();
         todosModel.setCode(UUID.randomUUID().toString());
         todosModel.setName(requestDto.getName());
@@ -67,19 +44,19 @@ public class ProjectFacadesImpl implements ProjectFacades {
     }
 
     @Override
-    public Boolean updateTodoList(TodosRequestDto requestDto) {
+    public Boolean updateProject(ProjectRequestDto requestDto) {
         ProjectModel existed = projectService.getTodosByCode(requestDto.getCode());
         if (Objects.isNull(existed)){
             return false;
         }
         existed.setName(requestDto.getName());
-        projectService.updateTodoList(existed);
+        projectService.updateProject(existed);
         achievementStrategy.updateAchievement(existed);
         return true;
     }
 
     @Override
-    public Boolean deleteTodoList(TodosRequestDto requestDto) {
+    public Boolean deleteProject(ProjectRequestDto requestDto) {
         ProjectModel existed = projectService.getTodosByCode(requestDto.getCode());
         if (Objects.isNull(existed)){
             return false;
