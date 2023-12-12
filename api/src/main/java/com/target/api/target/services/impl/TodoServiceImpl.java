@@ -26,13 +26,13 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public void createTodo(TodoModel todoModel) {
-        todoRepository.save(todoModel);
+    public TodoModel createTodo(TodoModel todoModel) {
+        return todoRepository.save(todoModel);
     }
 
     @Override
-    public void updateTodo(TodoModel todoModel) {
-        todoRepository.save(todoModel);
+    public TodoModel updateTodo(TodoModel todoModel) {
+        return todoRepository.save(todoModel);
     }
 
     @Override

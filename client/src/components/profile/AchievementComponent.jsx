@@ -63,7 +63,7 @@ export default function AchievementComponent({ achievement, key }) {
                                     <div className="row">
                                         <div className="col">
                                             <p className='h5 d-inline'>Target </p>
-                                            <p className='lead d-inline' style={ {"word-wrap": "break-word"}}>
+                                            <p className='lead d-inline' style={ {wordWrap: "break-word"}}>
                                                 {achievement.name}
                                             </p>
                                         </div>

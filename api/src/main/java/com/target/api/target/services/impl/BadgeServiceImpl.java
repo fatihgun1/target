@@ -23,13 +23,13 @@ public class BadgeServiceImpl implements BadgeService {
     }
 
     @Override
-    public void crateBadge(BadgeModel badge) {
-        badgeRepository.save(badge);
+    public BadgeModel crateBadge(BadgeModel badge) {
+        return badgeRepository.save(badge);
     }
 
     @Override
-    public void updateBadge(BadgeModel badge) {
-        badgeRepository.save(badge);
+    public BadgeModel updateBadge(BadgeModel badge) {
+        return badgeRepository.save(badge);
     }
 
     @Override

@@ -9,14 +9,12 @@ import com.target.api.target.mapper.BadgeMapper;
 import com.target.api.target.model.AchievementModel;
 import com.target.api.target.model.TodoModel;
 import com.target.api.target.services.AchievementService;
-import com.target.api.target.services.BadgeService;
+import com.target.api.target.services.ProjectService;
 import com.target.api.target.services.TodoService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,10 +26,10 @@ public class AchievementFacadesImpl implements AchievementFacades {
     private AchievementMapper achievementMapper;
     @Resource(name = "badgeMapper")
     private BadgeMapper badgeMapper;
-    @Resource(name = "badgeService")
-    private BadgeService badgeService;
     @Resource(name = "todoService")
     private TodoService todoService;
+    @Resource(name = "projectService")
+    private ProjectService projectService;
 
     @Override
     public List<AchievementDto> getAchievementByOwner(String owner) {
@@ -77,7 +75,8 @@ public class AchievementFacadesImpl implements AchievementFacades {
     }
 
     private List<BadgeDto> calculateDeserved(AchievementModel achievement) {
-        List<BadgeDto> badges = badgeMapper.toBadgeDtoList(badgeService.getBadgeByOwner(achievement.getOwner()));
+
+        List<BadgeDto> badges = badgeMapper.toBadgeDtoList(projectService.getBadgesByProject(achievement.getProject()));
         for (BadgeDto badge : badges) {
             if (achievement.getTotalScore() >= Long.parseLong(badge.getScore())) {
                 badge.setIsDeserved(Boolean.TRUE);

@@ -3,6 +3,7 @@ package com.target.api.target.controller;
 import com.target.api.target.dto.ContainerDto;
 import com.target.api.target.facades.pack.ContainerFacade;
 import com.target.api.target.facades.request.BadgeRequestDto;
+import com.target.api.target.facades.request.ContainerReplaceDto;
 import com.target.api.target.facades.request.ContainerRequestDto;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
@@ -28,6 +29,11 @@ public class ContainerController {
     @PostMapping("/update")
     public ContainerDto updateContainer(@Valid @RequestBody ContainerRequestDto containerRequestDto){
         return containerFacade.updateContainer(containerRequestDto);
+    }
+
+    @PostMapping("/replace")
+    public Boolean updateProjectContainer(@RequestBody ContainerReplaceDto request){
+        return containerFacade.updateProjectContainer(request);
     }
 
     @PostMapping("/delete")

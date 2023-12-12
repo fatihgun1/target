@@ -1,7 +1,9 @@
 package com.target.api.target.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.target.api.target.config.VIEW;
 import com.target.api.target.dto.ProjectDto;
-import com.target.api.target.facades.request.TodosRequestDto;
+import com.target.api.target.facades.request.ProjectRequestDto;
 import com.target.api.target.facades.project.ProjectFacades;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
@@ -18,29 +20,30 @@ public class ProjectController {
     private ProjectFacades projectFacades;
 
     @PostMapping("/create")
-    public ResponseEntity<String> createTodos(@Valid @RequestBody TodosRequestDto todosRequestDto){
-        projectFacades.createTodoList(todosRequestDto);
+    public ResponseEntity<String> createTodos(@Valid @RequestBody ProjectRequestDto todosRequestDto){
+        projectFacades.createProject(todosRequestDto);
         return ResponseEntity.ok("Created");
     }
 
     @GetMapping("/all/{owner}")
-    public List<ProjectDto> getTodos(@PathVariable String owner){
-        return projectFacades.getTodosByOwner(owner);
+    @JsonView(VIEW.BASE.class)
+    public List<ProjectDto> getProject(@PathVariable String owner){
+        return projectFacades.getProjectByOwner(owner);
     }
 
     @GetMapping("/get/{code}")
     public ProjectDto getTodosByCode(@PathVariable("code") String code){
-        return projectFacades.getTodosByCode(code);
+        return projectFacades.getProjectByCode(code);
     }
 
     @PostMapping("/update")
-    public ResponseEntity<String> updateTodos(@Valid @RequestBody TodosRequestDto todosRequestDto){
-        Boolean succeed = projectFacades.updateTodoList(todosRequestDto);
+    public ResponseEntity<String> updateTodos(@Valid @RequestBody ProjectRequestDto todosRequestDto){
+        Boolean succeed = projectFacades.updateProject(todosRequestDto);
         return succeed ? ResponseEntity.ok("Updated"): ResponseEntity.badRequest().body("Could not update");
     }
     @PostMapping("/delete")
-    public ResponseEntity<String> deleteTodos(@RequestBody TodosRequestDto todosRequestDto){
-        Boolean succeed = projectFacades.deleteTodoList(todosRequestDto);
+    public ResponseEntity<String> deleteTodos(@RequestBody ProjectRequestDto todosRequestDto){
+        Boolean succeed = projectFacades.deleteProject(todosRequestDto);
         return succeed ? ResponseEntity.ok("Deleted"): ResponseEntity.badRequest().body("Could not delete");
     }
 

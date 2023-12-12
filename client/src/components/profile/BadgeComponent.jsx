@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteBadge, updateBadge } from '../../redux/slice/badgeSlice';
+import { deleteBadgeOnContainer } from '../../redux/slice/packSlice';
 
-export default function BadgeComponent({ badge, key, token, setAction }) {
-    const styleName = { fontSize: "24px", fontWeight: 400, margin: "0px" }
+export default function BadgeComponent({ badge, key }) {
+    const styleName = { fontSize: "14px", fontWeight: 600, margin: "0px" }
     const styleDesc = { fontSize: "12px", fontWeight: 400 }
     const [edit, setEdit] = useState(false);
     const dispatch = useDispatch();
-    const badgeresponse = useSelector(state => state.badge)
+    const badgeresponse = useSelector(state => state.pack)
     const [newBadge, setNewBadge] = useState({
         name: null,
         description: null,
@@ -18,16 +19,14 @@ export default function BadgeComponent({ badge, key, token, setAction }) {
 
     useEffect(() => {
         setNewBadge(badge)
-    }, [edit])
+    }, [badge])
 
     const badgeDeleteButton = async () => {
         await dispatch(deleteBadge({ code: badge.code })).unwrap()
             .then((response) => {
-                setEdit(prev => !prev)
-                setAction(prev => !prev)
-            })
-            .catch((error) => {
-                console.log(error)
+ 
+                    dispatch(deleteBadgeOnContainer(badge));
+                
             })
     }
 
@@ -36,7 +35,6 @@ export default function BadgeComponent({ badge, key, token, setAction }) {
             .then((response) => {
                 if (response.status !== "BAD_REQUEST") {
                     setEdit(prev => !prev)
-                    setAction(prev => !prev)
                 }
             })
             .catch((error) => {
@@ -56,7 +54,7 @@ export default function BadgeComponent({ badge, key, token, setAction }) {
                     <img src={badge.mediaUrl} alt={badge.name} style={{ width: "64px" }} />
                 </div>
 
-                <div className="col">
+                <div className="col-4">
                     <div className="row">
                         <div className="col">
                             <p className='display-6' style={styleName}>{badge.name}</p>
@@ -130,7 +128,6 @@ export default function BadgeComponent({ badge, key, token, setAction }) {
         <div className='row border align-items-center p-2 m-2' key={key}>
             {edit === false ? preview : editable}
             <div className="col-2">
-
                 <div className="input-group">
                     {edit === true ?
                         <>

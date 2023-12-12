@@ -9,4 +9,5 @@ public class StatusDto {
     private String name;
     private String code;
     private Long score;
+    private String container;
 }

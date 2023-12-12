@@ -27,7 +27,6 @@ export const getProfile = createAsyncThunk('createMedia', async () => {
 
 export const updateProfile = createAsyncThunk('updateProfile', async (payload) => {
     payload.owner= user.user;
-    console.log(payload);
     try{
         const response = await axios.post(`http://localhost:8080/profile/update`, payload, headers)
         return response.data;

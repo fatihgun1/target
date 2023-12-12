@@ -21,7 +21,7 @@ public class AchievementStrategyImpl implements AchievementStrategy {
         achievement.setName(todos.getName());
         achievement.setTotalScore(0L);
         achievement.setOwner(todos.getOwner());
-        achievement.setTodosCode(todos.getCode());
+        achievement.setProject(todos.getCode());
         achievementService.createAchievement(achievement);
     }
 

@@ -31,30 +31,28 @@ public class StatusFacadesImpl implements StatusFacades {
     }
 
     @Override
-    public Boolean createStatus(StatusRequestDto statusRequestDto) {
+    public StatusDto createStatus(StatusRequestDto statusRequestDto) {
         ContainerModel container = containerService.getContainer(statusRequestDto.getContainer());
         if (Objects.isNull(container)){
-            return false;
+            return null;
         }
         StatusModel status = new StatusModel();
         status.setName(statusRequestDto.getName());
         status.setCode(UUID.randomUUID().toString());
         status.setScore(statusRequestDto.getScore());
         status.setContainer(container);
-        statusService.createStatus(status);
-        return true;
+        return statusMapper.toMapStatusDto(statusService.createStatus(status));
     }
 
     @Override
-    public Boolean updateStatus(StatusRequestDto statusRequestDto) {
+    public StatusDto updateStatus(StatusRequestDto statusRequestDto) {
         StatusModel status = statusService.getStatusByCode(statusRequestDto.getCode());
         if(Objects.isNull(status)){
-            return false;
+            return null;
         }
         status.setScore(statusRequestDto.getScore());
         status.setName(statusRequestDto.getName());
-        statusService.updateStatus(status);
-        return true;
+        return statusMapper.toMapStatusDto(statusService.updateStatus(status));
     }
 
     @Override

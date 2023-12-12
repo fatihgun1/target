@@ -1,5 +1,6 @@
 package com.target.api.target.controller;
 
+import com.target.api.target.dto.StatusDto;
 import com.target.api.target.facades.request.StatusRequestDto;
 import com.target.api.target.facades.todos.StatusFacades;
 import jakarta.annotation.Resource;
@@ -15,15 +16,13 @@ public class StatusController {
     private StatusFacades statusFacades;
 
     @PostMapping("/create")
-    public ResponseEntity<String> createStatus(@Valid @RequestBody StatusRequestDto statusRequestDto){
-        statusFacades.createStatus(statusRequestDto);
-        return ResponseEntity.ok("Created");
+    public StatusDto createStatus(@Valid @RequestBody StatusRequestDto statusRequestDto){
+        return statusFacades.createStatus(statusRequestDto);
     }
 
     @PostMapping("/update")
-    public ResponseEntity<String> updateStatus(@Valid @RequestBody StatusRequestDto statusRequestDto){
-        Boolean succeed = statusFacades.updateStatus(statusRequestDto);
-        return succeed ? ResponseEntity.ok("Updated") : ResponseEntity.ok("Could not update");
+    public StatusDto updateStatus(@Valid @RequestBody StatusRequestDto statusRequestDto){
+        return statusFacades.updateStatus(statusRequestDto);
     }
 
     @PostMapping("/delete")

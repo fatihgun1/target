@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface TodoFacades {
     List<TodoDto> getTodoList(String code);
-    void createTodo(TodoRequestDto todoRequestDto);
-    Boolean updateTodo(TodoRequestDto todoRequestDto);
+    TodoDto createTodo(TodoRequestDto todoRequestDto);
+    TodoDto updateTodo(TodoRequestDto todoRequestDto);
     Boolean deleteTodo(TodoRequestDto todoRequestDto);
 }

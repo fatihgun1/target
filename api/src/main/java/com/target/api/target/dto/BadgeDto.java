@@ -8,6 +8,7 @@ import lombok.Data;
 public class BadgeDto {
     private String code;
     private String name;
+    private String container;
     private String description;
     private String score;
     private String mediaUrl;

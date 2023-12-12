@@ -19,6 +19,7 @@ public class BadgeMapper {
         target.setDescription(source.getDescription());
         target.setScore(String.valueOf(source.getScore()));
         target.setMediaUrl(source.getMediaUrl());
+        target.setContainer(source.getContainer().getCode());
         return target;
     }
 

@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface AchievementRepository extends JpaRepository<AchievementModel,Long> {
     AchievementModel findByCode(String code);
-    AchievementModel findByTodosCode(String code);
+    AchievementModel findByProject(String code);
     List<AchievementModel> findByOwner(String owner);
     @Query(value = "SELECT t.code, s.score  FROM status as s " +
             "JOIN todo AS t ON s.pk = t.status_pk  " +

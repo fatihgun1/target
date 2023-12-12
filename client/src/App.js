@@ -13,6 +13,7 @@ import TodoPage from './Page/Todo/TodoPage';
 import EditProjectPage from './Page/Todo/EditProjectPage'
 import CreateTodoPage from './Page/Todo/CreateTodoPage';
 import Homepage from './Page/Homepage';
+import ContainerPage from './Page/Profile/ContainerPage';
 function App() {
 
   const authRouter = createBrowserRouter(
@@ -54,6 +55,12 @@ function App() {
           path: "/project/edit/:code",
           element: (
             <EditProjectPage/>
+          )
+        },
+        {
+          path: "/container/show/:code",
+          element: (
+            <ContainerPage/>
           )
         },
         {

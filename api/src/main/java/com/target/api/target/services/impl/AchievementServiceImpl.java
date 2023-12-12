@@ -20,7 +20,7 @@ public class AchievementServiceImpl implements AchievementService {
 
     @Override
     public AchievementModel getAchievementByTodosCode(String code) {
-        return achievementRepository.findByTodosCode(code);
+        return achievementRepository.findByProject(code);
     }
 
     @Override

@@ -32,34 +32,34 @@ public class TodoFacadesImpl implements TodoFacades {
         List<TodoModel> todos = todoService.getTodoList(code);
         List<TodoDto> todoDtos = new ArrayList<>();
         for (TodoModel todo : todos){
-            todoDtos.add(todoMapper.toTodoDto(todo));
+            todoDtos.add(todoMapper.toMapTodoDto(todo));
         }
         return todoDtos;
     }
 
     @Override
-    public void createTodo(TodoRequestDto todoRequestDto) {
+    public TodoDto createTodo(TodoRequestDto todoRequestDto) {
         TodoModel todo = new TodoModel();
         todo.setCode(UUID.randomUUID().toString());
         todo.setDescription(todoRequestDto.getDescription());
         todo.setStatus(statusService.getStatusByCode(todoRequestDto.getStatus().getCode()));
         todo.setProject(projectService.getTodosByCode(todoRequestDto.getCode()));
         todo.setIsCalculated(Boolean.FALSE);
-        todoService.createTodo(todo);
+        return todoMapper.toMapTodoDto( todoService.createTodo(todo));
     }
 
     @Override
-    public Boolean updateTodo(TodoRequestDto todoRequestDto) {
+    public TodoDto updateTodo(TodoRequestDto todoRequestDto) {
         TodoModel existed = todoService.getTodoByCode(todoRequestDto.getCode());
         StatusModel status = statusService.getStatusByCode(todoRequestDto.getStatus().getCode());
         if (Objects.isNull(existed)){
-            return false;
+            return null;
         }
         existed.setDescription(todoRequestDto.getDescription());
         existed.setStatus(status);
         existed.setIsCalculated(Boolean.FALSE);
-        todoService.updateTodo(existed);
-        return true;
+
+        return todoMapper.toMapTodoDto(todoService.updateTodo(existed));
     }
 
     @Override

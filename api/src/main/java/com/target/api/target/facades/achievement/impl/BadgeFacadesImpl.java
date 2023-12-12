@@ -34,7 +34,7 @@ public class BadgeFacadesImpl implements BadgeFacades {
     }
 
     @Override
-    public void crateBadge(BadgeRequestDto source) {
+    public BadgeDto crateBadge(BadgeRequestDto source) {
         BadgeModel target = new BadgeModel();
         target.setCode(UUID.randomUUID().toString());
         target.setName(source.getName());
@@ -43,21 +43,20 @@ public class BadgeFacadesImpl implements BadgeFacades {
         target.setOwner(source.getOwner());
         target.setMediaUrl(source.getMediaUrl());
         target.setContainer(containerService.getContainer(source.getContainer()));
-        badgeService.crateBadge(target);
+        return badgeMapper.toBadgeDto(badgeService.crateBadge(target));
     }
 
     @Override
-    public Boolean updateBadge(BadgeRequestDto source) {
+    public BadgeDto updateBadge(BadgeRequestDto source) {
         BadgeModel target = badgeService.getBadgeByCode(source.getCode());
         if (Objects.isNull(target)){
-            return false;
+            return null;
         }
         target.setName(source.getName());
         target.setDescription(source.getDescription());
         target.setScore(Long.valueOf(source.getScore()));
         target.setMediaUrl(source.getMediaUrl());
-        badgeService.updateBadge(target);
-        return true;
+        return badgeMapper.toBadgeDto(badgeService.updateBadge(target));
     }
 
     @Override

@@ -17,6 +17,7 @@ public class StatusMapper {
         target.setCode(source.getCode());
         target.setName(source.getName());
         target.setScore(source.getScore());
+        target.setContainer(source.getContainer().getCode());
         return target;
     }
 
