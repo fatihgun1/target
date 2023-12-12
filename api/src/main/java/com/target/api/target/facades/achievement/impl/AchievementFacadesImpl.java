@@ -7,6 +7,7 @@ import com.target.api.target.facades.request.AchievementRequestDto;
 import com.target.api.target.mapper.AchievementMapper;
 import com.target.api.target.mapper.BadgeMapper;
 import com.target.api.target.model.AchievementModel;
+import com.target.api.target.model.BadgeModel;
 import com.target.api.target.model.TodoModel;
 import com.target.api.target.services.AchievementService;
 import com.target.api.target.services.ProjectService;
@@ -15,6 +16,7 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -76,12 +78,12 @@ public class AchievementFacadesImpl implements AchievementFacades {
 
     private List<BadgeDto> calculateDeserved(AchievementModel achievement) {
 
-        List<BadgeDto> badges = badgeMapper.toBadgeDtoList(projectService.getBadgesByProject(achievement.getProject()));
-        for (BadgeDto badge : badges) {
-            if (achievement.getTotalScore() >= Long.parseLong(badge.getScore())) {
-                badge.setIsDeserved(Boolean.TRUE);
+        List<BadgeDto> badges = badgeMapper.toBadgeDtoList(projectService.getBadgesByProject(achievement.getProject()).stream().sorted(Comparator.comparing(BadgeModel::getScore)).toList());
+        for (BadgeDto badgeDto : badges) {
+            if (achievement.getTotalScore() >= Long.parseLong(badgeDto.getScore())) {
+                badgeDto.setIsDeserved(Boolean.TRUE);
             } else {
-                badge.setIsDeserved(Boolean.FALSE);
+                badgeDto.setIsDeserved(Boolean.FALSE);
             }
         }
         return badges;
