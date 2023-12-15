@@ -1,3 +1,4 @@
+
  .c-center {
   height: 100vh;
 }
@@ -29,4 +30,11 @@
 .onHover:hover{
   background-color: grey;
   cursor: pointer;
+}
+
+.footer {
+  position: fixed;
+  height: 100px;
+  bottom: 0;
+  width: 100%;
 }

@@ -14,6 +14,7 @@ import EditProjectPage from './Page/Todo/EditProjectPage'
 import CreateTodoPage from './Page/Todo/CreateTodoPage';
 import Homepage from './Page/Homepage';
 import ContainerPage from './Page/Profile/ContainerPage';
+import MarketPage from './Page/MarketPage';
 function App() {
 
   const authRouter = createBrowserRouter(
@@ -21,6 +22,12 @@ function App() {
       path: "/",
       element: <Layout/> ,
       children: [
+        {
+          path: "/market",
+          element: (
+            <MarketPage/>
+          )
+        },
         {
           path: "/profile",
           element: (

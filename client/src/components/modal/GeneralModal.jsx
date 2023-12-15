@@ -8,7 +8,9 @@ export default function GeneralModal({ children , modal, setModal,width}) {
             right: 'auto',
             bottom: 'auto',
             marginRight: '-50%',
+            overflow: 'scroll',
             width:width,
+            height: '450px',
             transform: 'translate(-50%, -50%)',
         },
     };

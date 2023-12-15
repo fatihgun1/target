@@ -12,4 +12,5 @@ public class ContainerDto {
     private String name;
     private List<StatusDto> status;
     private List<BadgeDto> badges;
+    private Boolean isPublished;
 }
