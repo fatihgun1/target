@@ -12,7 +12,7 @@ export default function TodoPage() {
 
     useEffect(() => {
         dispatch(getProjectByCode(code))
-    }, [])
+    }, [dispatch])
 
     return (
         <div className='container'>

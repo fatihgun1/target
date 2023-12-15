@@ -6,7 +6,7 @@ export default function Navlinks() {
         <div className=''>
             <ul className="navbar-nav">
                 <li className="nav-item">
-                    <Link to="/" className="nav-link">Market place</Link>
+                    <Link to="/market" className="nav-link">Market place</Link>
                 </li>
                 <li className="nav-item">
                     <Link to="/profile" className="nav-link">Profile</Link>

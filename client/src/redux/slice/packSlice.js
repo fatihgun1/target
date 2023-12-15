@@ -3,7 +3,7 @@ import axios from "axios";
 
 const initialState = {
     containers: [{
-        code: null, name: null,
+        code: null, name: null, isPublished:null,
         status: [{ code: null, name: null, score: null }],
         badges: [{ code: null, name: null, description: null, score: null, mediaUrl: null, isDeserved: null }]
     }],
@@ -103,6 +103,11 @@ export const packSlice = createSlice({
             let containerIndex = current(state.containers).findIndex(item => item.code === (action.payload.container));
             let badgeIndex = state.containers.at(containerIndex).status.findIndex(item => item.code === action.payload.code);
             state.containers.at(containerIndex).status.splice(badgeIndex, 1)
+        },
+
+        disablePublishButton: (state, action) => {
+            let containerIndex = current(state.containers).findIndex(item => item.code === (action.payload.code));
+            state.containers.at(containerIndex).isPublished = false;
         },
 
     },
@@ -245,5 +250,5 @@ export const packSlice = createSlice({
     }
 })
 
-export const { setBadgeToContainer, deleteBadgeOnContainer, setStatusToContainer, deleteStatusOnContainer } = packSlice.actions
+export const { setBadgeToContainer, deleteBadgeOnContainer, setStatusToContainer, deleteStatusOnContainer,disablePublishButton } = packSlice.actions
 export default packSlice.reducer;

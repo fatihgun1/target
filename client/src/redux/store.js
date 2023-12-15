@@ -9,6 +9,7 @@ import mediaSlice from "./slice/mediaSlice";
 import profileSlice from "./slice/profileSlice";
 import projectSlice from "./slice/projectSlice";
 import packSlice from "./slice/packSlice";
+import marketSilce from "./slice/marketSilce";
 export default configureStore({
     reducer : {
         register:registerSlice,
@@ -20,6 +21,7 @@ export default configureStore({
         achievement:achievementSlice,
         media:mediaSlice,
         profile:profileSlice,
-        pack:packSlice
+        pack:packSlice,
+        market:marketSilce
     }
 })

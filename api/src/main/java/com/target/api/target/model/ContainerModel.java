@@ -14,6 +14,7 @@ public class ContainerModel {
     private Long pk;
     private String code;
     private String name;
+    private Boolean isPublished;
 
     @OneToMany(mappedBy = "container",cascade = CascadeType.DETACH,orphanRemoval = true)
     private List<StatusModel> status;

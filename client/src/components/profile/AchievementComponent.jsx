@@ -11,7 +11,7 @@ export default function AchievementComponent({ achievement, key }) {
     const dispatch = useDispatch();
     useEffect(() => {
 
-    }, [achieve]);
+    }, [achievement]);
 
 
     const customStyles = {

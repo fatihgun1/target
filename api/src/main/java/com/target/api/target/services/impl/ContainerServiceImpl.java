@@ -24,6 +24,11 @@ public class ContainerServiceImpl implements ContainerService {
     }
 
     @Override
+    public ContainerModel getUnpublishedContainer(String code) {
+        return containerRepository.findByPublished(code);
+    }
+
+    @Override
     public ContainerModel updateContainer(ContainerModel container) {
         return containerRepository.save(container);
     }

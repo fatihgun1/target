@@ -12,7 +12,7 @@ export default function CreateTodoPage({ projectcode, status }) {
     } else {
       setTodo({ status: { code: status[0].code }, code: projectcode })
     }
-  }, [projectcode])
+  }, [dispatch])
 
   const onStatusChange = (e) => {
     const { value } = e.target;

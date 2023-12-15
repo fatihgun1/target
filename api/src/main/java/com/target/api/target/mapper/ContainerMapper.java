@@ -26,6 +26,7 @@ public class ContainerMapper {
         target.setName(source.getName());
         target.setBadges(badgeMapper.toBadgeDtoList(source.getBadge()));
         target.setStatus(statusMapper.toMapStatusList(source.getStatus()));
+        target.setIsPublished(Objects.nonNull(source.getIsPublished()) && source.getIsPublished());
         return target;
     }
 

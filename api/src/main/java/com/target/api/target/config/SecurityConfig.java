@@ -48,6 +48,7 @@ public class SecurityConfig {
                         .requestMatchers("/badge/**").permitAll()
                         .requestMatchers("/media/**").permitAll()
                         .requestMatchers("/pack/**").permitAll()
+                        .requestMatchers("/market/**").permitAll()
                         .requestMatchers("/container/**").permitAll()
                         .requestMatchers("/api/v1/admin").hasAnyAuthority(RoleEnum.ADMIN.name())
                         .requestMatchers("/api/v1/user").hasAnyAuthority(RoleEnum.USER.name())
