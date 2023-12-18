@@ -3,12 +3,8 @@ import trophy from '../../assets/img/trophy.png'
 import ReactModal from 'react-modal'
 import SimpleBadgeComponent from './SimpleBadgeComponent';
 
-import { useDispatch } from 'react-redux';
-
 export default function AchievementComponent({ achievement, key }) {
     const [modal, setModal] = useState(false);
-    const [achieve, setAchieve] = useState(achievement)
-    const dispatch = useDispatch();
     useEffect(() => {
 
     }, [achievement]);

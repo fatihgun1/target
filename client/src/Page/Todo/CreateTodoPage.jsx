@@ -1,36 +1,38 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { createTodo } from '../../redux/slice/todoSlice';
 import { setTodoToProject } from '../../redux/slice/projectSlice';
 export default function CreateTodoPage({ projectcode, status }) {
-  const [todo, setTodo] = useState({ description: null, status: { code: null }, code: null });
+  const [todo, setTodo] = useState({ description: null, status: { code: null}, code: null });
   const [disableAddButton, setDisableAddButton] = useState(false);
+  const description = useRef();
   const dispatch = useDispatch();
   useEffect(() => {
     if (status === undefined) {
       setDisableAddButton(true)
     } else {
-      setTodo({ status: { code: status[0].code }, code: projectcode })
+      if (status){
+        setTodo({ status: { code: status[0].code }, code: projectcode })
+      }
     }
-  }, [dispatch])
+  }, [projectcode])
 
   const onStatusChange = (e) => {
     const { value } = e.target;
     setTodo(prev => ({ ...prev, status: { code: value } }))
   }
 
-  const onFormCange = (e) => {
-    const { name, value } = e.target;
-    setTodo(prev => ({ ...prev, [name]: value }))
-  }
-
   const onCreateTodoButtonClick = () => {
-    dispatch(createTodo(todo)).unwrap().then((response) => {
-      if (response.status !== "BAD_REQUEST") {
-        dispatch(setTodoToProject(response))
-        setTodo({description: null, status: { code: status[0].code }, code: projectcode })
-      }
-    });
+    todo.description = description.current.value
+    if (description) {
+      dispatch(createTodo(todo)).unwrap().then((response) => {
+        if (response.status !== "BAD_REQUEST") {
+          dispatch(setTodoToProject(response))
+          description.current.value = '';
+        }
+      });
+    }
+
   }
 
   return (
@@ -39,7 +41,7 @@ export default function CreateTodoPage({ projectcode, status }) {
         Add your task
       </div>
       <div className="card-body">
-        <textarea className="form-control" name='description' rows="3" onChange={onFormCange}></textarea>
+        <textarea className="form-control" rows="3" ref={description}></textarea>
       </div>
       <div className="card-footer bg-transparent">
         <div className="row">

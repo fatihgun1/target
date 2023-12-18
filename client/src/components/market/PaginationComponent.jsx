@@ -12,7 +12,7 @@ export default function PaginationComponent({ totalPage, currentPage, setPage })
 
     <div className="btn-group">
       {generateArray(totalPage).map((num, index) => (
-        <div className={num === currentPage + 1 ? "btn btn-primary active" : "btn btn-outline-primary"} onClick={() => onPageNumberClick(num)}>{num}</div>
+        <div key={index} className={num === currentPage + 1 ? "btn btn-primary active" : "btn btn-outline-primary"} onClick={() => onPageNumberClick(num)}>{num}</div>
       ))}
     </div>
   )

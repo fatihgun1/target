@@ -1,11 +1,9 @@
 import React, { useState } from 'react'
-import { currentUser } from '../../redux/slice/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { createProject } from '../../redux/slice/projectSlice';
 export default function CreateProjectComponent({ setModal }) {
 
   const dispatch = useDispatch();
-  const cUser = useSelector(state => state.user);
   const projectState = useSelector(state => state.project);
 
   const [project, setProject] = useState({
@@ -14,22 +12,19 @@ export default function CreateProjectComponent({ setModal }) {
   });
 
   const onFormChange = e => {
-    dispatch(currentUser());
     const { name, value } = e.target;
     setProject(prev => ({ ...prev, [name]: value }))
-    setProject(prev => ({ ...prev, owner: cUser.user }))
   }
 
   const saveTodo = async e => {
     await dispatch(createProject(project)).unwrap().then((response) => {
-      console.log("resposne",response);
       if(response.status !== "BAD_REQUEST"){
         setModal(prev => !prev);
       }
     });
   }
 
-  const goBack = e => {
+  const goBack = () => {
     setModal(prev => !prev);
   }
 

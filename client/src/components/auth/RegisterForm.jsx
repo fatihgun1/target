@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { fetchRegister } from '../../redux/slice/registerSlice';
@@ -20,8 +20,7 @@ export default function RegisterForm() {
         setUser(prev => ({ ...prev, [name]: value }));
     }
 
-    const onRegister = async e => {
-        e.preventDefault();
+    const onRegister = () => {
         dispatch(fetchRegister(user)).then(() => {
             if (register.success) {
                 navigate('/login')
@@ -30,7 +29,7 @@ export default function RegisterForm() {
     }
 
     return (
-        <form className='container'>
+        <div className='container'>
             <div className='mb-3'>
                 <input className="form-control" name="firstName" placeholder="First Name" type="text" onChange={onFormChange} />
             </div>
@@ -55,9 +54,8 @@ export default function RegisterForm() {
                     <span>Do you have account ?</span>
                     <span><Link className='btn btn-primary' to='/login'>Login</Link></span>
                 </div>
-
             </div>
             {register.error && <p>{register.error}</p>}
-        </form>
+        </div>
     )
 }

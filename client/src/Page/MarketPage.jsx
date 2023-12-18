@@ -22,8 +22,8 @@ export default function MarketPage() {
     <div className='container'>
       <div className="display-6">Market</div>
       <hr/>
-      {marketresponse.market && marketresponse.market.entries && marketresponse.market.entries.map((container, index) => (
-        <MarketEntryModel container={container} key={index}/>
+      {marketresponse.market && marketresponse.market.entries && marketresponse.market.entries.map((container) => (
+        <MarketEntryModel container={container} index={container.code}/>
       ))}
 
     <div>

@@ -3,6 +3,7 @@ package com.target.api.target.repository;
 import com.target.api.target.model.ProjectModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 

@@ -16,7 +16,7 @@ public class ProjectModel {
     private String code;
     private String owner;
 
-    @OneToMany(mappedBy = "project",cascade = CascadeType.DETACH)
+    @OneToMany(mappedBy = "project",cascade = CascadeType.DETACH,orphanRemoval = true)
     private List<TodoModel> todos;
 
     @ManyToOne(cascade = CascadeType.DETACH)

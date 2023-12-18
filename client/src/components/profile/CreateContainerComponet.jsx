@@ -16,12 +16,15 @@ export default function CreateContainerComponet({ setModal }) {
     setContainer(prev => ({ ...prev, [name]: value }))
   }
 
-  const crateContainer = async e => {
-    await dispatch(createContainer(container)).unwrap().then((response) => {
-      if (response.status !== "BAD_REQUEST") {
-        setModal(prev => !prev);
-      }
-    });
+  const crateContainer = async () => {
+    if(container && container.name){
+      dispatch(createContainer(container)).unwrap().then((response) => {
+        if (response.status !== "BAD_REQUEST") {
+          setModal(prev => !prev);
+        }
+      });
+    }
+
   }
 
   const goBack = e => {
@@ -30,13 +33,13 @@ export default function CreateContainerComponet({ setModal }) {
 
   return (
     <div>
-      <h3 className='mb-3'>Create project</h3>
+      <h3 className='mb-3'>Create Container</h3>
       <div className='mb-3'>
-        <input name="name" className='form-control' placeholder="what is your target" type="text" onChange={onFormChange} />
+        <input name="name" className='form-control' placeholder="Container name" type="text" onChange={onFormChange} />
       </div>
       <div className='row'>
         <div className="col">
-          <button className='btn btn-primary' onClick={crateContainer} style={{ width: "100%" }}>Begin</button>
+          <button className='btn btn-primary' onClick={crateContainer} style={{ width: "100%" }}>Crate</button>
         </div>
         <div className="col">
           <button className='btn btn-danger' onClick={goBack} style={{ width: "100%" }}>Cancel</button>

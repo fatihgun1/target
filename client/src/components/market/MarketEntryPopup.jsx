@@ -1,8 +1,8 @@
 import React from 'react'
 
-export default function MarketEntryPopup({ container }) {
+export default function MarketEntryPopup({ container , key}) {
     return (
-        <div className='row'>
+        <div className='row' key={key}>
             <div className="col">
                 <div className="display-6">Status</div>
                 <hr/>

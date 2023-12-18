@@ -20,9 +20,8 @@ public class ProjectController {
     private ProjectFacades projectFacades;
 
     @PostMapping("/create")
-    public ResponseEntity<String> createTodos(@Valid @RequestBody ProjectRequestDto todosRequestDto){
-        projectFacades.createProject(todosRequestDto);
-        return ResponseEntity.ok("Created");
+    public ProjectDto createTodos(@Valid @RequestBody ProjectRequestDto todosRequestDto){
+        return projectFacades.createProject(todosRequestDto);
     }
 
     @GetMapping("/all/{owner}")
@@ -37,14 +36,12 @@ public class ProjectController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<String> updateTodos(@Valid @RequestBody ProjectRequestDto todosRequestDto){
-        Boolean succeed = projectFacades.updateProject(todosRequestDto);
-        return succeed ? ResponseEntity.ok("Updated"): ResponseEntity.badRequest().body("Could not update");
+    public ProjectDto updateTodos(@Valid @RequestBody ProjectRequestDto todosRequestDto){
+        return projectFacades.updateProject(todosRequestDto);
     }
     @PostMapping("/delete")
-    public ResponseEntity<String> deleteTodos(@RequestBody ProjectRequestDto todosRequestDto){
-        Boolean succeed = projectFacades.deleteProject(todosRequestDto);
-        return succeed ? ResponseEntity.ok("Deleted"): ResponseEntity.badRequest().body("Could not delete");
+    public Boolean deleteTodos(@RequestBody ProjectRequestDto todosRequestDto){
+        return projectFacades.deleteProject(todosRequestDto);
     }
 
 }

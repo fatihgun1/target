@@ -123,7 +123,6 @@ export const marketSilce = createSlice({
         builder.addCase(buyContainer.fulfilled, (state, action) => {
             state.loading = false;
             state.error = null;
-            console.log(action.payload);
             if (action.payload.status !== "BAD_REQUEST") {
                 state.success = true;
             } else {

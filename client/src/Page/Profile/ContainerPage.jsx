@@ -41,7 +41,6 @@ export default function ContainerPage() {
     }
 
     const setContainerToProject  = () => {
-        console.log(replace);
         dispatch(replaceContainer(replace))
     } 
 
@@ -56,6 +55,11 @@ export default function ContainerPage() {
                         <input className="form-control" disabled={responsepatch.loading} name='name' onChange={onCrateFormChange} defaultValue={container && container.name} />
                         <button className='btn btn-sm btn-primary' onClick={onUpdateButtonClick}>Update</button>
                     </div>
+                    {responsepatch.error && 
+                       <div className="alert alert-danger mt-4" >
+                       {responsepatch.error}
+                   </div>
+                    }
                 </div>
                 <div className="col">
                     <div className="row">
