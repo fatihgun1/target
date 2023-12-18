@@ -15,8 +15,10 @@ export default function BackpackComponent() {
         dispatch(getBackPack());
     }, [dispatch])
 
-    const onProjectButtonClick = (code) => {
-        dispatch(deleteContainer({ code: code }))
+    const onProjectDeletButtonClick = (code) => {
+        dispatch(deleteContainer({ code: code })).unwrap().then((response)=>{
+            
+        });
     }
 
     const onPublishButtonClick = (code) => {
@@ -42,7 +44,7 @@ export default function BackpackComponent() {
             <div className="row row-cols-1 row-cols-md-4 g-2 text-center">
                 {responsepack && responsepack.containers && responsepack.containers.map((container, index) => (
                     <div className='col' key={index}>
-                        <div class="card justify-content-center onHover " style={{ height: '120px' }} >
+                        <div className="card justify-content-center onHover " style={{ height: '120px' }} >
                             <div className="card-header  bg-transparent">
                                 <div className="row">
                                     <div className="col d-flex justify-content-start">
@@ -52,7 +54,7 @@ export default function BackpackComponent() {
 
                                     </div>
                                     <div className="col d-flex justify-content-end ">
-                                        <button className='btn btn-sm btn-outline-danger' onClick={() => onProjectButtonClick(container.code)}>del</button>
+                                        <button className='btn btn-sm btn-outline-danger' onClick={() => onProjectDeletButtonClick(container.code)}>del</button>
                                     </div>
                                 </div>
 

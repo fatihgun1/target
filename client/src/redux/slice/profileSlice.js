@@ -26,9 +26,9 @@ export const getProfile = createAsyncThunk('createMedia', async () => {
 
 
 export const updateProfile = createAsyncThunk('updateProfile', async (payload) => {
-    payload.owner= user.user;
     try{
-        const response = await axios.post(`http://localhost:8080/profile/update`, payload, headers)
+        payload.owner= user.user;
+        const response = await axios.post(`http://localhost:8080/profile/update`, payload, headers);
         return response.data;
     }catch(err){
         return err.response.data;
@@ -53,7 +53,7 @@ export const profileSlice = createSlice({
                 state.success = true;
                 state.profile = action.payload;
             }
-            if(action.payload.status === "BAD_REQUEST"){
+            if(action.payload && action.payload.status === "BAD_REQUEST"){
                 state.error = action.payload.message;
                 state.success = false;
             }
@@ -71,9 +71,8 @@ export const profileSlice = createSlice({
         });
         builder.addCase(updateProfile.fulfilled,(state,action)=>{
             state.loading = false;
-            state.error = null;
-            console.log(action.payload);
-            if(action.payload.status !== "BAD_REQUEST"){
+            state.error = null; 
+            if(action.payload && action.payload.status !== "BAD_REQUEST"){
                 state.success = true;
                 state.profile = action.payload;
             }else{

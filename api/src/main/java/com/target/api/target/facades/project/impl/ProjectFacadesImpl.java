@@ -19,7 +19,6 @@ public class ProjectFacadesImpl implements ProjectFacades {
     private ProjectService projectService;
     @Resource(name = "projectMapper")
     private ProjectMapper projectMapper;
-
     @Resource(name = "achievementStrategy")
     private AchievementStrategy achievementStrategy;
 
@@ -34,25 +33,24 @@ public class ProjectFacadesImpl implements ProjectFacades {
     }
 
     @Override
-    public void createProject(ProjectRequestDto requestDto) {
+    public ProjectDto createProject(ProjectRequestDto requestDto) {
         final ProjectModel todosModel = new ProjectModel();
         todosModel.setCode(UUID.randomUUID().toString());
         todosModel.setName(requestDto.getName());
         todosModel.setOwner(requestDto.getOwner());
-        projectService.createTodoList(todosModel);
         achievementStrategy.createAchievement(todosModel);
+        return projectMapper.toMapProjectDto(projectService.createProject(todosModel));
     }
 
     @Override
-    public Boolean updateProject(ProjectRequestDto requestDto) {
+    public ProjectDto updateProject(ProjectRequestDto requestDto) {
         ProjectModel existed = projectService.getTodosByCode(requestDto.getCode());
         if (Objects.isNull(existed)){
-            return false;
+            return null;
         }
         existed.setName(requestDto.getName());
-        projectService.updateProject(existed);
         achievementStrategy.updateAchievement(existed);
-        return true;
+        return projectMapper.toMapProjectDto(projectService.updateProject(existed));
     }
 
     @Override

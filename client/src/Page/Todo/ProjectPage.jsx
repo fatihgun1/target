@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { currentUser } from '../../redux/slice/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import ProjectsComponent from '../../components/project/ProjectsComponent';
 import { getProject } from '../../redux/slice/projectSlice';
@@ -8,16 +7,12 @@ import CreateProjectComponent from '../../components/project/CreateProjectCompon
 
 export default function ProjectPage() {
   const dispatch = useDispatch();
-  const user = useSelector(state => state.user);
   const project = useSelector(state => state.project);
-  const [action, setAction] = useState(false);
   const [modal,setModal] = useState(false)
 
   useEffect(() => {
-    dispatch(currentUser());
-    dispatch(getProject(user))
-  }, [dispatch,action,modal])
-
+    dispatch(getProject())
+  }, [])
 
   return (
     <div className='container'>
@@ -35,7 +30,7 @@ export default function ProjectPage() {
               project.loading === false ?
                 <>
                   {project.projects && project.projects.map((todox, index) => (
-                    <ProjectsComponent name={todox.name} key={index} project={todox.code} setAction={setAction} />
+                    <ProjectsComponent name={todox.name} index={index} project={todox.code} />
                   ))}
                 </>
                 :

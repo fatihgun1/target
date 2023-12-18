@@ -17,7 +17,7 @@ public class BadgeModel {
     private Long score;
     @Column(length = 1000)
     private String mediaUrl;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "container_pk")
     private ContainerModel container;
 }

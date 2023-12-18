@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { fetchLogin } from '../../redux/slice/loginSlice';
+import { decodeToken } from 'react-jwt';
 
 export default function LoginForm() {
-    const navigate = useNavigate();
     const dispatch = useDispatch();
     const login = useSelector(state => state.user);
 
@@ -18,21 +18,20 @@ export default function LoginForm() {
         setUser(prev => ({ ...prev, [name]: value }));
     }
 
-    const onSignIn = async e => {
-        e.preventDefault();
-        await dispatch(fetchLogin(user)).unwrap()
+    const onSignIn =  () => {
+        dispatch(fetchLogin(user)).unwrap()
         .then((response)=> {
+            console.log("sii");
             if(response.token){
+                const user = decodeToken(response.token);
+                localStorage.setItem('user',JSON.stringify({user:user.sub,token:response.token}));
                 window.location.replace('/profile')
             }
-        }).catch((err)=>{
-            console.log("Login failed");
-        });
-
+        })
     }
 
     return (
-        <form>
+        <div className='container'>
             <div className='mb-3'>
                 <input className="form-control" name="email" placeholder="Email" type="email" onChange={onFormChange} />
             </div>
@@ -53,6 +52,6 @@ export default function LoginForm() {
                 </div>
             </div>
             {login.error && <p>{login.error}</p>}
-        </form>
+        </div>
     )
 }

@@ -37,8 +37,8 @@ public class ContainerController {
     }
 
     @PostMapping("/delete")
-    public ResponseEntity deleteContainer(@RequestBody ContainerRequestDto containerRequestDto){
+    public Boolean deleteContainer(@RequestBody ContainerRequestDto containerRequestDto){
         containerFacade.deleteContainer(containerRequestDto);
-        return ResponseEntity.ok().build();
+        return Boolean.TRUE;
     }
 }

@@ -1,9 +1,9 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
-import { deleteProject } from '../../redux/slice/projectSlice';
+import { deleteProject, deleteProjectEntry } from '../../redux/slice/projectSlice';
 
-export default function ProjectsComponent({ name, project, key, setAction }) {
+export default function ProjectsComponent({ name, project, index }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -11,17 +11,17 @@ export default function ProjectsComponent({ name, project, key, setAction }) {
         navigate(`/todo/${code}`)
     }
 
-    const deleteTodo = async (e) => {
-        dispatch(deleteProject({ code: project })).unwrap().then((response) => {
-            setAction(prev => !prev)
-        }).catch((err) => {
-            console.log(err);
-        });
+    const deleteTodo = async () => {
+        dispatch(deleteProject({ code: project })).unwrap().then((response)=>{
+            if (response === true){
+                dispatch(deleteProjectEntry(project))
+            }
+        })
     }
 
     return (
-        <div className="col">
-            <div className='card' key={key} style={{ height: "150px" }}>
+        <div className="col" key={index} >
+            <div className='card' style={{ height: "150px" }}>
                 <div className="card-body text-center " onClick={() => navigateTodoDetail(project)}>
                     {name}
                 </div>

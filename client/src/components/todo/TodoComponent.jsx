@@ -1,4 +1,4 @@
-import React, {  useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import GeneralModal from '../modal/GeneralModal';
 import { useDispatch } from 'react-redux';
 import { deleteTodo, updateTodo as fetchTodo} from '../../redux/slice/todoSlice';
@@ -8,9 +8,10 @@ export default function TodoComponent({ todo, status, key }) {
   const dispatch = useDispatch();
   const [updateTodo, setUpdateTodo] = useState(() => todo);
 
+  useEffect(()=> {setUpdateTodo(todo)},[todo])
+  
   const onUpdateTodoButtonClick = () => {
     dispatch(fetchTodo(updateTodo)).unwrap().then((response)=> {
-      
       if(response){
         dispatch(updateTodoInProject(response))
         setModal(prev => !prev)

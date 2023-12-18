@@ -8,7 +8,7 @@ import { setBadgeToContainer } from '../../redux/slice/packSlice';
 export default function CreateBadgeComponent({ code }) {
   const [modal, setModal] = useState(false);
   const distpatch = useDispatch();
-  const badgeresponse = useSelector(state => state.pack)
+  const [err,setErr] = useState();
   const [badge, setBadge] = useState({
     name: null,
     description: null,
@@ -19,6 +19,7 @@ export default function CreateBadgeComponent({ code }) {
 
   useEffect(() => {
     setBadge({ container: code })
+    setErr(null)
   }, [modal]);
 
   const onCrateFormChange = (e) => {
@@ -26,7 +27,7 @@ export default function CreateBadgeComponent({ code }) {
     setBadge(prev => ({ ...prev, [name]: value }))
   }
 
-  const onCrateBadgeButtonClick = async (e) => {
+  const onCrateBadgeButtonClick = () => {
 
     distpatch(createBadge(badge)).unwrap()
       .then((response) => {
@@ -34,6 +35,8 @@ export default function CreateBadgeComponent({ code }) {
           setModal(prev => !prev)
           distpatch(setBadgeToContainer(response));
           setBadge({ name: null, description: null, score: null, mediaUrl: null })
+        }else{
+          setErr(response.message)
         }
       });
   }
@@ -51,11 +54,11 @@ export default function CreateBadgeComponent({ code }) {
             <div className="d-grid">
               <button className="btn btn-sm btn-primary" onClick={onCrateBadgeButtonClick}>Create Badge</button>
             </div>
-            {badgeresponse && badgeresponse.error &&
+            {err &&
               <div className="row">
                 <div className="col">
                   <div className="alert alert-danger mt-4" >
-                    {badgeresponse.error}
+                    {err}
                   </div>
                 </div>
               </div>

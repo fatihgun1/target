@@ -11,12 +11,14 @@ export default function TodoPage() {
     const todosresponse = useSelector(state => state.project);
 
     useEffect(() => {
-        dispatch(getProjectByCode(code))
-    }, [dispatch])
+        function fetchProject() {
+            dispatch(getProjectByCode(code))
+        }
+        fetchProject();
+    }, [code])
 
     return (
         <div className='container'>
-
             <div className="container-fluid bg-dark p-2 mb-2 mt-2 text-white">
                 Project: {todosresponse.project.name}
             </div>
@@ -30,7 +32,7 @@ export default function TodoPage() {
             <div className="row">
                 <div className="col">
                     {todosresponse.project.todos && todosresponse.project.todos.map((todo, index) => (
-                        <TodoComponent todo={todo} status={todosresponse.project.container.status} key={index}/>
+                        <TodoComponent todo={todo} status={todosresponse.project && todosresponse.project.container && todosresponse.project.container.status} key={index}/>
                     ))}
                 </div>
             </div>

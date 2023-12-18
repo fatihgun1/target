@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteStatus, updateStatus } from '../../redux/slice/statusSlice';
-import { deleteStatusOnContainer } from '../../redux/slice/packSlice';
+import { deleteStatusOnContainer, updateStatusOnContainer } from '../../redux/slice/packSlice';
 export default function StatusCompont({ status, key }) {
 
     const [edit, setEdit] = useState(false);
@@ -31,6 +31,7 @@ export default function StatusCompont({ status, key }) {
         dispatch(updateStatus(statu)).unwrap()
             .then((response) => {
                 if (response.status !== "BAD_REQUEST") {
+                    dispatch(updateStatusOnContainer(response))
                     setEdit(prev => !prev)
                 }
             })

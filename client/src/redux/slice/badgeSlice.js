@@ -49,7 +49,7 @@ export const badgeSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         //CREATE BADGE
-        builder.addCase(createBadge.pending,(state,action)=>{
+        builder.addCase(createBadge.pending,(state)=>{
             state.loading = true;
             state.error = null;
             state.success = false

@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { decodeToken } from "react-jwt";
 
 export const userSlice = createSlice({
     name:'user',
@@ -9,17 +8,6 @@ export const userSlice = createSlice({
         token: null
     },
     reducers:{
-        currentUser: (state) =>{
-            let token = JSON.parse(localStorage.getItem('token'));
-            if(token){
-
-                const user = decodeToken(token.token);
-                state.user = user.sub
-                state.isLogin = true;
-                state.token = token.token;
-                localStorage.setItem('user',JSON.stringify(state));
-            }
-        },
         logout : (state) => {
             localStorage.removeItem('token')
             localStorage.removeItem('user')

@@ -13,33 +13,33 @@ import java.util.List;
 @Service("projectService")
 public class ProjectServiceImpl implements ProjectService {
     @Autowired
-    private ProjectRepository todosRepository;
+    private ProjectRepository projectRepository;
     @Autowired
     private BadgeRepository badgeRepository;
 
     @Override
     public List<ProjectModel> getTodosByOwner(String owner) {
-        return todosRepository.findByOwner(owner);
+        return projectRepository.findByOwner(owner);
     }
 
     @Override
     public ProjectModel getTodosByCode(String name) {
-        return todosRepository.findByCode(name);
+        return projectRepository.findByCode(name);
     }
 
     @Override
-    public void createTodoList(ProjectModel todosModel) {
-        todosRepository.save(todosModel);
+    public ProjectModel createProject(ProjectModel project) {
+        return projectRepository.save(project);
     }
 
     @Override
-    public void updateProject(ProjectModel todosModel) {
-         todosRepository.save(todosModel);
+    public ProjectModel updateProject(ProjectModel todosModel) {
+         return projectRepository.save(todosModel);
     }
 
     @Override
     public void deleteTodoList(ProjectModel todosModel) {
-         todosRepository.delete(todosModel);
+        projectRepository.delete(todosModel);
     }
 
     @Override

@@ -1,6 +1,8 @@
 import React from 'react'
 import ReactModal from 'react-modal';
-export default function GeneralModal({ children , modal, setModal,width}) {
+export default function GeneralModal({ children , modal, setModal,width,height}) {
+    ReactModal.setAppElement('#root');
+
     const customStyles = {
         content: {
             top: '50%',
@@ -10,7 +12,7 @@ export default function GeneralModal({ children , modal, setModal,width}) {
             marginRight: '-50%',
             overflow: 'scroll',
             width:width,
-            height: '450px',
+            height: height,
             transform: 'translate(-50%, -50%)',
         },
     };

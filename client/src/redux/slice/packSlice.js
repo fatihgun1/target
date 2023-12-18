@@ -99,10 +99,21 @@ export const packSlice = createSlice({
             }
         },
 
+        updateStatusOnContainer: (state, action) => {
+            let containerIndex = current(state.containers).findIndex(item => item.code === (action.payload.container));
+            let statusIndex = state.containers.at(containerIndex).status.findIndex(item => item.code === action.payload.code);
+            state.containers.at(containerIndex).status[statusIndex] = action.payload;
+        },
+        updateBadgeOnContainer: (state, action) => {
+            let containerIndex = current(state.containers).findIndex(item => item.code === (action.payload.container));
+            let statusIndex = state.containers.at(containerIndex).badges.findIndex(item => item.code === action.payload.code);
+            state.containers.at(containerIndex).badges[statusIndex] = action.payload;
+        },
+
         deleteStatusOnContainer: (state, action) => {
             let containerIndex = current(state.containers).findIndex(item => item.code === (action.payload.container));
-            let badgeIndex = state.containers.at(containerIndex).status.findIndex(item => item.code === action.payload.code);
-            state.containers.at(containerIndex).status.splice(badgeIndex, 1)
+            let statusIndex = state.containers.at(containerIndex).status.findIndex(item => item.code === action.payload.code);
+            state.containers.at(containerIndex).status.splice(statusIndex, 1)
         },
 
         disablePublishButton: (state, action) => {
@@ -211,7 +222,7 @@ export const packSlice = createSlice({
         builder.addCase(deleteContainer.fulfilled, (state, action) => {
             state.loading = false;
             state.error = null;
-            if (action.payload.status !== "BAD_REQUEST") {
+            if ( action.payload.status !== "BAD_REQUEST" && action.payload === true) {
                 state.success = true;
                 let containerIndex = current(state.containers).findIndex(item => item.code === (action.payload.container));
                 state.containers.splice(containerIndex, 1)
@@ -250,5 +261,5 @@ export const packSlice = createSlice({
     }
 })
 
-export const { setBadgeToContainer, deleteBadgeOnContainer, setStatusToContainer, deleteStatusOnContainer,disablePublishButton } = packSlice.actions
+export const { setBadgeToContainer, deleteBadgeOnContainer, setStatusToContainer, deleteStatusOnContainer,disablePublishButton,updateStatusOnContainer,updateBadgeOnContainer } = packSlice.actions
 export default packSlice.reducer;
