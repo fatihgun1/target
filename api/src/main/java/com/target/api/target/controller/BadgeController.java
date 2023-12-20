@@ -21,9 +21,9 @@ public class BadgeController {
         return badgeFacades.getBadgeByCode(code);
     }
 
-    @GetMapping("/all/{owner}")
-    public List<BadgeDto> getBadges(@PathVariable String owner){
-        return badgeFacades.getBadgeByOwner(owner);
+    @GetMapping("/all")
+    public List<BadgeDto> getBadges(){
+        return badgeFacades.getBadgeByOwner();
     }
 
     @PostMapping("/create")

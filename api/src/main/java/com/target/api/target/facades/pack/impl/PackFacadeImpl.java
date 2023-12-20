@@ -4,6 +4,7 @@ import com.target.api.target.dto.PackDto;
 import com.target.api.target.facades.pack.PackFacade;
 import com.target.api.target.mapper.PackMapper;
 import com.target.api.target.services.PackService;
+import com.target.api.target.util.CurrentUser;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ public class PackFacadeImpl implements PackFacade {
     @Resource(name = "packMapper")
     private PackMapper packMapper;
     @Override
-    public PackDto getUserPack(String owner) {
-        return packMapper.toMapPackDto(packService.getPackByOwner(owner));
+    public PackDto getUserPack() {
+        return packMapper.toMapPackDto(packService.getPackByOwner(CurrentUser.resolve()));
     }
 }

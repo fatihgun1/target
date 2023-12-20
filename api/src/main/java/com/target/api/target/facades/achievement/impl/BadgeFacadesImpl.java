@@ -7,6 +7,7 @@ import com.target.api.target.mapper.BadgeMapper;
 import com.target.api.target.model.BadgeModel;
 import com.target.api.target.services.BadgeService;
 import com.target.api.target.services.ContainerService;
+import com.target.api.target.util.CurrentUser;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +25,8 @@ public class BadgeFacadesImpl implements BadgeFacades {
     private ContainerService containerService;
 
     @Override
-    public List<BadgeDto> getBadgeByOwner(String owner) {
-        return badgeMapper.toBadgeDtoList(badgeService.getBadgeByOwner(owner));
+    public List<BadgeDto> getBadgeByOwner() {
+        return badgeMapper.toBadgeDtoList(badgeService.getBadgeByOwner(CurrentUser.resolve()));
     }
 
     @Override
@@ -40,7 +41,7 @@ public class BadgeFacadesImpl implements BadgeFacades {
         target.setName(source.getName());
         target.setDescription(source.getDescription());
         target.setScore(Long.valueOf(source.getScore()));
-        target.setOwner(source.getOwner());
+        target.setOwner(CurrentUser.resolve());
         target.setMediaUrl(source.getMediaUrl());
         target.setContainer(containerService.getContainer(source.getContainer()));
         return badgeMapper.toBadgeDto(badgeService.crateBadge(target));

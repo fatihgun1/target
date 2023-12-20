@@ -4,6 +4,7 @@ import com.target.api.target.model.AchievementModel;
 import com.target.api.target.model.ProjectModel;
 import com.target.api.target.services.AchievementService;
 import com.target.api.target.strategy.AchievementStrategy;
+import com.target.api.target.util.CurrentUser;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class AchievementStrategyImpl implements AchievementStrategy {
         achievement.setCode(UUID.randomUUID().toString());
         achievement.setName(todos.getName());
         achievement.setTotalScore(0L);
-        achievement.setOwner(todos.getOwner());
+        achievement.setOwner(CurrentUser.resolve());
         achievement.setProject(todos.getCode());
         achievementService.createAchievement(achievement);
     }

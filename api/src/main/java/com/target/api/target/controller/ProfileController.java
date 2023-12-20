@@ -14,9 +14,9 @@ public class ProfileController {
     @Resource(name = "profileFacade")
     private ProfileFacade profileFacade;
 
-    @GetMapping("/{owner}")
-    public ProfileDto profile(@PathVariable String owner){
-        return profileFacade.getProfile(owner);
+    @GetMapping
+    public ProfileDto profile(){
+        return profileFacade.getProfile();
     }
 
     @PostMapping("/update")

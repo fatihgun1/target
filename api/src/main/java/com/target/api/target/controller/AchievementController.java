@@ -14,9 +14,9 @@ public class AchievementController {
     @Resource(name = "achievementFacades")
     private AchievementFacades achievementFacades;
 
-    @GetMapping("/all/{owner}")
-    public List<AchievementDto> getAchievementByOwner(@PathVariable String owner){
-        return achievementFacades.getAchievementByOwner(owner);
+    @GetMapping("/all")
+    public List<AchievementDto> getAchievementByOwner(){
+        return achievementFacades.getAchievementByOwner();
     }
 
 }

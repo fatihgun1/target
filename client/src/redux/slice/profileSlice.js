@@ -8,11 +8,9 @@ const initialState = {
     error:null
 }
 
-const user = JSON.parse(localStorage.getItem('user'));
-
 export const getProfile = createAsyncThunk('createMedia', async () => {
     try{
-        const response = await axiosInstance.get(`/profile/${user.user}`)
+        const response = await axiosInstance.get(`/profile`)
         return response.data;
     }catch(err){
         return err.response.data;
@@ -22,7 +20,6 @@ export const getProfile = createAsyncThunk('createMedia', async () => {
 
 export const updateProfile = createAsyncThunk('updateProfile', async (payload) => {
     try{
-        payload.owner= user.user;
         const response = await axiosInstance.post(`/profile/update`, payload);
         return response.data;
     }catch(err){

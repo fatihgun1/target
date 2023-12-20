@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { axiosInstance } from "../../utils/axiosConfig";
+
 const initialState = {
     badges : {name: null,description: null,owner: null,score: null,mediaUrl: null},
     loading:false,

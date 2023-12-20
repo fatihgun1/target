@@ -6,7 +6,6 @@ import lombok.Data;
 
 @Data
 public class ProjectRequestDto {
-    private String owner;
     @NotEmpty(message = "Project Name Cannot Be Empty")
     @Size(max = 120,message = "Project name length max length 120 ")
     private String name;

@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface AchievementFacades {
 
-    List<AchievementDto> getAchievementByOwner(String owner);
+    List<AchievementDto> getAchievementByOwner();
     AchievementDto calculate(String code);
 }

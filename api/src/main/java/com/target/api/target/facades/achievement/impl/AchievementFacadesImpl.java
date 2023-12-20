@@ -12,6 +12,7 @@ import com.target.api.target.model.TodoModel;
 import com.target.api.target.services.AchievementService;
 import com.target.api.target.services.ProjectService;
 import com.target.api.target.services.TodoService;
+import com.target.api.target.util.CurrentUser;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -34,8 +35,8 @@ public class AchievementFacadesImpl implements AchievementFacades {
     private ProjectService projectService;
 
     @Override
-    public List<AchievementDto> getAchievementByOwner(String owner) {
-        List<AchievementModel> achievements = achievementService.getAchievementByOwner(owner);
+    public List<AchievementDto> getAchievementByOwner() {
+        List<AchievementModel> achievements = achievementService.getAchievementByOwner(CurrentUser.resolve());
         List<AchievementDto> achievementDtos = new ArrayList<>();
         for (AchievementModel achievement : achievements) {
             AchievementDto achievementDto = achievementMapper.toAchievementDto(achievement);

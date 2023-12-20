@@ -8,7 +8,6 @@ const initialState = {
     error:null
 }
 
-
 export const createMedia = createAsyncThunk('createMedia', async (payload) => {
     try{
         const response = await axios.post(`${process.env.REACT_APP_API_MEDIA_URL}`, payload)

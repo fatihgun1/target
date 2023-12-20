@@ -6,7 +6,7 @@ import com.target.api.target.facades.request.BadgeRequestDto;
 import java.util.List;
 
 public interface BadgeFacades {
-    List<BadgeDto> getBadgeByOwner(String owner);
+    List<BadgeDto> getBadgeByOwner();
     BadgeDto getBadgeByCode(String code);
     BadgeDto crateBadge(BadgeRequestDto badge);
     BadgeDto updateBadge(BadgeRequestDto badge);

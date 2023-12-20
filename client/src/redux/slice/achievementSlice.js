@@ -8,11 +8,10 @@ const initialState = {
     success:false,
     error:null
 }
-const user = JSON.parse(localStorage.getItem('user'));
 
 export const getAchievemnetByUser = createAsyncThunk('getAchievemnetByCode', async () => {
     try{
-        const response = await axiosInstance.get(`/achievement/all/${user.user}`)
+        const response = await axiosInstance.get(`/achievement/all`)
         return response.data;
        
     }catch(err){

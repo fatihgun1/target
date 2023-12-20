@@ -2,6 +2,7 @@ package com.target.api.target.mapper;
 
 import com.target.api.target.dto.BadgeEntryDto;
 import com.target.api.target.model.BadgeEntryModel;
+import com.target.api.target.util.CurrentUser;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -17,7 +18,7 @@ public class BadgeEntryMapper {
             target.setCode(source.getCode());
             target.setDescription(source.getDescription());
             target.setName(source.getName());
-            target.setOwner(source.getOwner());
+            target.setOwner(CurrentUser.resolve());
             target.setScore(source.getScore());
             target.setMediaUrl(source.getMediaUrl());
             return target;

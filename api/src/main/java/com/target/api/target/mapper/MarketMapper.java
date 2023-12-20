@@ -6,6 +6,7 @@ import com.target.api.target.services.BadgeService;
 import com.target.api.target.services.ContainerService;
 import com.target.api.target.services.MarketService;
 import com.target.api.target.services.StatusService;
+import com.target.api.target.util.CurrentUser;
 import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,7 @@ public class MarketMapper {
         MarketEntryDto target = new MarketEntryDto();
         target.setCode(source.getCode());
         target.setName(source.getName());
-        target.setOwner(source.getOwner());
+        target.setOwner(CurrentUser.resolve());
         target.setBadges(badgeEntryMapper.toMapBadgeEntryList(source.getBadgeEntry()));
         target.setStatus(statusEntryMapper.toMapStatusEntryList(source.getStatusEntry()));
         return target;
@@ -93,7 +94,7 @@ public class MarketMapper {
         target.setCode(UUID.randomUUID().toString());
         target.setName(source.getName());
         target.setDescription(source.getDescription());
-        target.setOwner(source.getOwner());
+        target.setOwner(CurrentUser.resolve());
         target.setScore(source.getScore());
         target.setMediaUrl(source.getMediaUrl());
         target.setMarketEntry(relation);

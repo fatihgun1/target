@@ -10,5 +10,4 @@ public class ContainerRequestDto {
     @NotEmpty(message = "Container Name Cannot Be Empty")
     @Size(max = 60,message = "Container name length max length 120")
     private String name;
-    private String owner;
 }
