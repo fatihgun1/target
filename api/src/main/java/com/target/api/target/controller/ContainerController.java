@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/container",method = RequestMethod.GET)
+@RequestMapping(value = "/api/v1/authenticated/container",method = RequestMethod.GET)
 public class ContainerController {
 
     @Resource(name = "containerFacade")

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/badge",method = RequestMethod.GET)
+@RequestMapping(value = "/api/v1/authenticated/badge",method = RequestMethod.GET)
 public class BadgeController {
 
     @Resource(name = "badgeFacades")

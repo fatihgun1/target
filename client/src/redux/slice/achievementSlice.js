@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import { axiosInstance } from "../../utils/axiosConfig";
 
 const initialState = {
     achievements : [{ name: null, totalScore: null }],
@@ -10,23 +10,15 @@ const initialState = {
 }
 const user = JSON.parse(localStorage.getItem('user'));
 
-const headers =  { 
-    headers: {
-         'Authorization': `Bearer ${user ? user.token :null}`
-} };
-
-
-
 export const getAchievemnetByUser = createAsyncThunk('getAchievemnetByCode', async () => {
     try{
-        const response = await axios.get(`http://localhost:8080/achievement/all/${user.user}`,headers)
+        const response = await axiosInstance.get(`/achievement/all/${user.user}`)
         return response.data;
        
     }catch(err){
         console.log(err);
     }
 })
-
 
 export const achievementSlice = createSlice({
     name:'achievement',

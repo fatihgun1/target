@@ -10,7 +10,7 @@ const initialState = {
 
 export const fetchRegister = createAsyncThunk('fetchRegister', async (credential) => {
     try {
-        const response = await axios.post('http://localhost:8080/api/v1/auth/signup', credential)
+        const response = await axios.post(`${process.env.REACT_APP_REGISTER_URL}`, credential)
         return response.data;
     } catch (err) {
         

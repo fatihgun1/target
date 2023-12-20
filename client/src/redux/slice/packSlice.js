@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
-import axios from "axios";
-
+import { axiosInstance } from "../../utils/axiosConfig";
 const initialState = {
     containers: [{
         code: null, name: null, isPublished:null,
@@ -14,15 +13,9 @@ const initialState = {
 
 const user = JSON.parse(localStorage.getItem('user'));
 
-const headers = {
-    headers: {
-        'Authorization': `Bearer ${user ? user.token : null}`
-    }
-};
-
 export const getBackPack = createAsyncThunk('getBackPack', async () => {
     try {
-        const response = await axios.get(`http://localhost:8080/pack/${user.user}`, null, headers)
+        const response = await axiosInstance.get(`/pack/${user.user}`)
         return response.data;
     } catch (err) {
         return err.response.data;
@@ -33,7 +26,7 @@ export const getBackPack = createAsyncThunk('getBackPack', async () => {
 export const createContainer = createAsyncThunk('createContainer', async (payload) => {
     payload.owner = user.user;
     try {
-        const response = await axios.post(`http://localhost:8080/container/create`, payload, headers)
+        const response = await axiosInstance.post(`/container/create`, payload)
         return response.data;
     } catch (err) {
         return err.response.data;
@@ -42,7 +35,7 @@ export const createContainer = createAsyncThunk('createContainer', async (payloa
 
 export const getContainer = createAsyncThunk('getContainer', async (payload) => {
     try {
-        const response = await axios.get(`http://localhost:8080/container/${payload.code}`, null, headers)
+        const response = await axiosInstance.get(`/container/${payload.code}`)
         return response.data;
     } catch (err) {
         return err.response.data;
@@ -51,7 +44,7 @@ export const getContainer = createAsyncThunk('getContainer', async (payload) => 
 
 export const updateContainer = createAsyncThunk('updateContainer', async (payload) => {
     try {
-        const response = await axios.post(`http://localhost:8080/container/update`, payload, headers)
+        const response = await axiosInstance.post(`/container/update`, payload)
         return response.data;
     } catch (err) {
         return err.response.data;
@@ -60,7 +53,7 @@ export const updateContainer = createAsyncThunk('updateContainer', async (payloa
 
 export const deleteContainer = createAsyncThunk('deleteContainer', async (payload) => {
     try {
-        const response = await axios.post(`http://localhost:8080/container/delete`, payload, headers)
+        const response = await axiosInstance.post(`/container/delete`, payload)
         return response.data;
     } catch (err) {
         return err.response.data;
@@ -69,7 +62,7 @@ export const deleteContainer = createAsyncThunk('deleteContainer', async (payloa
 
 export const replaceContainer = createAsyncThunk('replaceContainer', async (payload) => {
     try {
-        const response = await axios.post(`http://localhost:8080/container/replace`, payload, headers)
+        const response = await axiosInstance.post(`/container/replace`, payload)
         return response.data;
     } catch (err) {
         return err.response.data;

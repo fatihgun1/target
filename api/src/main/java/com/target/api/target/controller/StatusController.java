@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/status",method = RequestMethod.GET)
+@RequestMapping(value = "/api/v1/authenticated/status",method = RequestMethod.GET)
 public class StatusController {
 
     @Resource(name = "statusFacades")

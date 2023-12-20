@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import { axiosInstance } from "../../utils/axiosConfig";
 
 const initialState = {
     profile:{fullName:null,title:null,profileScore:null,mediaUrl:null,bio:null,owner:null},
@@ -10,14 +10,9 @@ const initialState = {
 
 const user = JSON.parse(localStorage.getItem('user'));
 
-const headers =  { 
-    headers: {
-         'Authorization': `Bearer ${user ? user.token :null}`
-} };
-
 export const getProfile = createAsyncThunk('createMedia', async () => {
     try{
-        const response = await axios.get(`http://localhost:8080/profile/${user.user}`, null, headers)
+        const response = await axiosInstance.get(`/profile/${user.user}`)
         return response.data;
     }catch(err){
         return err.response.data;
@@ -28,7 +23,7 @@ export const getProfile = createAsyncThunk('createMedia', async () => {
 export const updateProfile = createAsyncThunk('updateProfile', async (payload) => {
     try{
         payload.owner= user.user;
-        const response = await axios.post(`http://localhost:8080/profile/update`, payload, headers);
+        const response = await axiosInstance.post(`/profile/update`, payload);
         return response.data;
     }catch(err){
         return err.response.data;

@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-
+import { axiosInstance } from "../../utils/axiosConfig";
 const initialState = {
     market:{totalPage:null,pageSize:null,currentPage:null,
         entries: [{
@@ -28,17 +27,11 @@ const initialState = {
 
 const user = JSON.parse(localStorage.getItem('user'));
 
-const headers = {
-    headers: {
-        'Authorization': `Bearer ${user ? user.token : null}`
-    }
-};
-
 
 //*********************CONTAINER*****************************
 export const getMarket = createAsyncThunk('getMarket', async (payload) => {
     try {
-        const response = await axios.post(`http://localhost:8080/market/m`, payload, headers)
+        const response = await axiosInstance.post(`/market/m`, payload)
         return response.data;
     } catch (err) {
         return err.response.data;
@@ -47,7 +40,7 @@ export const getMarket = createAsyncThunk('getMarket', async (payload) => {
 
 export const publishContainer = createAsyncThunk('publishContainer', async (payload) => {
     try {
-        const response = await axios.post(`http://localhost:8080/market/p`, payload, headers)
+        const response = await axiosInstance.post(`/market/p`, payload)
         return response.data;
     } catch (err) {
         return err.response.data;
@@ -57,13 +50,12 @@ export const publishContainer = createAsyncThunk('publishContainer', async (payl
 export const buyContainer = createAsyncThunk('buyContainer', async (payload) => {
     try {
         payload.owner = user.user;
-        const response = await axios.post(`http://localhost:8080/market/b`, payload, headers)
+        const response = await axiosInstance.post(`/market/b`, payload)
         return response.data;
     } catch (err) {
         return err.response.data;
     }
 })
-
 
 export const marketSilce = createSlice({
     name: 'market',

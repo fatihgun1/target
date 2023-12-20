@@ -21,8 +21,9 @@ export default function RegisterForm() {
     }
 
     const onRegister = () => {
-        dispatch(fetchRegister(user)).then(() => {
-            if (register.success) {
+        dispatch(fetchRegister(user)).then((response) => {
+            console.log(response);
+            if (response.payload) {
                 navigate('/login')
             }
         });

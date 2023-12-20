@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/todo",method = RequestMethod.GET)
+@RequestMapping(value = "/api/v1/authenticated/todo",method = RequestMethod.GET)
 public class TodoController {
 
     @Resource(name = "todoFacades")

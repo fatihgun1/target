@@ -1,23 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-
+import { axiosInstance } from "../../utils/axiosConfig";
 const initialState = {
     badges : {name: null,description: null,owner: null,score: null,mediaUrl: null},
     loading:false,
     success:false,
     error:null
 }
-const user = JSON.parse(localStorage.getItem('user'));
-
-const headers =  { 
-    headers: {
-         'Authorization': `Bearer ${user ? user.token :null}`
-} };
-
 
 export const createBadge = createAsyncThunk('createBadge', async (payload) => {
     try{
-        const response = await axios.post(`http://localhost:8080/badge/create`, payload, headers)
+        const response = await axiosInstance.post(`/badge/create`, payload)
         return response.data;
     }catch(err){
         return err.response.data;
@@ -26,7 +18,7 @@ export const createBadge = createAsyncThunk('createBadge', async (payload) => {
 
 export const updateBadge = createAsyncThunk('updateBadge', async (payload) => {
     try{
-        const response = await axios.post(`http://localhost:8080/badge/update`, payload, headers)
+        const response = await axiosInstance.post(`/badge/update`, payload)
         return response.data;
     }catch(err){
         return err.response.data;
@@ -36,7 +28,7 @@ export const updateBadge = createAsyncThunk('updateBadge', async (payload) => {
 export const deleteBadge = createAsyncThunk('deleteBadge', async (payload) => {
    
     try{
-        const response = await axios.post(`http://localhost:8080/badge/delete`, payload, headers)
+        const response = await axiosInstance.post(`/badge/delete`, payload)
         return response.data;
     }catch(err){
         console.log(err);

@@ -6,7 +6,7 @@ import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/pack",method = RequestMethod.GET)
+@RequestMapping(value = "/api/v1/authenticated/pack",method = RequestMethod.GET)
 public class PackController {
     @Resource(name = "packFacade")
     private PackFacade packFacade;

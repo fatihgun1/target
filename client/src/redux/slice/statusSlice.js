@@ -1,22 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import { axiosInstance } from "../../utils/axiosConfig";
 
 const initialState = {
     loading:false,
     success:false,
     error:null
 }
-const user = JSON.parse(localStorage.getItem('user'));
-
-const headers =  { 
-    headers: {
-         'Authorization': `Bearer ${user ? user.token :null}`
-} };
-
 
 export const createStatus = createAsyncThunk('createStatus', async (payload) => {
     try{
-        const response = await axios.post(`http://localhost:8080/status/create`, payload, headers)
+        const response = await axiosInstance.post(`/status/create`, payload)
         return response.data;
     }catch(err){
         return err.response.data;
@@ -26,7 +19,7 @@ export const createStatus = createAsyncThunk('createStatus', async (payload) => 
 
 export const updateStatus = createAsyncThunk('updateStatus', async (payload) => {
     try{
-        const response = await axios.post(`http://localhost:8080/status/update`, payload, headers)
+        const response = await axiosInstance.post(`/status/update`, payload)
         return response.data;
     }catch(err){
         return err.response.data;
@@ -35,10 +28,10 @@ export const updateStatus = createAsyncThunk('updateStatus', async (payload) => 
 
 export const deleteStatus = createAsyncThunk('deleteStatus', async (payload) => {
     try{
-        const response = await axios.post(`http://localhost:8080/status/delete`, payload, headers)
+        const response = await axiosInstance.post(`/status/delete`, payload)
         return response.data;
     }catch(err){
-        console.log(err);
+        return err.response.data;
     }
 })
 

@@ -8,7 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/profile",method = RequestMethod.GET)
+@RequestMapping(value = "/api/v1/authenticated/profile",method = RequestMethod.GET)
 public class ProfileController {
 
     @Resource(name = "profileFacade")
