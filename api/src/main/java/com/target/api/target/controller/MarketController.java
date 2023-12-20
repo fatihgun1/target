@@ -9,7 +9,7 @@ import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/market",method = RequestMethod.GET)
+@RequestMapping(value = "/api/v1/authenticated/market",method = RequestMethod.GET)
 public class MarketController {
 
     @Resource(name = "marketFacade")

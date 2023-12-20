@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/achievement",method = RequestMethod.GET)
+@RequestMapping(value = "/api/v1/authenticated/achievement",method = RequestMethod.GET)
 public class AchievementController {
     @Resource(name = "achievementFacades")
     private AchievementFacades achievementFacades;

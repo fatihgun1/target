@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
-import axios from "axios";
-
+import { axiosInstance } from "../../utils/axiosConfig";
 const initialState = {
     projects: [{ name: null, code: null }],
     project: {
@@ -14,18 +13,10 @@ const initialState = {
 }
 const user = JSON.parse(localStorage.getItem('user'));
 
-const headers = {
-    headers: {
-        'Authorization': `Bearer ${user ? user.token : null}`
-    }
-};
-
 export const getProjectByCode = createAsyncThunk('getProjectByCode', async (code) => {
     try {
-        const response = await axios.get(`http://localhost:8080/project/get/${code}`, headers)
-
+        const response = await axiosInstance.get(`/project/get/${code}`)
         return response.data;
-
     } catch (err) {
         console.log(err);
     }
@@ -34,7 +25,7 @@ export const getProjectByCode = createAsyncThunk('getProjectByCode', async (code
 
 export const getProject = createAsyncThunk('getProject', async () => {
     try {
-        const response = await axios.get(`http://localhost:8080/project/all/${user.user}`, headers)
+        const response = await axiosInstance.get(`/project/all/${user.user}`);
         return response.data;
     } catch (err) {
         console.log(err);
@@ -44,7 +35,7 @@ export const getProject = createAsyncThunk('getProject', async () => {
 export const createProject = createAsyncThunk('createProject', async (payload) => {
     payload.owner = user.user;
     try {
-        const response = await axios.post(`http://localhost:8080/project/create`, payload, headers)
+        const response = await axiosInstance.post(`/project/create`, payload);
         return response.data;
     } catch (err) {
         return err.response.data;
@@ -53,7 +44,7 @@ export const createProject = createAsyncThunk('createProject', async (payload) =
 
 export const updateProject = createAsyncThunk('updateProject', async (payload) => {
     try {
-        const response = await axios.post(`http://localhost:8080/project/update`, payload, headers)
+        const response = await axiosInstance.post(`/project/update`, payload)
         return response.data;
     } catch (err) {
         return err.response.data;
@@ -62,7 +53,7 @@ export const updateProject = createAsyncThunk('updateProject', async (payload) =
 
 export const deleteProject = createAsyncThunk('deleteProject', async (payload) => {
     try {
-        const response = await axios.post(`http://localhost:8080/project/delete`, payload, headers)
+        const response = await axiosInstance.post(`/project/delete`, payload)
         return response.data;
     } catch (err) {
         return err.response.data;
@@ -175,6 +166,7 @@ export const projectSlice = createSlice({
         builder.addCase(updateProject.rejected, (state, action) => {
             state.loading = false;
             state.error = "3";
+            state.success = false;
         });
         //DELETE PROJECT
         builder.addCase(deleteProject.pending, (state, action) => {

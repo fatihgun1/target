@@ -5,9 +5,11 @@ import com.target.api.target.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -24,6 +26,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
 
@@ -38,38 +41,29 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http.csrf(AbstractHttpConfigurer::disable)
+        http.csrf(AbstractHttpConfigurer::disable).cors(Customizer.withDefaults())
                 .authorizeHttpRequests(request -> request.requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers("/project/**").permitAll()
-                        .requestMatchers("/profile/**").permitAll()
-                        .requestMatchers("/todo/**").permitAll()
-                        .requestMatchers("/status/**").permitAll()
-                        .requestMatchers("/achievement/**").permitAll()
-                        .requestMatchers("/badge/**").permitAll()
                         .requestMatchers("/media/**").permitAll()
-                        .requestMatchers("/pack/**").permitAll()
-                        .requestMatchers("/market/**").permitAll()
-                        .requestMatchers("/container/**").permitAll()
-                        .requestMatchers("/api/v1/admin").hasAnyAuthority(RoleEnum.ADMIN.name())
-                        .requestMatchers("/api/v1/user").hasAnyAuthority(RoleEnum.USER.name())
-                        .anyRequest().authenticated())
-
+                        .requestMatchers("/api/v1/admin/**").hasAnyAuthority(RoleEnum.ADMIN.name())
+                        .requestMatchers("/api/v1/authenticated/**").hasAnyAuthority(RoleEnum.USER.name())
+                        .anyRequest().
+                        authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
-
-
+/*
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
-    }
+    }*/
+
 
     @Bean
     public AuthenticationProvider authenticationProvider() {

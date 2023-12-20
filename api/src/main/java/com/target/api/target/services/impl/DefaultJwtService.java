@@ -31,7 +31,7 @@ public class DefaultJwtService implements JwtService {
     public String generateToken(UserDetails userDetail){
         return Jwts.builder().setSubject(userDetail.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 60*1000*24*expireTime))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000*60*24*expireTime))
                 .signWith(getSignatureKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -40,7 +40,7 @@ public class DefaultJwtService implements JwtService {
     public String generateRefreshToken(HashMap<String, Object> extractClaims, UserDetails user) {
         return Jwts.builder().setClaims(extractClaims).setSubject(user.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 60*1000*24*expireTime))
+                .setExpiration(new Date(System.currentTimeMillis() + 60*1000*24*expireTime*7))
                 .signWith(getSignatureKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

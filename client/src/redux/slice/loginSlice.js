@@ -12,7 +12,7 @@ const initialState = {
 
 export const fetchLogin = createAsyncThunk('fetchLogin', async (credential) => {
     try{
-        const response = await axios.post('http://localhost:8080/api/v1/auth/signin',credential);
+        const response = await axios.post(`${process.env.REACT_APP_LOGIN_URL}`,credential);
         return response.data;
     }catch(err){
 

@@ -8,16 +8,10 @@ const initialState = {
     error:null
 }
 
-const user = JSON.parse(localStorage.getItem('user'));
-
-const headers =  { 
-    headers: {
-         'Authorization': `Bearer ${user ? user.token :null}`
-} };
 
 export const createMedia = createAsyncThunk('createMedia', async (payload) => {
     try{
-        const response = await axios.post(`http://localhost:8080/media/upload`, payload, headers)
+        const response = await axios.post(`${process.env.REACT_APP_API_MEDIA_URL}`, payload)
         return response.data;
     }catch(err){
         return err.response.data;
