@@ -24,10 +24,10 @@ public class ProjectController {
         return projectFacades.createProject(todosRequestDto);
     }
 
-    @GetMapping("/all/{owner}")
+    @GetMapping("/all")
     @JsonView(VIEW.BASE.class)
-    public List<ProjectDto> getProject(@PathVariable String owner){
-        return projectFacades.getProjectByOwner(owner);
+    public List<ProjectDto> getProject(){
+        return projectFacades.getProjectByOwner();
     }
 
     @GetMapping("/get/{code}")

@@ -11,7 +11,6 @@ const initialState = {
     success: false,
     error: null
 }
-const user = JSON.parse(localStorage.getItem('user'));
 
 export const getProjectByCode = createAsyncThunk('getProjectByCode', async (code) => {
     try {
@@ -25,7 +24,7 @@ export const getProjectByCode = createAsyncThunk('getProjectByCode', async (code
 
 export const getProject = createAsyncThunk('getProject', async () => {
     try {
-        const response = await axiosInstance.get(`/project/all/${user.user}`);
+        const response = await axiosInstance.get(`/project/all`);
         return response.data;
     } catch (err) {
         console.log(err);
@@ -33,7 +32,6 @@ export const getProject = createAsyncThunk('getProject', async () => {
 })
 
 export const createProject = createAsyncThunk('createProject', async (payload) => {
-    payload.owner = user.user;
     try {
         const response = await axiosInstance.post(`/project/create`, payload);
         return response.data;

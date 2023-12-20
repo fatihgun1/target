@@ -3,6 +3,7 @@ package com.target.api.target.services.impl;
 import com.target.api.target.model.PackModel;
 import com.target.api.target.repository.PackRepository;
 import com.target.api.target.services.PackService;
+import com.target.api.target.util.CurrentUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class PackServiceImpl implements PackService {
 
     private PackModel createPack(String owner) {
         PackModel n_Pack = new PackModel();
-        n_Pack.setOwner(owner);
+        n_Pack.setOwner(CurrentUser.resolve());
         return packRepository.save(n_Pack);
     }
 

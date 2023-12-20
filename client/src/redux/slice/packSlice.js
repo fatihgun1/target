@@ -11,11 +11,9 @@ const initialState = {
     error: null
 }
 
-const user = JSON.parse(localStorage.getItem('user'));
-
 export const getBackPack = createAsyncThunk('getBackPack', async () => {
     try {
-        const response = await axiosInstance.get(`/pack/${user.user}`)
+        const response = await axiosInstance.get(`/pack`)
         return response.data;
     } catch (err) {
         return err.response.data;
@@ -24,7 +22,7 @@ export const getBackPack = createAsyncThunk('getBackPack', async () => {
 
 //*********************CONTAINER*****************************
 export const createContainer = createAsyncThunk('createContainer', async (payload) => {
-    payload.owner = user.user;
+
     try {
         const response = await axiosInstance.post(`/container/create`, payload)
         return response.data;

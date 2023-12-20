@@ -3,6 +3,7 @@ package com.target.api.target.mapper;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.target.api.target.dto.ProjectDto;
 import com.target.api.target.model.ProjectModel;
+import com.target.api.target.util.CurrentUser;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -26,7 +27,7 @@ public class ProjectMapper {
         ProjectDto target = new ProjectDto();
         target.setCode(source.getCode());
         target.setName(source.getName());
-        target.setOwner(source.getOwner());
+        target.setOwner(CurrentUser.resolve());
         target.setTodos(todoMapper.toMapTodoDtoList(source.getTodos()));
         target.setContainer(containerMapper.toMapContainerDto(source.getContainer()));
         return target;

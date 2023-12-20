@@ -6,6 +6,7 @@ import com.target.api.target.facades.request.ProfileRequestDto;
 import com.target.api.target.mapper.ProfileMapper;
 import com.target.api.target.model.ProfileModel;
 import com.target.api.target.services.ProfileService;
+import com.target.api.target.util.CurrentUser;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class ProfileFacadeImpl implements ProfileFacade {
 
     @Override
     public ProfileDto updateProfile(ProfileRequestDto profile) {
-        ProfileModel exitedProfile = profileService.getProfile(profile.getOwner());
+        ProfileModel exitedProfile = profileService.getProfile(CurrentUser.resolve());
         if (Objects.isNull(exitedProfile)){
             throw  new RuntimeException("User cannot find");
         }
@@ -29,8 +30,8 @@ public class ProfileFacadeImpl implements ProfileFacade {
     }
 
     @Override
-    public ProfileDto getProfile(String owner) {
-        ProfileModel profile = profileService.getProfile(owner);
+    public ProfileDto getProfile() {
+        ProfileModel profile = profileService.getProfile(CurrentUser.resolve());
         if (Objects.isNull(profile)){
             throw  new RuntimeException("User cannot find");
         }

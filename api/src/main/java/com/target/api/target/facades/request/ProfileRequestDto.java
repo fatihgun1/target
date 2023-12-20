@@ -13,5 +13,4 @@ public class ProfileRequestDto {
     private String mediaUrl;
     @NotEmpty(message = "Bio cannot be empty")
     private String bio;
-    private String owner;
 }

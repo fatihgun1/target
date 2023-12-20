@@ -10,6 +10,7 @@ import com.target.api.target.model.ProjectModel;
 import com.target.api.target.services.ContainerService;
 import com.target.api.target.services.PackService;
 import com.target.api.target.services.ProjectService;
+import com.target.api.target.util.CurrentUser;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,7 @@ public class ContainerFacadeImpl implements ContainerFacade {
         ContainerModel newContainer = new ContainerModel();
         newContainer.setName(container.getName());
         newContainer.setCode(UUID.randomUUID().toString());
-        newContainer.setPack(packService.getPackByOwner(container.getOwner()));
+        newContainer.setPack(packService.getPackByOwner(CurrentUser.resolve()));
         return containerMapper.toMapContainerDto(containerService.createContainer(newContainer));
     }
 

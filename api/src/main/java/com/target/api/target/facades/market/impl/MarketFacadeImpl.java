@@ -12,6 +12,7 @@ import com.target.api.target.model.PackModel;
 import com.target.api.target.services.ContainerService;
 import com.target.api.target.services.MarketService;
 import com.target.api.target.services.PackService;
+import com.target.api.target.util.CurrentUser;
 import jakarta.annotation.Resource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -55,7 +56,7 @@ public class MarketFacadeImpl implements MarketFacade {
 
     @Override
     public Boolean buy(MarketBuyRequestDto container) {
-        PackModel pack = packService.getPackByOwner(container.getOwner());
+        PackModel pack = packService.getPackByOwner(CurrentUser.resolve());
         MarketEntryModel marketContainer = marketService.getMarket(container.getCode());
         if (Objects.isNull(pack) || Objects.isNull(marketContainer)){
             return Boolean.FALSE;

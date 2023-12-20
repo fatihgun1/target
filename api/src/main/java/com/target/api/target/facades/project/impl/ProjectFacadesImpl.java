@@ -7,6 +7,7 @@ import com.target.api.target.mapper.ProjectMapper;
 import com.target.api.target.model.ProjectModel;
 import com.target.api.target.services.ProjectService;
 import com.target.api.target.strategy.AchievementStrategy;
+import com.target.api.target.util.CurrentUser;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +24,8 @@ public class ProjectFacadesImpl implements ProjectFacades {
     private AchievementStrategy achievementStrategy;
 
     @Override
-    public List<ProjectDto> getProjectByOwner(String owner) {
-        return projectMapper.toMapProjectList(projectService.getTodosByOwner(owner));
+    public List<ProjectDto> getProjectByOwner() {
+        return projectMapper.toMapProjectList(projectService.getTodosByOwner(CurrentUser.resolve()));
     }
 
     @Override
@@ -37,7 +38,7 @@ public class ProjectFacadesImpl implements ProjectFacades {
         final ProjectModel todosModel = new ProjectModel();
         todosModel.setCode(UUID.randomUUID().toString());
         todosModel.setName(requestDto.getName());
-        todosModel.setOwner(requestDto.getOwner());
+        todosModel.setOwner(CurrentUser.resolve());
         achievementStrategy.createAchievement(todosModel);
         return projectMapper.toMapProjectDto(projectService.createProject(todosModel));
     }
@@ -49,6 +50,7 @@ public class ProjectFacadesImpl implements ProjectFacades {
             return null;
         }
         existed.setName(requestDto.getName());
+        existed.setOwner(CurrentUser.resolve());
         achievementStrategy.updateAchievement(existed);
         return projectMapper.toMapProjectDto(projectService.updateProject(existed));
     }

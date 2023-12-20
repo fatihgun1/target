@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { axiosInstance } from "../../utils/axiosConfig";
+
 const initialState = {
     market:{totalPage:null,pageSize:null,currentPage:null,
         entries: [{
@@ -25,9 +26,6 @@ const initialState = {
     error: null
 }
 
-const user = JSON.parse(localStorage.getItem('user'));
-
-
 //*********************CONTAINER*****************************
 export const getMarket = createAsyncThunk('getMarket', async (payload) => {
     try {
@@ -49,7 +47,6 @@ export const publishContainer = createAsyncThunk('publishContainer', async (payl
 
 export const buyContainer = createAsyncThunk('buyContainer', async (payload) => {
     try {
-        payload.owner = user.user;
         const response = await axiosInstance.post(`/market/b`, payload)
         return response.data;
     } catch (err) {

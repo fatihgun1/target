@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 public class PackController {
     @Resource(name = "packFacade")
     private PackFacade packFacade;
-    @GetMapping("/{owner}")
-    public PackDto pack(@PathVariable String owner){
-        return packFacade.getUserPack(owner);
+    @GetMapping
+    public PackDto pack(){
+        return packFacade.getUserPack();
     }
 }
