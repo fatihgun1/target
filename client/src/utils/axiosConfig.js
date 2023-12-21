@@ -12,7 +12,7 @@ export const axiosInstance = axios.create({
    // withCredentials: true, // Enable sending cookies for cross-origin requests (if needed)
 });
 
-axiosInstance.interceptors.response.use(
+axiosInstance.interceptors.request.use(
     (config) => {
         const user = JSON.parse(localStorage.getItem('user'));
         if (user) {
@@ -26,7 +26,7 @@ axiosInstance.interceptors.response.use(
   );
   
   // Request interceptor
-  axiosInstance.interceptors.request.use(
+  axiosInstance.interceptors.response.use(
     (config) => {
       // Add common request logic here, e.g., token refresh
       return config;
