@@ -28,6 +28,7 @@ const initialState = {
 
 //*********************CONTAINER*****************************
 export const getMarket = createAsyncThunk('getMarket', async (payload) => {
+    console.log(process.env);
     try {
         const response = await axiosInstance.post(`/market/m`, payload)
         return response.data;
