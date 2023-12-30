@@ -15,6 +15,9 @@ import CreateTodoPage from './Page/Todo/CreateTodoPage';
 import Homepage from './Page/Homepage';
 import ContainerPage from './Page/Profile/ContainerPage';
 import MarketPage from './Page/MarketPage';
+import EducationPage from './Page/education/EducationPage';
+import SubjectPage from './Page/education/SubjectPage';
+import TutorialPage from './Page/education/TutorialPage';
 function App() {
 
   const authRouter = createBrowserRouter(
@@ -34,6 +37,25 @@ function App() {
             <ProfilePage/>
           )
         },
+        {
+          path:"/learning",
+          element :(
+            <EducationPage/>
+          )
+        },
+        {
+          path:"/learning/:code",
+          element :(
+            <SubjectPage/>
+          )
+        },
+        {
+          path:"/learning/tutorial/:code",
+          element :(
+            <TutorialPage/>
+          )
+        }
+        ,
         {
           path: "/profile/settings",
           element: (
