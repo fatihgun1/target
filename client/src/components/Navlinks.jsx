@@ -14,6 +14,12 @@ export default function Navlinks() {
                 <li className="nav-item">
                     <Link to="/project" className="nav-link">Project</Link>
                 </li>
+                <li className="nav-item">
+                    <Link to="/learning" className="nav-link">Learnings</Link>
+                </li>
+                <li className="nav-item">
+                    <Link to="#" className="nav-link">Notes</Link>
+                </li>
             </ul>
         </div>
     )

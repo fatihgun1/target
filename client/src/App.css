@@ -38,3 +38,12 @@
   bottom: 0;
   width: 100%;
 }
+
+
+.icon-right{
+  display: inline-flex;
+}
+.icon-right:hover{
+  opacity: 0.5;
+  cursor: pointer;
+}

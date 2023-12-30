@@ -27,7 +27,7 @@ export default function CreateContainerComponet({ setModal }) {
 
   }
 
-  const goBack = e => {
+  const goBack = () => {
     setModal(prev => !prev);
   }
 
